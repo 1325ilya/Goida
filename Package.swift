@@ -2,13 +2,11 @@
 import PackageDescription
 
 let package = Package(
-    name: "AyuGramIOSCore",
+    name: "SosuzagramIOSCore",
     platforms: [.iOS(.v17), .macOS(.v14)],
-    products: [
-        .library(name: "AyuGramIOSCore", targets: ["AyuGramIOSCore"])
-    ],
+    products: [.library(name: "SosuzagramIOSCore", targets: ["SosuzagramIOSCore"])],
     targets: [
-        .target(name: "AyuGramIOSCore"),
-        .testTarget(name: "AyuGramIOSCoreTests", dependencies: ["AyuGramIOSCore"])
+        .target(name: "SosuzagramIOSCore"),
+        .testTarget(name: "SosuzagramIOSCoreTests", dependencies: ["SosuzagramIOSCore"])
     ]
 )
