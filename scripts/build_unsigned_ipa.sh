@@ -12,6 +12,7 @@ rm -rf "$BUILD_DIR"
 mkdir -p "$APP_DIR"
 
 xcrun swiftc \
+  -parse-as-library \
   -target arm64-apple-ios17.0 \
   -sdk "$SDK_PATH" \
   -O \
@@ -40,16 +41,11 @@ cat > "$APP_DIR/Info.plist" <<PLIST
     <key>CFBundleShortVersionString</key>
     <string>0.1.0</string>
     <key>CFBundleVersion</key>
-    <string>1</string>
+    <string>2</string>
     <key>LSRequiresIPhoneOS</key>
     <true/>
     <key>MinimumOSVersion</key>
     <string>17.0</string>
-    <key>UIApplicationSceneManifest</key>
-    <dict>
-        <key>UIApplicationSupportsMultipleScenes</key>
-        <false/>
-    </dict>
     <key>UILaunchScreen</key>
     <dict/>
     <key>UISupportedInterfaceOrientations</key>
