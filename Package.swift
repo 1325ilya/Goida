@@ -6,7 +6,7 @@ let package = Package(
     platforms: [.iOS(.v17), .macOS(.v14)],
     products: [.library(name: "SosuzagramIOSCore", targets: ["SosuzagramIOSCore"])],
     targets: [
-        .target(name: "SosuzagramIOSCore", path: "Sources/AyuGramIOSCore"),
+        .target(name: "SosuzagramIOSCore", path: "Sources/SosuzagramIOSCore"),
         .testTarget(name: "SosuzagramIOSCoreTests", dependencies: ["SosuzagramIOSCore"], path: "Tests/SosuzagramIOSCoreTests")
     ]
 )

@@ -1,6 +1,6 @@
 import Foundation
 
-public enum AyuChatKind: String, Sendable, Codable, Equatable {
+public enum ChatKind: String, Sendable, Codable, Equatable {
     case user
     case group
     case supergroup
@@ -8,11 +8,11 @@ public enum AyuChatKind: String, Sendable, Codable, Equatable {
     case privateEncrypted
 }
 
-public struct AyuMessageSnapshot: Sendable, Codable, Equatable, Identifiable {
+public struct MessageSnapshot: Sendable, Codable, Equatable, Identifiable {
     public var id: Int64 { messageId }
     public let peerId: Int64
     public let messageId: Int64
-    public let chatKind: AyuChatKind
+    public let chatKind: ChatKind
     public let senderId: Int64?
     public let text: String?
     public let mediaLocalIdentifier: String?
@@ -22,7 +22,7 @@ public struct AyuMessageSnapshot: Sendable, Codable, Equatable, Identifiable {
     public init(
         peerId: Int64,
         messageId: Int64,
-        chatKind: AyuChatKind,
+        chatKind: ChatKind,
         senderId: Int64?,
         text: String?,
         mediaLocalIdentifier: String? = nil,
@@ -40,15 +40,15 @@ public struct AyuMessageSnapshot: Sendable, Codable, Equatable, Identifiable {
     }
 }
 
-public struct AyuArchivedMessage: Sendable, Codable, Equatable, Identifiable {
+public struct LocalHistoryItem: Sendable, Codable, Equatable, Identifiable {
     public var id: Int64 { snapshot.messageId }
-    public let snapshot: AyuMessageSnapshot
-    public var removedTimestamp: Date?
-    public var isRemoved: Bool
+    public let snapshot: MessageSnapshot
+    public var noLongerVisibleAt: Date?
+    public var isNoLongerVisible: Bool
 
-    public init(snapshot: AyuMessageSnapshot, removedTimestamp: Date? = nil, isRemoved: Bool = false) {
+    public init(snapshot: MessageSnapshot, noLongerVisibleAt: Date? = nil, isNoLongerVisible: Bool = false) {
         self.snapshot = snapshot
-        self.removedTimestamp = removedTimestamp
-        self.isRemoved = isRemoved
+        self.noLongerVisibleAt = noLongerVisibleAt
+        self.isNoLongerVisible = isNoLongerVisible
     }
 }
