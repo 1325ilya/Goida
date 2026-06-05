@@ -9,11 +9,19 @@
 ## Что внутри
 
 - Swift Package `SosuzagramIOSCore`
+- минимальное iOS-приложение `App/SosuzagramApp.swift`
 - настройки privacy-модов
 - модели message snapshot / archived item
 - сервис локальной истории
 - in-memory store для тестов
 - GitHub Actions CI
+- GitHub Actions build для `.ipa` artifact
+
+## IPA
+
+Actions -> `Build Sosuzagram IPA` -> artifact `Sosuzagram-ios26-unsigned-ipa`.
+
+Это unsigned/resignable IPA. Для установки на iPhone его надо подписать своим сертификатом через SideStore / AltStore / Sideloadly / Xcode / Apple Developer certificate.
 
 ## Ограничения
 
