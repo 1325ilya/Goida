@@ -1,0 +1,30 @@
+name: Release unsigned IPA
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  release-ipa:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build unsigned IPA
+        run: bash scripts/build_unsigned_ipa.sh
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG_NAME: sosuzagram-ios-unsigned-${{ github.run_number }}
+        run: |
+          gh release create "$TAG_NAME" \
+            build/ios/artifacts/Sosuzagram-ios26-unsigned.ipa \
+            --target "$GITHUB_SHA" \
+            --title "Sosuzagram iOS unsigned IPA ${{ github.run_number }}" \
+            --notes "Unsigned/resignable IPA. Sign it with your own certificate before installing on iPhone. This is a starter shell app with SosuzagramIOSCore bundled; Telegram-iOS integration is the next step."

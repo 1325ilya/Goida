@@ -1,0 +1,65 @@
+name: Build Sosuzagram (Telegram-iOS fork)
+
+on:
+  workflow_dispatch:
+    inputs:
+      build_configuration:
+        description: 'Build Configuration (e.g. release_universal)'
+        required: true
+        default: 'release_universal'
+
+jobs:
+  build:
+    runs-on: macos-14 # or macos-13, standard GitHub macOS runner
+    
+    steps:
+      - name: Checkout Sosuzagram overlay repository
+        uses: actions/checkout@v4
+        
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          
+      - name: Bootstrap Telegram-iOS upstream
+        run: ./scripts/bootstrap_telegram_ios.sh
+        
+      - name: Apply Sosuzagram Overlay & Patches
+        run: ./scripts/apply_sosuzagram_overlay.sh
+        
+      - name: Generate Build Configuration
+        run: ./scripts/generate_build_config.sh
+        env:
+          TELEGRAM_API_ID: ${{ secrets.TELEGRAM_API_ID }}
+          TELEGRAM_API_HASH: ${{ secrets.TELEGRAM_API_HASH }}
+          TEAM_ID: ${{ secrets.TEAM_ID || '0000000000' }}
+          BUNDLE_ID: 'org.sosuzagram.ios'
+          APP_TITLE: 'Sosuzagram'
+          
+      - name: Build IPA (Unsigned/Resignable)
+        run: |
+          cd upstream/Telegram-iOS
+          python3 build-system/Make/Make.py \
+              --cacheDir="$HOME/telegram-bazel-cache" \
+              build \
+              --configurationPath=build-system/template_minimal_development_configuration.json \
+              --configuration=${{ github.event.inputs.build_configuration }} \
+              --buildNumber=$GITHUB_RUN_NUMBER \
+              --codesigningInformationPath=""
+              
+          # If Make.py doesn't directly package IPA without codesigning, we will find the .app in bazel-out and package it
+          APP_PATH=$(find bazel-out -name "Telegram.app" -type d | head -n 1)
+          if [ -n "$APP_PATH" ]; then
+            mkdir -p Payload
+            cp -r "$APP_PATH" Payload/
+            zip -qr Sosuzagram-Telegram-iOS-unsigned.ipa Payload
+          else
+            echo "Error: Telegram.app not found in bazel-out"
+            exit 1
+          fi
+
+      - name: Upload Unsigned IPA
+        uses: actions/upload-artifact@v4
+        with:
+          name: Sosuzagram-Telegram-iOS-unsigned-ipa
+          path: upstream/Telegram-iOS/Sosuzagram-Telegram-iOS-unsigned.ipa
