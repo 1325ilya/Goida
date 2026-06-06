@@ -13,7 +13,7 @@ permissions:
 
 jobs:
   build:
-    runs-on: macos-14 # or macos-13, standard GitHub macOS runner
+    runs-on: macos-latest
     
     steps:
       - name: Checkout Sosuzagram overlay repository
@@ -39,11 +39,19 @@ jobs:
           BUNDLE_ID: 'org.sosuzagram.ios'
           APP_TITLE: 'Sosuzagram'
           
+      - name: Select Xcode Version
+        run: |
+          LATEST_XCODE=$(ls -d /Applications/Xcode* | sort -rV | head -n 1)
+          echo "Selecting $LATEST_XCODE"
+          sudo xcode-select -s "$LATEST_XCODE/Contents/Developer"
+
       - name: Build IPA (Unsigned/Resignable)
         run: |
           cd upstream/Telegram-iOS
           python3 build-system/Make/Make.py \
               --cacheDir="$HOME/telegram-bazel-cache" \
+              --overrideXcodeVersion \
+              --overrideBazelVersion \
               build \
               --configurationPath=build-system/template_minimal_development_configuration.json \
               --configuration=${{ github.event.inputs.build_configuration }} \
