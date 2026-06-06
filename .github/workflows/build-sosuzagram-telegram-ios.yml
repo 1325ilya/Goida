@@ -62,15 +62,18 @@ jobs:
           OUTPUT_PATH="build/artifacts"
           rm -rf "$OUTPUT_PATH"
           mkdir -p "$OUTPUT_PATH"
-          for f in bazel-out/applebin_ios-ios_arm*-opt-ST-*/bin/Telegram/Telegram.ipa; do
-            cp "$f" $OUTPUT_PATH/Sosuzagram-Telegram-iOS-unsigned.ipa
-          done
           
-          if [ ! -f "$OUTPUT_PATH/Sosuzagram-Telegram-iOS-unsigned.ipa" ]; then
-            echo "Error: Telegram.ipa not found in bazel-out!"
+          # Safely find the IPA in bazel-out instead of relying on a fragile path pattern
+          IPA_PATH=$(find bazel-out -name "Telegram.ipa" | head -n 1)
+          
+          if [ -z "$IPA_PATH" ]; then
+            echo "Error: Telegram.ipa not found anywhere in bazel-out!"
+            find bazel-out -name "*.ipa"
             exit 1
           fi
           
+          echo "Found IPA at: $IPA_PATH"
+          cp "$IPA_PATH" $OUTPUT_PATH/Sosuzagram-Telegram-iOS-unsigned.ipa
           cp "$OUTPUT_PATH/Sosuzagram-Telegram-iOS-unsigned.ipa" ./Sosuzagram-Telegram-iOS-unsigned.ipa
 
       - name: Upload Unsigned IPA
