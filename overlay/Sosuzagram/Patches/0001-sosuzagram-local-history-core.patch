@@ -1,0 +1,49 @@
+--- a/submodules/TelegramCore/Sources/State/AccountStateManagementUtils.swift
++++ b/submodules/TelegramCore/Sources/State/AccountStateManagementUtils.swift
+@@ -4246,6 +4246,14 @@
+                     }
+                 }
+             
++                // SOSUZAGRAM INCOMING MESSAGES HOOK
++                for message in messages {
++                    if message.flags.contains(.Incoming) {
++                        SosuzagramHooks.recordIncomingMessage?(message)
++                    }
++                }
+                 let _ = transaction.addMessages(messages, location: location)
+                 if case .UpperHistoryBlock = location {
+                     for message in messages {
+@@ -4438,6 +4446,12 @@
+                 if !resourceIds.isEmpty {
+                     let _ = mediaBox.removeCachedResources(Array(Set(resourceIds)), force: true).start()
+                 }
++                // SOSUZAGRAM REMOVE HOOK (GLOBAL)
++                for id in ids {
++                    SosuzagramHooks.recordMessageRemoval?(0, [id])
++                }
+                 deletedMessageIds.append(contentsOf: ids.map { .global($0) })
+             case let .DeleteMessages(ids):
+                 _internal_deleteMessages(transaction: transaction, mediaBox: mediaBox, ids: ids, manualAddMessageThreadStatsDifference: { id, add, remove in
+@@ -4445,6 +4459,15 @@
+                 })
++                // SOSUZAGRAM REMOVE HOOK
++                var byPeer: [Int64: [Int32]] = [:]
++                for id in ids {
++                    byPeer[id.peerId.toInt64(), default: []].append(id.id)
++                }
++                for (peerId, messageIds) in byPeer {
++                    SosuzagramHooks.recordMessageRemoval?(peerId, messageIds)
++                }
+                 deletedMessageIds.append(contentsOf: ids.map { .messageId($0) })
+             case let .UpdateMinAvailableMessage(id):
+                 if let message = transaction.getMessage(id) {
+--- /dev/null
++++ b/submodules/TelegramCore/Sources/SosuzagramHooks.swift
+@@ -0,0 +1,7 @@
++import Foundation
++import Postbox
++
++public struct SosuzagramHooks {
++    public static var recordIncomingMessage: ((_ message: StoreMessage) -> Void)?
++    public static var recordMessageRemoval: ((_ peerId: Int64, _ messageIds: [Int32]) -> Void)?
++}
