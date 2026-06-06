@@ -141,4 +141,8 @@ content = content.replace(
 with open(target_file, "w", encoding="utf8") as f:
     f.write(content)
 
+if "sosuzagramHeader" not in content:
+    print("Error: Failed to patch PrivacyAndSecurityController.swift!")
+    sys.exit(1)
+
 print("Patch applied successfully.")
