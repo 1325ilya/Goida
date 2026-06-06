@@ -59,4 +59,34 @@ content = content.replace('if actual_version != required_version:', 'if False:')
 with open(path, 'w') as f: f.write(content)
 " || echo "Warning: Failed to patch BuildEnvironment.py"
 
-echo "Overlay applied successfully."
+# Bypass aps-environment check in BuildConfiguration.py
+BUILD_CONFIG_PY="$UPSTREAM_DIR/build-system/Make/BuildConfiguration.py"
+if [ -f "$BUILD_CONFIG_PY" ]; then
+    python3 -c "
+import sys
+with open(sys.argv[1], 'r') as f:
+    content = f.read()
+
+# Replace resolve_aps_environment_from_directory body with return 'development'
+import re
+new_content = re.sub(
+    r'def resolve_aps_environment_from_directory\(source_path, team_id, bundle_id\):[\s\S]*?sys\.exit\(1\)',
+    'def resolve_aps_environment_from_directory(source_path, team_id, bundle_id):\n    return \'development\'',
+    content
+)
+
+with open(sys.argv[1], 'w') as f:
+    f.write(new_content)
+" "$BUILD_CONFIG_PY"
+    
+    # Verify patch success
+    if ! grep -q "return 'development'" "$BUILD_CONFIG_PY"; then
+        echo "Error: Failed to patch BuildConfiguration.py"
+        exit 1
+    fi
+    echo "Successfully patched BuildConfiguration.py to bypass aps-environment check."
+else
+    echo "Warning: BuildConfiguration.py not found at $BUILD_CONFIG_PY"
+fi
+
+echo "Overlay and patches applied successfully!"
