@@ -70,7 +70,7 @@ with open(sys.argv[1], 'r') as f:
 # Replace resolve_aps_environment_from_directory body with return 'development'
 import re
 new_content = re.sub(
-    r'def resolve_aps_environment_from_directory\(source_path, team_id, bundle_id\):[\s\S]*?sys\.exit\(1\)',
+    r'def resolve_aps_environment_from_directory\(source_path, team_id, bundle_id\):[\s\S]*?(?=\ndef )',
     'def resolve_aps_environment_from_directory(source_path, team_id, bundle_id):\n    return \'development\'',
     content
 )
