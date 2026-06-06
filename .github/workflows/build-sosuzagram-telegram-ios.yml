@@ -4,9 +4,9 @@ on:
   workflow_dispatch:
     inputs:
       build_configuration:
-        description: 'Build Configuration (e.g. release_universal)'
+        description: 'Build Configuration (e.g. release_arm64)'
         required: true
-        default: 'release_universal'
+        default: 'release_arm64'
 
 permissions:
   contents: write
