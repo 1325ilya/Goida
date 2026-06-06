@@ -8,6 +8,9 @@ on:
         required: true
         default: 'release_universal'
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: macos-14 # or macos-13, standard GitHub macOS runner
@@ -63,3 +66,14 @@ jobs:
         with:
           name: Sosuzagram-Telegram-iOS-unsigned-ipa
           path: upstream/Telegram-iOS/Sosuzagram-Telegram-iOS-unsigned.ipa
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG_NAME: sosuzagram-ios-full-${{ github.run_number }}
+        run: |
+          gh release create "$TAG_NAME" \
+            upstream/Telegram-iOS/Sosuzagram-Telegram-iOS-unsigned.ipa \
+            --target "$GITHUB_SHA" \
+            --title "Sosuzagram iOS (Full Telegram Fork) #${{ github.run_number }}" \
+            --notes "Unsigned/resignable full Telegram-iOS client with Local Message History. Sign it with your own certificate before installing."
