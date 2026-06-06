@@ -56,7 +56,7 @@ jobs:
               --configurationPath=build-system/template_minimal_development_configuration.json \
               --configuration=${{ github.event.inputs.build_configuration }} \
               --buildNumber=$GITHUB_RUN_NUMBER \
-              --codesigningInformationPath=""
+              --xcodeManagedCodesigning
               
           # If Make.py doesn't directly package IPA without codesigning, we will find the .app in bazel-out and package it
           APP_PATH=$(find bazel-out -name "Telegram.app" -type d | head -n 1)
