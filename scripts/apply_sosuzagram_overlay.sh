@@ -71,7 +71,7 @@ with open(sys.argv[1], 'r') as f:
 import re
 new_content = re.sub(
     r'def resolve_aps_environment_from_directory\(source_path, team_id, bundle_id\):[\s\S]*?(?=\ndef )',
-    'def resolve_aps_environment_from_directory(source_path, team_id, bundle_id):\n    return \'development\'',
+    'def resolve_aps_environment_from_directory(source_path, team_id, bundle_id):\n    return \'production\'',
     content
 )
 
@@ -80,7 +80,7 @@ with open(sys.argv[1], 'w') as f:
 " "$BUILD_CONFIG_PY"
     
     # Verify patch success
-    if ! grep -q "return 'development'" "$BUILD_CONFIG_PY"; then
+    if ! grep -q "return 'production'" "$BUILD_CONFIG_PY"; then
         echo "Error: Failed to patch BuildConfiguration.py"
         exit 1
     fi
