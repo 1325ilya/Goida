@@ -48,26 +48,30 @@ jobs:
       - name: Build IPA (Unsigned/Resignable)
         run: |
           cd upstream/Telegram-iOS
+          python3 build-system/Make/ImportCertificates.py --path build-system/fake-codesigning/certs
           python3 build-system/Make/Make.py \
               --cacheDir="$HOME/telegram-bazel-cache" \
               --overrideXcodeVersion \
               --overrideBazelVersion \
               build \
               --configurationPath=build-system/template_minimal_development_configuration.json \
-              --configuration=${{ github.event.inputs.build_configuration }} \
+              --configuration=release_arm64 \
               --buildNumber=$GITHUB_RUN_NUMBER \
-              --xcodeManagedCodesigning
+              --codesigningInformationPath=build-system/fake-codesigning
               
-          # If Make.py doesn't directly package IPA without codesigning, we will find the .app in bazel-out and package it
-          APP_PATH=$(find bazel-out -name "Telegram.app" -type d | head -n 1)
-          if [ -n "$APP_PATH" ]; then
-            mkdir -p Payload
-            cp -r "$APP_PATH" Payload/
-            zip -qr Sosuzagram-Telegram-iOS-unsigned.ipa Payload
-          else
-            echo "Error: Telegram.app not found in bazel-out"
+          OUTPUT_PATH="build/artifacts"
+          rm -rf "$OUTPUT_PATH"
+          mkdir -p "$OUTPUT_PATH"
+          for f in bazel-out/applebin_ios-ios_arm*-opt-ST-*/bin/Telegram/Telegram.ipa; do
+            cp "$f" $OUTPUT_PATH/Sosuzagram-Telegram-iOS-unsigned.ipa
+          done
+          
+          if [ ! -f "$OUTPUT_PATH/Sosuzagram-Telegram-iOS-unsigned.ipa" ]; then
+            echo "Error: Telegram.ipa not found in bazel-out!"
             exit 1
           fi
+          
+          cp "$OUTPUT_PATH/Sosuzagram-Telegram-iOS-unsigned.ipa" ./Sosuzagram-Telegram-iOS-unsigned.ipa
 
       - name: Upload Unsigned IPA
         uses: actions/upload-artifact@v4
