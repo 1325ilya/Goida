@@ -7,17 +7,16 @@ public struct PrivacySettings: Sendable, Equatable {
     public var skipPrivateEncryptedChats: Bool
     public var showLocalMarker: Bool
 
-    public init(
-        keepLocalHistory: Bool = true,
-        keepText: Bool = true,
-        keepMediaReferences: Bool = true,
-        skipPrivateEncryptedChats: Bool = true,
-        showLocalMarker: Bool = true
-    ) {
-        self.keepLocalHistory = keepLocalHistory
-        self.keepText = keepText
-        self.keepMediaReferences = keepMediaReferences
-        self.skipPrivateEncryptedChats = skipPrivateEncryptedChats
-        self.showLocalMarker = showLocalMarker
+    public init() {
+        let defaults = UserDefaults.standard
+        if defaults.object(forKey: "sosuzagram_local_history") != nil {
+            self.keepLocalHistory = defaults.bool(forKey: "sosuzagram_local_history")
+        } else {
+            self.keepLocalHistory = true
+        }
+        self.keepText = true
+        self.keepMediaReferences = true
+        self.skipPrivateEncryptedChats = true
+        self.showLocalMarker = true
     }
 }
