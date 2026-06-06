@@ -50,13 +50,13 @@ fi
 echo "Patching PrivacyAndSecurityController.swift via Python script..."
 python3 "$ROOT_DIR/scripts/patch_privacy_ui.py" "$UPSTREAM_DIR/submodules/SettingsUI/Sources/Privacy and Security/PrivacyAndSecurityController.swift"
 
-echo "Patching Make.py to bypass Xcode version check..."
+echo "Patching BuildEnvironment.py to bypass Xcode version check..."
 python3 -c "
 import sys
-path = '$UPSTREAM_DIR/build-system/Make/Make.py'
+path = '$UPSTREAM_DIR/build-system/Make/BuildEnvironment.py'
 with open(path, 'r') as f: content = f.read()
 content = content.replace('if actual_version != required_version:', 'if False:')
 with open(path, 'w') as f: f.write(content)
-" || echo "Warning: Failed to patch Make.py"
+" || echo "Warning: Failed to patch BuildEnvironment.py"
 
 echo "Overlay applied successfully."
