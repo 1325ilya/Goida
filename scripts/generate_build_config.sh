@@ -40,8 +40,8 @@ cat > "$CONFIG_FILE" <<EOF
     "is_appstore_build": "false",
     "app_center_id": "0",
     "premium_iap_product_id": "org.telegram.premium",
-    "enable_siri": "false",
-    "enable_icloud": "false",
+    "enable_siri": false,
+    "enable_icloud": false,
     "developmentTeam": "$TEAM_ID",
     "developmentCodeSigningIdentity": "Apple Development",
     "developmentProvisioningProfile": "match Development $BUNDLE_ID"
