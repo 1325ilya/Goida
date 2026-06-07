@@ -1,6 +1,21 @@
+diff --git a/submodules/TelegramCore/Sources/SosuzagramHooks.swift b/submodules/TelegramCore/Sources/SosuzagramHooks.swift
+new file mode 100644
+index 00000000..17ed050c
+--- /dev/null
++++ b/submodules/TelegramCore/Sources/SosuzagramHooks.swift
+@@ -0,0 +1,7 @@
++import Foundation
++import Postbox
++
++public struct SosuzagramHooks {
++    public static var recordIncomingMessage: ((_ message: StoreMessage) -> Void)?
++    public static var recordMessageRemoval: ((_ peerId: Int64, _ messageIds: [Int32]) -> Void)?
++}
+diff --git a/submodules/TelegramCore/Sources/State/AccountStateManagementUtils.swift b/submodules/TelegramCore/Sources/State/AccountStateManagementUtils.swift
+index 89eb1516..1af54434 100644
 --- a/submodules/TelegramCore/Sources/State/AccountStateManagementUtils.swift
 +++ b/submodules/TelegramCore/Sources/State/AccountStateManagementUtils.swift
-@@ -4246,6 +4246,14 @@
+@@ -4246,6 +4246,12 @@ func replayFinalState(
                      }
                  }
              
@@ -13,7 +28,7 @@
                  let _ = transaction.addMessages(messages, location: location)
                  if case .UpperHistoryBlock = location {
                      for message in messages {
-@@ -4438,6 +4446,12 @@
+@@ -4436,11 +4442,23 @@ func replayFinalState(
                  if !resourceIds.isEmpty {
                      let _ = mediaBox.removeCachedResources(Array(Set(resourceIds)), force: true).start()
                  }
@@ -24,7 +39,7 @@
                  deletedMessageIds.append(contentsOf: ids.map { .global($0) })
              case let .DeleteMessages(ids):
                  _internal_deleteMessages(transaction: transaction, mediaBox: mediaBox, ids: ids, manualAddMessageThreadStatsDifference: { id, add, remove in
-@@ -4445,6 +4459,15 @@
+                     addMessageThreadStatsDifference(threadKey: id, remove: remove, addedMessagePeer: nil, addedMessageId: nil, isOutgoing: false)
                  })
 +                // SOSUZAGRAM REMOVE HOOK
 +                var byPeer: [Int64: [Int32]] = [:]
@@ -37,13 +52,3 @@
                  deletedMessageIds.append(contentsOf: ids.map { .messageId($0) })
              case let .UpdateMinAvailableMessage(id):
                  if let message = transaction.getMessage(id) {
---- /dev/null
-+++ b/submodules/TelegramCore/Sources/SosuzagramHooks.swift
-@@ -0,0 +1,7 @@
-+import Foundation
-+import Postbox
-+
-+public struct SosuzagramHooks {
-+    public static var recordIncomingMessage: ((_ message: StoreMessage) -> Void)?
-+    public static var recordMessageRemoval: ((_ peerId: Int64, _ messageIds: [Int32]) -> Void)?
-+}

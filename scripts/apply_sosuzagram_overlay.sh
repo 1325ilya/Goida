@@ -40,7 +40,7 @@ if [ -d "$OVERLAY_DIR/Patches" ]; then
   for patch_file in "$OVERLAY_DIR/Patches/"*.patch; do
     if [ -f "$patch_file" ]; then
       echo "Applying patch: $(basename "$patch_file")"
-      git -C "$UPSTREAM_DIR" apply "$patch_file" || echo "Warning: Failed to apply $patch_file"
+      git -C "$UPSTREAM_DIR" apply "$patch_file" || { echo "Error: Failed to apply $patch_file" >&2; exit 1; }
     fi
   done
 else

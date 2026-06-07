@@ -1,6 +1,8 @@
+diff --git a/submodules/TelegramUI/BUILD b/submodules/TelegramUI/BUILD
+index a3374276..f0647a4a 100644
 --- a/submodules/TelegramUI/BUILD
 +++ b/submodules/TelegramUI/BUILD
-@@ -528,6 +528,7 @@
+@@ -526,6 +526,7 @@ swift_library(
          "//submodules/TelegramUI/Components/RankChatPreviewItem",
          "//submodules/TelegramUI/Components/TextProcessingScreen",
          "//submodules/TelegramUI/Components/CreateBotScreen",
@@ -8,9 +10,11 @@
      ] + select({
          "@build_bazel_rules_apple//apple:ios_arm64": appcenter_targets,
          "//build-system:ios_sim_arm64": [],
+diff --git a/submodules/TelegramUI/Sources/AppDelegate.swift b/submodules/TelegramUI/Sources/AppDelegate.swift
+index 1c1631c7..8a056fc0 100644
 --- a/submodules/TelegramUI/Sources/AppDelegate.swift
 +++ b/submodules/TelegramUI/Sources/AppDelegate.swift
-@@ -46,6 +46,7 @@
+@@ -45,6 +45,7 @@ import RecaptchaEnterprise
  import NavigationBarImpl
  import ContextUI
  import ContextControllerImpl
@@ -18,8 +22,7 @@
  
  #if canImport(AppCenter)
  import AppCenter
-@@ -321,9 +322,35 @@
-         
+@@ -323,6 +324,34 @@ private func extractAccountManagerState(records: AccountRecordsView<TelegramAcco
      func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
          precondition(!testIsLaunched)
          testIsLaunched = true
@@ -32,12 +35,12 @@
 +            if case let .Id(id) = message.id {
 +                let snapshot = MessageSnapshot(
 +                    peerId: id.peerId.toInt64(),
-+                    messageId: id.id,
-+                    chatKind: id.peerId.namespace == Namespaces.Peer.CloudUser ? .privateRegular : .group,
++                    messageId: Int64(id.id),
++                    chatKind: id.peerId.namespace == Namespaces.Peer.CloudUser ? .user : .group,
 +                    senderId: message.authorId?.toInt64(),
 +                    text: message.text,
 +                    mediaLocalIdentifier: nil,
-+                    originalTimestamp: message.timestamp,
++                    originalTimestamp: Date(timeIntervalSince1970: TimeInterval(message.timestamp)),
 +                    isOutgoing: false
 +                )
 +                Task {
