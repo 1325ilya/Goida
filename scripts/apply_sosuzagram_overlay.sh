@@ -100,4 +100,13 @@ with open('$IMPORT_CERTS_PY', 'w') as f: f.write(content)
     echo "Patched ImportCertificates.py keychain deletion bug."
 fi
 
+echo "Configuring Bazel repository cache..."
+cat >> "$UPSTREAM_DIR/.bazelrc" <<'EOF'
+
+# Sosuzagram custom cache options
+build --repository_cache=/Users/runner/telegram-bazel-cache/repository_cache
+query --repository_cache=/Users/runner/telegram-bazel-cache/repository_cache
+EOF
+
 echo "Overlay and patches applied successfully!"
+
