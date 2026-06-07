@@ -288,61 +288,11 @@ private enum SosuzagramSettingsEntry: ItemListNodeEntry {
     }
 }
 
-public struct ImportedPlugin {
-    public let id: String
-    public let name: String
-    public let desc: String
-    public let author: String
-    public let version: String
-}
-
 private func getPluginsDirectory() -> URL {
     let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
     let dir = paths[0].appendingPathComponent("SosuzagramPlugins")
     try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true, attributes: nil)
     return dir
-}
-
-private func extractValue(from line: String) -> String? {
-    let parts = line.components(separatedBy: "=")
-    if parts.count >= 2 {
-        let val = parts[1...].joined(separator: "=").trimmingCharacters(in: .whitespaces)
-        if (val.hasPrefix("\"") && val.hasSuffix("\"")) || (val.hasPrefix("'") && val.hasSuffix("'")) {
-            return String(val.dropFirst().dropLast())
-        }
-        return val
-    }
-    return nil
-}
-
-func parsePlugin(at url: URL) -> ImportedPlugin? {
-    guard let content = try? String(contentsOf: url, encoding: .utf8) else { return nil }
-    var id: String?
-    var name: String?
-    var desc: String?
-    var author: String?
-    var version: String?
-    
-    let lines = content.components(separatedBy: .newlines)
-    for line in lines {
-        let trimmed = line.trimmingCharacters(in: .whitespaces)
-        if trimmed.hasPrefix("__id__") {
-            id = extractValue(from: trimmed)
-        } else if trimmed.hasPrefix("__name__") {
-            name = extractValue(from: trimmed)
-        } else if trimmed.hasPrefix("__description__") {
-            desc = extractValue(from: trimmed)
-        } else if trimmed.hasPrefix("__author__") {
-            author = extractValue(from: trimmed)
-        } else if trimmed.hasPrefix("__version__") {
-            version = extractValue(from: trimmed)
-        }
-    }
-    
-    if let id = id, let name = name {
-        return ImportedPlugin(id: id, name: name, desc: desc ?? "", author: author ?? "", version: version ?? "")
-    }
-    return nil
 }
 
 private func getImportedPlugins() -> [ImportedPlugin] {
