@@ -40,7 +40,11 @@ jobs:
           APP_TITLE: 'Sosuzagram'
           
       - name: Patch Provisioning Profiles
-        run: python3 scripts/patch_fake_profiles.py
+        run: |
+          cd upstream/Telegram-iOS
+          python3 build-system/Make/ImportCertificates.py --path build-system/fake-codesigning/certs
+          cd ../..
+          python3 scripts/patch_fake_profiles.py
           
       - name: Select Xcode Version
         run: |
