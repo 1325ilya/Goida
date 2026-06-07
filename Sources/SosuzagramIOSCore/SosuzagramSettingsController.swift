@@ -277,7 +277,7 @@ private enum SosuzagramSettingsEntry: ItemListNodeEntry {
             return ItemListDisclosureItem(presentationData: presentationData, title: title, label: "+", sectionId: self.section, style: .blocks, action: {
                 args.importPlugins()
             })
-        case let .pluginItem(_, id, name, desc, isEnabled, _):
+        case let .pluginItem(_, id, name, _, isEnabled, _):
             return ItemListSwitchItem(presentationData: presentationData, systemStyle: .glass, title: name, value: isEnabled, sectionId: self.section, style: .blocks, updated: { val in
                 args.togglePlugin(id, val)
             })
@@ -387,10 +387,22 @@ class DocumentPickerDelegate: NSObject, UIDocumentPickerDelegate {
 
 private var activePickerDelegate: DocumentPickerDelegate?
 
+private func sosuzagramSettingsPresenter() -> UIViewController? {
+    let rootController = UIApplication.shared.connectedScenes
+        .compactMap { $0 as? UIWindowScene }
+        .flatMap(\.windows)
+        .first(where: \.isKeyWindow)?
+        .rootViewController
+
+    var topController = rootController
+    while let presentedController = topController?.presentedViewController {
+        topController = presentedController
+    }
+    return topController
+}
+
 public func sosuzagramSettingsController(context: AccountContext) -> ViewController {
     deployEmbeddedPluginsIfNeeded()
-    let presentationData = context.sharedContext.currentPresentationData.with { $0 }
-    
     let statePromise = ValuePromise<Bool>(true, ignoreRepeated: false)
     
     var updateSettingsImpl: (() -> Void)?
@@ -447,13 +459,6 @@ public func sosuzagramSettingsController(context: AccountContext) -> ViewControl
             updateSettingsImpl?()
         },
         importPlugins: {
-            let types: [UTType]
-            if #available(iOS 14.0, *) {
-                types = [UTType.data, UTType.item]
-            } else {
-                types = []
-            }
-            let picker = UIDocumentPickerViewController(forOpeningContentTypes: types, asCopy: true)
             let delegate = DocumentPickerDelegate { url in
                 let targetURL = getPluginsDirectory().appendingPathComponent(url.lastPathComponent)
                 try? FileManager.default.removeItem(at: targetURL)
@@ -466,9 +471,16 @@ public func sosuzagramSettingsController(context: AccountContext) -> ViewControl
                 
                 updateSettingsImpl?()
             }
+
+            let picker: UIDocumentPickerViewController
+            if #available(iOS 14.0, *) {
+                picker = UIDocumentPickerViewController(forOpeningContentTypes: [UTType.data, UTType.item], asCopy: true)
+            } else {
+                picker = UIDocumentPickerViewController(documentTypes: ["public.data", "public.item"], in: .import)
+            }
             activePickerDelegate = delegate
             picker.delegate = delegate
-            UIApplication.shared.keyWindow?.rootViewController?.present(picker, animated: true)
+            sosuzagramSettingsPresenter()?.present(picker, animated: true)
         },
         togglePlugin: { id, val in
             UserDefaults.standard.set(val, forKey: "sosuzagram_plugin_enabled_\(id)")
