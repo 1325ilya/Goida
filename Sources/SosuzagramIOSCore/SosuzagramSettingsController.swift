@@ -1,4 +1,3 @@
-#if !SWIFT_PACKAGE
 import Foundation
 import UIKit
 import Display
@@ -535,4 +534,3 @@ public func sosuzagramSettingsController(context: AccountContext) -> ViewControl
     
     return controller
 }
-#endif
