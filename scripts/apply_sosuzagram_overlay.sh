@@ -89,4 +89,15 @@ else
     echo "Warning: BuildConfiguration.py not found at $BUILD_CONFIG_PY"
 fi
 
+# Fix delete-keychain bug in ImportCertificates.py
+IMPORT_CERTS_PY="$UPSTREAM_DIR/build-system/Make/ImportCertificates.py"
+if [ -f "$IMPORT_CERTS_PY" ]; then
+    python3 -c "
+with open('$IMPORT_CERTS_PY', 'r') as f: content = f.read()
+content = content.replace(\"arguments=['delete-keychain']\", \"arguments=['delete-keychain', keychain_name]\")
+with open('$IMPORT_CERTS_PY', 'w') as f: f.write(content)
+" || echo "Warning: Failed to patch ImportCertificates.py"
+    echo "Patched ImportCertificates.py keychain deletion bug."
+fi
+
 echo "Overlay and patches applied successfully!"
