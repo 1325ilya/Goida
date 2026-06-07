@@ -34,14 +34,9 @@ public struct EmbeddedPlugin {
 public let embeddedPlugins: [EmbeddedPlugin] = [
 """
     for name, encoded in plugins:
-        # Split base64 into multiline string to avoid Swift compiler constraints on extremely long single-line strings
-        chunk_size = 16000
-        chunks = [encoded[i:i+chunk_size] for i in range(0, len(encoded), chunk_size)]
-        chunks_str = "\\n        + ".join(f'"{chunk}"' for chunk in chunks)
-        
         swift_content += f"""    EmbeddedPlugin(
         filename: "{name}",
-        contentBase64: {chunks_str}
+        contentBase64: "{encoded}"
     ),
 """
     swift_content += """]
