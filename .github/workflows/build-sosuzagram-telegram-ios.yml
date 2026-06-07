@@ -24,6 +24,14 @@ jobs:
         with:
           python-version: '3.11'
           
+      - name: Cache Bazel artifacts
+        uses: actions/cache@v4
+        with:
+          path: /Users/runner/telegram-bazel-cache
+          key: ${{ runner.os }}-bazel-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-bazel-
+            
       - name: Bootstrap Telegram-iOS upstream
         run: ./scripts/bootstrap_telegram_ios.sh
         
