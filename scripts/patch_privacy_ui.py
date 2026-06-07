@@ -111,7 +111,6 @@ content = content.replace(
             case let .sosuzagramHeader(_, text):
                 return ItemListSectionHeaderItem(presentationData: presentationData, text: text, sectionId: self.section)
             case let .sosuzagramHistoryToggle(_, text, value):
-                let arguments = arguments as! PrivacyAndSecurityControllerArguments
                 return ItemListSwitchItem(presentationData: presentationData, systemStyle: .glass, title: text, value: value, sectionId: self.section, style: .blocks, updated: { value in
                     if text == "Save Deleted Messages" {
                         UserDefaults.standard.set(value, forKey: "sosuzagram_local_history")
