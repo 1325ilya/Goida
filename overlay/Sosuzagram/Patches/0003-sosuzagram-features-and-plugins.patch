@@ -1,0 +1,298 @@
+diff --git a/submodules/ChatListUI/Sources/ChatListControllerNode.swift b/submodules/ChatListUI/Sources/ChatListControllerNode.swift
+index 826aa80f..a75ba424 100644
+--- a/submodules/ChatListUI/Sources/ChatListControllerNode.swift
++++ b/submodules/ChatListUI/Sources/ChatListControllerNode.swift
+@@ -2398,6 +2398,9 @@ final class ChatListControllerNode: ASDisplayNode, ASGestureRecognizerDelegate {
+ }
+ 
+ func shouldDisplayStoriesInChatListHeader(storySubscriptions: EngineStorySubscriptions, isHidden: Bool) -> Bool {
++    if UserDefaults.standard.bool(forKey: "sosuzagram_hide_stories") {
++        return false
++    }
+     if !storySubscriptions.items.isEmpty {
+         return true
+     }
+diff --git a/submodules/TelegramCore/Sources/State/ManagedLocalInputActivities.swift b/submodules/TelegramCore/Sources/State/ManagedLocalInputActivities.swift
+index 7acc37a1..9150ed68 100644
+--- a/submodules/TelegramCore/Sources/State/ManagedLocalInputActivities.swift
++++ b/submodules/TelegramCore/Sources/State/ManagedLocalInputActivities.swift
+@@ -142,6 +142,9 @@ private func actionFromActivity(_ activity: PeerInputActivity?) -> Api.SendMessa
+ }
+ 
+ private func requestActivity(postbox: Postbox, network: Network, accountPeerId: PeerId, peerId: PeerId, threadId: Int64?, activity: PeerInputActivity?) -> Signal<Void, NoError> {
++    if UserDefaults.standard.bool(forKey: "sosuzagram_hide_typing") {
++        return .complete()
++    }
+     return postbox.transaction { transaction -> Signal<Void, NoError> in
+         if let peer = transaction.getPeer(peerId) {
+             if peerId == accountPeerId {
+diff --git a/submodules/TelegramCore/Sources/State/ManagedSynchronizeViewStoriesOperations.swift b/submodules/TelegramCore/Sources/State/ManagedSynchronizeViewStoriesOperations.swift
+index bebd6915..56a5ec07 100644
+--- a/submodules/TelegramCore/Sources/State/ManagedSynchronizeViewStoriesOperations.swift
++++ b/submodules/TelegramCore/Sources/State/ManagedSynchronizeViewStoriesOperations.swift
+@@ -85,6 +85,9 @@ func managedSynchronizeViewStoriesOperations(postbox: Postbox, network: Network,
+             
+             for (entry, disposable) in beginOperations {
+                 let signal = withTakenOperation(postbox: postbox, peerId: entry.peerId, tagLocalIndex: entry.tagLocalIndex, { transaction, entry -> Signal<Void, NoError> in
++                    if UserDefaults.standard.bool(forKey: "sosuzagram_hide_story_views") {
++                        return .complete()
++                    }
+                     if let entry = entry {
+                         if let operation = entry.contents as? SynchronizeViewStoriesOperation {
+                             if let peer = transaction.getPeer(entry.peerId) {
+diff --git a/submodules/TelegramUI/Components/Chat/ChatMessageBubbleItemNode/Sources/ChatMessageBubbleItemNode.swift b/submodules/TelegramUI/Components/Chat/ChatMessageBubbleItemNode/Sources/ChatMessageBubbleItemNode.swift
+index 60c7f868..8be4ea83 100644
+--- a/submodules/TelegramUI/Components/Chat/ChatMessageBubbleItemNode/Sources/ChatMessageBubbleItemNode.swift
++++ b/submodules/TelegramUI/Components/Chat/ChatMessageBubbleItemNode/Sources/ChatMessageBubbleItemNode.swift
+@@ -1024,36 +1024,41 @@ public class ChatMessageBubbleItemNode: ChatMessageItemView, ChatMessagePreviewI
+     override public func animateInsertion(_ currentTimestamp: Double, duration: Double, options: ListViewItemAnimationOptions) {
+         super.animateInsertion(currentTimestamp, duration: duration, options: options)
+         
+-        self.shadowNode.layer.animateAlpha(from: 0.0, to: 1.0, duration: 0.2)
+-        
+-        func process(node: ASDisplayNode) {
+-            if node === self.accessoryItemNode {
+-                return
+-            }
++        if UserDefaults.standard.object(forKey: "sosuzagram_plugin_enabled_text_animation") as? Bool ?? true {
++            self.layer.animateAlpha(from: 0.0, to: 1.0, duration: 0.35)
++            self.layer.animatePosition(from: CGPoint(x: 0.0, y: 30.0), to: CGPoint(), duration: 0.35, timingFunction: CAMediaTimingFunctionName.easeOut.rawValue, additive: true)
++        } else {
++            self.shadowNode.layer.animateAlpha(from: 0.0, to: 1.0, duration: 0.2)
+             
+-            if node !== self {
+-                switch node {
+-                case _ as ContextExtractedContentContainingNode, _ as ContextControllerSourceNode, _ as ContextExtractedContentNode:
+-                    break
+-                default:
+-                    node.layer.allowsGroupOpacity = true
+-                    node.layer.animateAlpha(from: 0.0, to: 1.0, duration: 0.2, completion: { [weak node] _ in
+-                        node?.layer.allowsGroupOpacity = false
+-                    })
++            func process(node: ASDisplayNode) {
++                if node === self.accessoryItemNode {
+                     return
+                 }
++                
++                if node !== self {
++                    switch node {
++                    case _ as ContextExtractedContentContainingNode, _ as ContextControllerSourceNode, _ as ContextExtractedContentNode:
++                        break
++                    default:
++                        node.layer.allowsGroupOpacity = true
++                        node.layer.animateAlpha(from: 0.0, to: 1.0, duration: 0.2, completion: { [weak node] _ in
++                            node?.layer.allowsGroupOpacity = false
++                        })
++                        return
++                    }
++                }
++                
++                guard let subnodes = node.subnodes else {
++                    return
++                }
++                
++                for subnode in subnodes {
++                    process(node: subnode)
++                }
+             }
+             
+-            guard let subnodes = node.subnodes else {
+-                return
+-            }
+-            
+-            for subnode in subnodes {
+-                process(node: subnode)
+-            }
++            process(node: self)
+         }
+-        
+-        process(node: self)
+     }
+     
+     override public func animateRemoved(_ currentTimestamp: Double, duration: Double) {
+diff --git a/submodules/TelegramUI/Sources/Chat/ChatControllerMediaRecording.swift b/submodules/TelegramUI/Sources/Chat/ChatControllerMediaRecording.swift
+index 57ba2cac..c571c33c 100644
+--- a/submodules/TelegramUI/Sources/Chat/ChatControllerMediaRecording.swift
++++ b/submodules/TelegramUI/Sources/Chat/ChatControllerMediaRecording.swift
+@@ -343,65 +343,94 @@ extension ChatControllerImpl {
+                 )
+             case let .send(viewOnce):
+                 self.chatDisplayNode.updateRecordedMediaDeleted(false)
+-                self.recorderDataDisposable.set((audioRecorderValue.takenRecordedData()
+-                |> deliverOnMainQueue).startStrict(next: { [weak self] data in
+-                    if let strongSelf = self, let data = data {
+-                        if data.duration < 0.5 {
+-                            strongSelf.recorderFeedback?.error()
+-                            strongSelf.recorderFeedback = nil
+-                            strongSelf.audioRecorder.set(.single(nil))
+-                            strongSelf.recorderDataDisposable.set(nil)
+-                        } else {
+-                            let randomId = Int64.random(in: Int64.min ... Int64.max)
+-                            
+-                            let resource = LocalFileMediaResource(fileId: randomId)
+-                            strongSelf.context.engine.resources.storeResourceData(id: EngineMediaResource.Id(resource.id), data: data.compressedData)
+-                            
+-                            let waveformBuffer: Data? = data.waveform
+-                            
+-                            let correlationId = Int64.random(in: 0 ..< Int64.max)
+-                            var usedCorrelationId = false
+-                            
+-                            var shouldAnimateMessageTransition = strongSelf.chatDisplayNode.shouldAnimateMessageTransition
+-                            if strongSelf.chatLocation.threadId == nil, let channel = strongSelf.presentationInterfaceState.renderedPeer?.peer as? TelegramChannel, channel.isMonoForum, let linkedMonoforumId = channel.linkedMonoforumId, let mainChannel = strongSelf.presentationInterfaceState.renderedPeer?.peers[linkedMonoforumId] as? TelegramChannel, mainChannel.hasPermission(.manageDirect) {
+-                                shouldAnimateMessageTransition = false
+-                            }
+-                            
+-                            if shouldAnimateMessageTransition, let textInputPanelNode = strongSelf.chatDisplayNode.textInputPanelNode, let micButton = textInputPanelNode.micButton {
+-                                usedCorrelationId = true
+-                                strongSelf.chatDisplayNode.messageTransitionNode.add(correlationId: correlationId, source: .audioMicInput(ChatMessageTransitionNodeImpl.Source.AudioMicInput(micButton: micButton)), initiated: {
+-                                    guard let strongSelf = self else {
+-                                        return
+-                                    }
+-                                    strongSelf.audioRecorder.set(.single(nil))
+-                                })
+-                            } else {
++                
++                let sendAction = { [weak self] in
++                    guard let strongSelf = self else { return }
++                    strongSelf.recorderDataDisposable.set((audioRecorderValue.takenRecordedData()
++                    |> deliverOnMainQueue).startStrict(next: { [weak self] data in
++                        if let strongSelf = self, let data = data {
++                            if data.duration < 0.5 {
++                                strongSelf.recorderFeedback?.error()
++                                strongSelf.recorderFeedback = nil
+                                 strongSelf.audioRecorder.set(.single(nil))
+-                            }
+-                            
+-                            strongSelf.chatDisplayNode.setupSendActionOnViewUpdate({
+-                                if let strongSelf = self {
+-                                    strongSelf.chatDisplayNode.collapseInput()
+-                                    
+-                                    strongSelf.updateChatPresentationInterfaceState(animated: true, interactive: false, {
+-                                        $0.updatedInterfaceState { $0.withUpdatedReplyMessageSubject(nil).withUpdatedSendMessageEffect(nil).withUpdatedPostSuggestionState(nil) }
++                                strongSelf.recorderDataDisposable.set(nil)
++                            } else {
++                                let randomId = Int64.random(in: Int64.min ... Int64.max)
++                                
++                                let resource = LocalFileMediaResource(fileId: randomId)
++                                strongSelf.context.engine.resources.storeResourceData(id: EngineMediaResource.Id(resource.id), data: data.compressedData)
++                                
++                                let waveformBuffer: Data? = data.waveform
++                                
++                                let correlationId = Int64.random(in: 0 ..< Int64.max)
++                                var usedCorrelationId = false
++                                
++                                var shouldAnimateMessageTransition = strongSelf.chatDisplayNode.shouldAnimateMessageTransition
++                                if strongSelf.chatLocation.threadId == nil, let channel = strongSelf.presentationInterfaceState.renderedPeer?.peer as? TelegramChannel, channel.isMonoForum, let linkedMonoforumId = channel.linkedMonoforumId, let mainChannel = strongSelf.presentationInterfaceState.renderedPeer?.peers[linkedMonoforumId] as? TelegramChannel, mainChannel.hasPermission(.manageDirect) {
++                                    shouldAnimateMessageTransition = false
++                                }
++                                
++                                if shouldAnimateMessageTransition, let textInputPanelNode = strongSelf.chatDisplayNode.textInputPanelNode, let micButton = textInputPanelNode.micButton {
++                                    usedCorrelationId = true
++                                    strongSelf.chatDisplayNode.messageTransitionNode.add(correlationId: correlationId, source: .audioMicInput(ChatMessageTransitionNodeImpl.Source.AudioMicInput(micButton: micButton)), initiated: {
++                                        guard let strongSelf = self else {
++                                            return
++                                        }
++                                        strongSelf.audioRecorder.set(.single(nil))
+                                     })
++                                } else {
++                                    strongSelf.audioRecorder.set(.single(nil))
++                                }
++                                
++                                strongSelf.chatDisplayNode.setupSendActionOnViewUpdate({
++                                    if let strongSelf = self {
++                                        strongSelf.chatDisplayNode.collapseInput()
++                                        
++                                        strongSelf.updateChatPresentationInterfaceState(animated: true, interactive: false, {
++                                            $0.updatedInterfaceState { $0.withUpdatedReplyMessageSubject(nil).withUpdatedSendMessageEffect(nil).withUpdatedPostSuggestionState(nil) }
++                                        })
++                                    }
++                                }, usedCorrelationId ? correlationId : nil)
++                                
++                                var attributes: [MessageAttribute] = []
++                                if viewOnce {
++                                    attributes.append(AutoremoveTimeoutMessageAttribute(timeout: viewOnceTimeout, countdownBeginTime: nil))
+                                 }
+-                            }, usedCorrelationId ? correlationId : nil)
+-                            
+-                            var attributes: [MessageAttribute] = []
+-                            if viewOnce {
+-                                attributes.append(AutoremoveTimeoutMessageAttribute(timeout: viewOnceTimeout, countdownBeginTime: nil))
++                                
++                                strongSelf.sendMessages([.message(text: "", attributes: attributes, inlineStickers: [:], mediaReference: .standalone(media: TelegramMediaFile(fileId: MediaId(namespace: Namespaces.Media.LocalFile, id: randomId), partialReference: nil, resource: resource, previewRepresentations: [], videoThumbnails: [], immediateThumbnailData: nil, mimeType: "audio/ogg", size: Int64(data.compressedData.count), attributes: [.Audio(isVoice: true, duration: Int(data.duration), title: nil, performer: nil, waveform: waveformBuffer)], alternativeRepresentations: [])), threadId: strongSelf.chatLocation.threadId, replyToMessageId: strongSelf.presentationInterfaceState.interfaceState.replyMessageSubject?.subjectModel, replyToStoryId: nil, localGroupingKey: nil, correlationId: correlationId, bubbleUpEmojiOrStickersets: [])])
++                                
++                                strongSelf.recorderFeedback?.tap()
++                                strongSelf.recorderFeedback = nil
++                                strongSelf.recorderDataDisposable.set(nil)
+                             }
+-                            
+-                            strongSelf.sendMessages([.message(text: "", attributes: attributes, inlineStickers: [:], mediaReference: .standalone(media: TelegramMediaFile(fileId: MediaId(namespace: Namespaces.Media.LocalFile, id: randomId), partialReference: nil, resource: resource, previewRepresentations: [], videoThumbnails: [], immediateThumbnailData: nil, mimeType: "audio/ogg", size: Int64(data.compressedData.count), attributes: [.Audio(isVoice: true, duration: Int(data.duration), title: nil, performer: nil, waveform: waveformBuffer)], alternativeRepresentations: [])), threadId: strongSelf.chatLocation.threadId, replyToMessageId: strongSelf.presentationInterfaceState.interfaceState.replyMessageSubject?.subjectModel, replyToStoryId: nil, localGroupingKey: nil, correlationId: correlationId, bubbleUpEmojiOrStickersets: [])])
+-                            
+-                            strongSelf.recorderFeedback?.tap()
+-                            strongSelf.recorderFeedback = nil
+-                            strongSelf.recorderDataDisposable.set(nil)
+                         }
+-                    }
+-                }))
++                    }))
++                }
++                
++                if UserDefaults.standard.bool(forKey: "sosuzagram_confirm_voice_messages") {
++                    let alertController = textAlertController(
++                        context: self.context,
++                        updatedPresentationData: self.updatedPresentationData,
++                        title: "Confirm Voice Message",
++                        text: "Do you want to send this voice message?",
++                        actions: [
++                            TextAlertAction(type: .genericAction, title: self.presentationData.strings.Common_Cancel, action: { [weak self] in
++                                if let strongSelf = self {
++                                    strongSelf.audioRecorder.set(.single(nil))
++                                    strongSelf.recorderDataDisposable.set(nil)
++                                    strongSelf.recorderFeedback = nil
++                                    strongSelf.chatDisplayNode.updateRecordedMediaDeleted(true)
++                                }
++                            }),
++                            TextAlertAction(type: .defaultAction, title: self.presentationData.strings.Common_OK, action: {
++                                sendAction()
++                            })
++                        ]
++                    )
++                    self.present(alertController, in: .window(.root))
++                } else {
++                    sendAction()
++                }
+             }
+         } else if let videoRecorderValue = self.videoRecorderValue {
+             if case .send = updatedAction {
+diff --git a/submodules/TelegramUI/Sources/ChatController.swift b/submodules/TelegramUI/Sources/ChatController.swift
+index f48dc84e..a0c2979d 100644
+--- a/submodules/TelegramUI/Sources/ChatController.swift
++++ b/submodules/TelegramUI/Sources/ChatController.swift
+@@ -3416,7 +3416,27 @@ public final class ChatControllerImpl: TelegramBaseController, ChatController, G
+                             return
+                         }
+                         
+-                        context.requestCall(peerId: peer.id, isVideo: isVideo, completion: {})
++                        let performCall = {
++                            context.requestCall(peerId: peer.id, isVideo: isVideo, completion: {})
++                        }
++                        if UserDefaults.standard.bool(forKey: "sosuzagram_confirm_calls") {
++                            let text = isVideo ? "Do you want to make a video call?" : "Do you want to make a voice call?"
++                            let alertController = textAlertController(
++                                context: strongSelf.context,
++                                updatedPresentationData: strongSelf.updatedPresentationData,
++                                title: "Confirm Call",
++                                text: text,
++                                actions: [
++                                    TextAlertAction(type: .genericAction, title: strongSelf.presentationData.strings.Common_Cancel, action: {}),
++                                    TextAlertAction(type: .defaultAction, title: strongSelf.presentationData.strings.Common_OK, action: {
++                                        performCall()
++                                    })
++                                ]
++                            )
++                            strongSelf.present(alertController, in: .window(.root))
++                        } else {
++                            performCall()
++                        }
+                     })
+                 })
+             }

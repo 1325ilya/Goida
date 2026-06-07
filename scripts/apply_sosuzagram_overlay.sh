@@ -12,6 +12,9 @@ fi
 
 echo "Applying Sosuzagram overlay..."
 
+# 0. Generate embedded plugins Swift file
+python3 "$ROOT_DIR/scripts/generate_embedded_plugins.py"
+
 # 1. Copy SosuzagramIOSCore to Telegram's submodules
 # Telegram-iOS uses bazel, so we put it where it can be referenced.
 # For simplicity, we can place it in submodules/SosuzagramIOSCore
@@ -31,6 +34,16 @@ swift_library(
         "**/*.swift",
     ]),
     module_name = "SosuzagramIOSCore",
+    deps = [
+        "//submodules/Display:Display",
+        "//submodules/SSignalKit/SwiftSignalKit:SwiftSignalKit",
+        "//submodules/Postbox:Postbox",
+        "//submodules/TelegramCore:TelegramCore",
+        "//submodules/TelegramPresentationData:TelegramPresentationData",
+        "//submodules/ItemListUI:ItemListUI",
+        "//submodules/AccountContext:AccountContext",
+        "//submodules/PresentationDataUtils:PresentationDataUtils",
+    ],
     visibility = ["//visibility:public"],
 )
 EOF
@@ -49,6 +62,16 @@ fi
 
 echo "Patching PrivacyAndSecurityController.swift via Python script..."
 python3 "$ROOT_DIR/scripts/patch_privacy_ui.py" "$UPSTREAM_DIR/submodules/SettingsUI/Sources/Privacy and Security/PrivacyAndSecurityController.swift"
+
+echo "Copying alternate icons..."
+cp -R "$OVERLAY_DIR/Telegram-iOS/"*.alticon "$UPSTREAM_DIR/Telegram/Telegram-iOS/"
+echo "Patching alternate icons and app display name..."
+python3 "$ROOT_DIR/scripts/patch_alternate_icons.py" "$UPSTREAM_DIR"
+
+echo "Patching settings navigation..."
+python3 "$ROOT_DIR/scripts/patch_settings_navigation.py" "$UPSTREAM_DIR"
+
+
 
 echo "Patching BuildEnvironment.py to bypass Xcode version check..."
 python3 -c "
