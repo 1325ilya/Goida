@@ -8,10 +8,9 @@ import TelegramPresentationData
 import ItemListUI
 import AccountContext
 import PresentationDataUtils
-import UniformTypeIdentifiers
 import TelegramUIPreferences
 
-private final class SosuzagramSettingsControllerArguments {
+private struct SosuzagramSettingsControllerArguments {
     let context: AccountContext
     let toggleSkipReadHistory: (Bool) -> Void
     let toggleHideStoryViews: (Bool) -> Void
@@ -22,36 +21,7 @@ private final class SosuzagramSettingsControllerArguments {
     let toggleConfirmCalls: (Bool) -> Void
     let toggleConfirmVoiceMessages: (Bool) -> Void
     let selectIcon: (String) -> Void
-    let importPlugins: () -> Void
-    let togglePlugin: (String, Bool) -> Void
-    
-    init(
-        context: AccountContext,
-        toggleSkipReadHistory: @escaping (Bool) -> Void,
-        toggleHideStoryViews: @escaping (Bool) -> Void,
-        toggleHideTyping: @escaping (Bool) -> Void,
-        toggleKeepLocalHistory: @escaping (Bool) -> Void,
-        toggleShowMarker: @escaping (Bool) -> Void,
-        toggleHideStories: @escaping (Bool) -> Void,
-        toggleConfirmCalls: @escaping (Bool) -> Void,
-        toggleConfirmVoiceMessages: @escaping (Bool) -> Void,
-        selectIcon: @escaping (String) -> Void,
-        importPlugins: @escaping () -> Void,
-        togglePlugin: @escaping (String, Bool) -> Void
-    ) {
-        self.context = context
-        self.toggleSkipReadHistory = toggleSkipReadHistory
-        self.toggleHideStoryViews = toggleHideStoryViews
-        self.toggleHideTyping = toggleHideTyping
-        self.toggleKeepLocalHistory = toggleKeepLocalHistory
-        self.toggleShowMarker = toggleShowMarker
-        self.toggleHideStories = toggleHideStories
-        self.toggleConfirmCalls = toggleConfirmCalls
-        self.toggleConfirmVoiceMessages = toggleConfirmVoiceMessages
-        self.selectIcon = selectIcon
-        self.importPlugins = importPlugins
-        self.togglePlugin = togglePlugin
-    }
+    let openPlugin: (String) -> Void
 }
 
 private enum SosuzagramSettingsSection: Int32 {
@@ -62,250 +32,27 @@ private enum SosuzagramSettingsSection: Int32 {
     case plugins
 }
 
-private enum SosuzagramSettingsEntry: ItemListNodeEntry {
-    case ghostHeader(PresentationTheme, String)
-    case skipReadHistoryToggle(PresentationTheme, String, Bool)
-    case hideStoryViewsToggle(PresentationTheme, String, Bool)
-    case hideTypingToggle(PresentationTheme, String, Bool)
-    case ghostInfo(PresentationTheme, String)
+private struct SosuzagramSettingsEntry: ItemListNodeEntry {
+    let section: ItemListSectionId
+    let stableId: UInt64
+    let sortId: Int32
+    let signature: String
+    let buildItem: (ItemListPresentationData, SosuzagramSettingsControllerArguments) -> ListViewItem
 
-    case antiDeleteHeader(PresentationTheme, String)
-    case keepLocalHistoryToggle(PresentationTheme, String, Bool)
-    case showMarkerToggle(PresentationTheme, String, Bool)
-    case antiDeleteInfo(PresentationTheme, String)
+    static func == (lhs: SosuzagramSettingsEntry, rhs: SosuzagramSettingsEntry) -> Bool {
+        return lhs.section == rhs.section
+            && lhs.stableId == rhs.stableId
+            && lhs.sortId == rhs.sortId
+            && lhs.signature == rhs.signature
+    }
 
-    case uiHeader(PresentationTheme, String)
-    case hideStoriesToggle(PresentationTheme, String, Bool)
-    case confirmCallsToggle(PresentationTheme, String, Bool)
-    case confirmVoiceMessagesToggle(PresentationTheme, String, Bool)
-
-    case iconsHeader(PresentationTheme, String)
-    case iconItem(PresentationTheme, String, String, Bool, Int32) // theme, title, iconName, isSelected, index
-
-    case pluginsHeader(PresentationTheme, String)
-    case importPluginsAction(PresentationTheme, String)
-    case pluginItem(PresentationTheme, String, String, String, Bool, Int32) // theme, id, name, desc, isEnabled, index
-    case pluginsInfo(PresentationTheme, String)
-    
-    var section: ItemListSectionId {
-        switch self {
-        case .ghostHeader, .skipReadHistoryToggle, .hideStoryViewsToggle, .hideTypingToggle, .ghostInfo:
-            return SosuzagramSettingsSection.ghost.rawValue
-        case .antiDeleteHeader, .keepLocalHistoryToggle, .showMarkerToggle, .antiDeleteInfo:
-            return SosuzagramSettingsSection.antiDelete.rawValue
-        case .uiHeader, .hideStoriesToggle, .confirmCallsToggle, .confirmVoiceMessagesToggle:
-            return SosuzagramSettingsSection.ui.rawValue
-        case .iconsHeader, .iconItem:
-            return SosuzagramSettingsSection.icons.rawValue
-        case .pluginsHeader, .importPluginsAction, .pluginItem, .pluginsInfo:
-            return SosuzagramSettingsSection.plugins.rawValue
-        }
-    }
-    
-    var stableId: UInt64 {
-        switch self {
-        case .ghostHeader: return 0
-        case .skipReadHistoryToggle: return 1
-        case .hideStoryViewsToggle: return 2
-        case .hideTypingToggle: return 3
-        case .ghostInfo: return 4
-        case .antiDeleteHeader: return 5
-        case .keepLocalHistoryToggle: return 6
-        case .showMarkerToggle: return 7
-        case .antiDeleteInfo: return 8
-        case .uiHeader: return 9
-        case .hideStoriesToggle: return 10
-        case .confirmCallsToggle: return 11
-        case .confirmVoiceMessagesToggle: return 12
-        case .iconsHeader: return 13
-        case let .iconItem(_, _, _, _, index): return 100 + UInt64(index)
-        case .pluginsHeader: return 200
-        case .importPluginsAction: return 201
-        case let .pluginItem(_, _, _, _, _, index): return 1000 + UInt64(index)
-        case .pluginsInfo: return 2000
-        }
-    }
-    
-    var sortId: Int32 {
-        switch self {
-        case .ghostHeader: return 0
-        case .skipReadHistoryToggle: return 1
-        case .hideStoryViewsToggle: return 2
-        case .hideTypingToggle: return 3
-        case .ghostInfo: return 4
-        case .antiDeleteHeader: return 5
-        case .keepLocalHistoryToggle: return 6
-        case .showMarkerToggle: return 7
-        case .antiDeleteInfo: return 8
-        case .uiHeader: return 9
-        case .hideStoriesToggle: return 10
-        case .confirmCallsToggle: return 11
-        case .confirmVoiceMessagesToggle: return 12
-        case .iconsHeader: return 13
-        case let .iconItem(_, _, _, _, index): return 100 + index
-        case .pluginsHeader: return 200
-        case .importPluginsAction: return 201
-        case let .pluginItem(_, _, _, _, _, index): return 1000 + index
-        case .pluginsInfo: return 2000
-        }
-    }
-    
-    static func ==(lhs: SosuzagramSettingsEntry, rhs: SosuzagramSettingsEntry) -> Bool {
-        switch lhs {
-        case let .ghostHeader(lhsTheme, lhsText):
-            if case let .ghostHeader(rhsTheme, rhsText) = rhs, lhsTheme === rhsTheme, lhsText == rhsText { return true }
-            return false
-        case let .skipReadHistoryToggle(lhsTheme, lhsText, lhsValue):
-            if case let .skipReadHistoryToggle(rhsTheme, rhsText, rhsValue) = rhs, lhsTheme === rhsTheme, lhsText == rhsText, lhsValue == rhsValue { return true }
-            return false
-        case let .hideStoryViewsToggle(lhsTheme, lhsText, lhsValue):
-            if case let .hideStoryViewsToggle(rhsTheme, rhsText, rhsValue) = rhs, lhsTheme === rhsTheme, lhsText == rhsText, lhsValue == rhsValue { return true }
-            return false
-        case let .hideTypingToggle(lhsTheme, lhsText, lhsValue):
-            if case let .hideTypingToggle(rhsTheme, rhsText, rhsValue) = rhs, lhsTheme === rhsTheme, lhsText == rhsText, lhsValue == rhsValue { return true }
-            return false
-        case let .ghostInfo(lhsTheme, lhsText):
-            if case let .ghostInfo(rhsTheme, rhsText) = rhs, lhsTheme === rhsTheme, lhsText == rhsText { return true }
-            return false
-        case let .antiDeleteHeader(lhsTheme, lhsText):
-            if case let .antiDeleteHeader(rhsTheme, rhsText) = rhs, lhsTheme === rhsTheme, lhsText == rhsText { return true }
-            return false
-        case let .keepLocalHistoryToggle(lhsTheme, lhsText, lhsValue):
-            if case let .keepLocalHistoryToggle(rhsTheme, rhsText, rhsValue) = rhs, lhsTheme === rhsTheme, lhsText == rhsText, lhsValue == rhsValue { return true }
-            return false
-        case let .showMarkerToggle(lhsTheme, lhsText, lhsValue):
-            if case let .showMarkerToggle(rhsTheme, rhsText, rhsValue) = rhs, lhsTheme === rhsTheme, lhsText == rhsText, lhsValue == rhsValue { return true }
-            return false
-        case let .antiDeleteInfo(lhsTheme, lhsText):
-            if case let .antiDeleteInfo(rhsTheme, rhsText) = rhs, lhsTheme === rhsTheme, lhsText == rhsText { return true }
-            return false
-        case let .uiHeader(lhsTheme, lhsText):
-            if case let .uiHeader(rhsTheme, rhsText) = rhs, lhsTheme === rhsTheme, lhsText == rhsText { return true }
-            return false
-        case let .hideStoriesToggle(lhsTheme, lhsText, lhsValue):
-            if case let .hideStoriesToggle(rhsTheme, rhsText, rhsValue) = rhs, lhsTheme === rhsTheme, lhsText == rhsText, lhsValue == rhsValue { return true }
-            return false
-        case let .confirmCallsToggle(lhsTheme, lhsText, lhsValue):
-            if case let .confirmCallsToggle(rhsTheme, rhsText, rhsValue) = rhs, lhsTheme === rhsTheme, lhsText == rhsText, lhsValue == rhsValue { return true }
-            return false
-        case let .confirmVoiceMessagesToggle(lhsTheme, lhsText, lhsValue):
-            if case let .confirmVoiceMessagesToggle(rhsTheme, rhsText, rhsValue) = rhs, lhsTheme === rhsTheme, lhsText == rhsText, lhsValue == rhsValue { return true }
-            return false
-        case let .iconsHeader(lhsTheme, lhsText):
-            if case let .iconsHeader(rhsTheme, rhsText) = rhs, lhsTheme === rhsTheme, lhsText == rhsText { return true }
-            return false
-        case let .iconItem(lhsTheme, lhsTitle, lhsIcon, lhsSelected, lhsIndex):
-            if case let .iconItem(rhsTheme, rhsTitle, rhsIcon, rhsSelected, rhsIndex) = rhs, lhsTheme === rhsTheme, lhsTitle == rhsTitle, lhsIcon == rhsIcon, lhsSelected == rhsSelected, lhsIndex == rhsIndex { return true }
-            return false
-        case let .pluginsHeader(lhsTheme, lhsText):
-            if case let .pluginsHeader(rhsTheme, rhsText) = rhs, lhsTheme === rhsTheme, lhsText == rhsText { return true }
-            return false
-        case let .importPluginsAction(lhsTheme, lhsText):
-            if case let .importPluginsAction(rhsTheme, rhsText) = rhs, lhsTheme === rhsTheme, lhsText == rhsText { return true }
-            return false
-        case let .pluginItem(lhsTheme, lhsId, lhsName, lhsDesc, lhsEnabled, lhsIndex):
-            if case let .pluginItem(rhsTheme, rhsId, rhsName, rhsDesc, rhsEnabled, rhsIndex) = rhs, lhsTheme === rhsTheme, lhsId == rhsId, lhsName == rhsName, lhsDesc == rhsDesc, lhsEnabled == rhsEnabled, lhsIndex == rhsIndex { return true }
-            return false
-        case let .pluginsInfo(lhsTheme, lhsText):
-            if case let .pluginsInfo(rhsTheme, rhsText) = rhs, lhsTheme === rhsTheme, lhsText == rhsText { return true }
-            return false
-        }
-    }
-    
-    static func <(lhs: SosuzagramSettingsEntry, rhs: SosuzagramSettingsEntry) -> Bool {
+    static func < (lhs: SosuzagramSettingsEntry, rhs: SosuzagramSettingsEntry) -> Bool {
         return lhs.sortId < rhs.sortId
     }
-    
+
     func item(presentationData: ItemListPresentationData, arguments: Any) -> ListViewItem {
-        let args = arguments as! SosuzagramSettingsControllerArguments
-        switch self {
-        case let .ghostHeader(_, text):
-            return ItemListSectionHeaderItem(presentationData: presentationData, text: text, sectionId: self.section)
-        case let .skipReadHistoryToggle(_, title, value):
-            return ItemListSwitchItem(presentationData: presentationData, systemStyle: .glass, title: title, value: value, sectionId: self.section, style: .blocks, updated: { val in
-                args.toggleSkipReadHistory(val)
-            })
-        case let .hideStoryViewsToggle(_, title, value):
-            return ItemListSwitchItem(presentationData: presentationData, systemStyle: .glass, title: title, value: value, sectionId: self.section, style: .blocks, updated: { val in
-                args.toggleHideStoryViews(val)
-            })
-        case let .hideTypingToggle(_, title, value):
-            return ItemListSwitchItem(presentationData: presentationData, systemStyle: .glass, title: title, value: value, sectionId: self.section, style: .blocks, updated: { val in
-                args.toggleHideTyping(val)
-            })
-        case let .ghostInfo(_, text):
-            return ItemListTextItem(presentationData: presentationData, text: .plain(text), sectionId: self.section)
-            
-        case let .antiDeleteHeader(_, text):
-            return ItemListSectionHeaderItem(presentationData: presentationData, text: text, sectionId: self.section)
-        case let .keepLocalHistoryToggle(_, title, value):
-            return ItemListSwitchItem(presentationData: presentationData, systemStyle: .glass, title: title, value: value, sectionId: self.section, style: .blocks, updated: { val in
-                args.toggleKeepLocalHistory(val)
-            })
-        case let .showMarkerToggle(_, title, value):
-            return ItemListSwitchItem(presentationData: presentationData, systemStyle: .glass, title: title, value: value, sectionId: self.section, style: .blocks, updated: { val in
-                args.toggleShowMarker(val)
-            })
-        case let .antiDeleteInfo(_, text):
-            return ItemListTextItem(presentationData: presentationData, text: .plain(text), sectionId: self.section)
-            
-        case let .uiHeader(_, text):
-            return ItemListSectionHeaderItem(presentationData: presentationData, text: text, sectionId: self.section)
-        case let .hideStoriesToggle(_, title, value):
-            return ItemListSwitchItem(presentationData: presentationData, systemStyle: .glass, title: title, value: value, sectionId: self.section, style: .blocks, updated: { val in
-                args.toggleHideStories(val)
-            })
-        case let .confirmCallsToggle(_, title, value):
-            return ItemListSwitchItem(presentationData: presentationData, systemStyle: .glass, title: title, value: value, sectionId: self.section, style: .blocks, updated: { val in
-                args.toggleConfirmCalls(val)
-            })
-        case let .confirmVoiceMessagesToggle(_, title, value):
-            return ItemListSwitchItem(presentationData: presentationData, systemStyle: .glass, title: title, value: value, sectionId: self.section, style: .blocks, updated: { val in
-                args.toggleConfirmVoiceMessages(val)
-            })
-            
-        case let .iconsHeader(_, text):
-            return ItemListSectionHeaderItem(presentationData: presentationData, text: text, sectionId: self.section)
-        case let .iconItem(_, title, iconName, isSelected, _):
-            return ItemListDisclosureItem(presentationData: presentationData, title: title, label: isSelected ? "✓" : "", sectionId: self.section, style: .blocks, action: {
-                args.selectIcon(iconName)
-            })
-            
-        case let .pluginsHeader(_, text):
-            return ItemListSectionHeaderItem(presentationData: presentationData, text: text, sectionId: self.section)
-        case let .importPluginsAction(_, title):
-            return ItemListDisclosureItem(presentationData: presentationData, title: title, label: "+", sectionId: self.section, style: .blocks, action: {
-                args.importPlugins()
-            })
-        case let .pluginItem(_, id, name, _, isEnabled, _):
-            return ItemListSwitchItem(presentationData: presentationData, systemStyle: .glass, title: name, value: isEnabled, sectionId: self.section, style: .blocks, updated: { val in
-                args.togglePlugin(id, val)
-            })
-        case let .pluginsInfo(_, text):
-            return ItemListTextItem(presentationData: presentationData, text: .plain(text), sectionId: self.section)
-        }
+        return self.buildItem(presentationData, arguments as! SosuzagramSettingsControllerArguments)
     }
-}
-
-private func getPluginsDirectory() -> URL {
-    let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-    let dir = paths[0].appendingPathComponent("SosuzagramPlugins")
-    try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true, attributes: nil)
-    return dir
-}
-
-private func getImportedPlugins() -> [ImportedPlugin] {
-    let dir = getPluginsDirectory()
-    guard let urls = try? FileManager.default.contentsOfDirectory(at: dir, includingPropertiesForKeys: nil) else { return [] }
-    var result: [ImportedPlugin] = []
-    for url in urls {
-        if url.pathExtension == "plugin" || url.pathExtension == "sosuzagramplugin" {
-            if let p = parsePlugin(at: url) {
-                result.append(p)
-            }
-        }
-    }
-    return result
 }
 
 private func sosuzagramSettingsEntries(
@@ -319,138 +66,287 @@ private func sosuzagramSettingsEntries(
     confirmCalls: Bool,
     confirmVoiceMessages: Bool,
     currentIcon: String,
-    plugins: [ImportedPlugin]
+    plugins: [SosuzagramPluginDescriptor]
 ) -> [SosuzagramSettingsEntry] {
+    let theme = presentationData.theme
     var entries: [SosuzagramSettingsEntry] = []
-    
-    // 1. Ghost Mode
-    entries.append(.ghostHeader(presentationData.theme, "GHOST MODE"))
-    entries.append(.skipReadHistoryToggle(presentationData.theme, "Skip Read History", skipReadHistory))
-    entries.append(.hideStoryViewsToggle(presentationData.theme, "Hide Story Views", hideStoryViews))
-    entries.append(.hideTypingToggle(presentationData.theme, "Hide Typing status", hideTyping))
-    entries.append(.ghostInfo(presentationData.theme, "Ghost Mode lets you read messages, watch stories, and type without sending notifications to the other party."))
-    
-    // 2. Anti-Delete
-    entries.append(.antiDeleteHeader(presentationData.theme, "ANTI-DELETE"))
-    entries.append(.keepLocalHistoryToggle(presentationData.theme, "Save Deleted Messages", keepLocalHistory))
-    entries.append(.showMarkerToggle(presentationData.theme, "Show Deletion Marker", showMarker))
-    entries.append(.antiDeleteInfo(presentationData.theme, "Keep deleted and edited messages locally. A trash icon will mark deleted messages."))
-    
-    // 3. UI Customization
-    entries.append(.uiHeader(presentationData.theme, "UI CUSTOMIZATION & CONFIRMATIONS"))
-    entries.append(.hideStoriesToggle(presentationData.theme, "Hide Stories in Chat List", hideStories))
-    entries.append(.confirmCallsToggle(presentationData.theme, "Confirm voice/video calls", confirmCalls))
-    entries.append(.confirmVoiceMessagesToggle(presentationData.theme, "Confirm voice message sending", confirmVoiceMessages))
-    
-    // 4. Alternate App Icons
-    entries.append(.iconsHeader(presentationData.theme, "CUSTOM APP ICONS"))
-    let icons = [
-        ("Default", "nil"),
-        ("Red (Exteragram style)", "Red"),
-        ("Green (Exteragram style)", "Green"),
-        ("Orange (Exteragram style)", "Orange"),
-        ("Purple (Exteragram style)", "Purple")
-    ]
-    var iconIndex: Int32 = 0
-    for (title, val) in icons {
-        let isSelected = (currentIcon == val)
-        entries.append(.iconItem(presentationData.theme, title, val, isSelected, iconIndex))
-        iconIndex += 1
-    }
-    
-    // 5. Plugins
-    entries.append(.pluginsHeader(presentationData.theme, "IMPORTED PLUGINS"))
-    entries.append(.importPluginsAction(presentationData.theme, "Import plugin (.plugin / .sosuzagramplugin)"))
-    
-    var pluginIndex: Int32 = 0
-    for plugin in plugins {
-        let isEnabled = UserDefaults.standard.object(forKey: "sosuzagram_plugin_enabled_\(plugin.id)") as? Bool ?? true
-        entries.append(.pluginItem(presentationData.theme, plugin.id, plugin.name, plugin.desc, isEnabled, pluginIndex))
-        pluginIndex += 1
-    }
-    entries.append(.pluginsInfo(presentationData.theme, "Plugins extend Sosuzagram functionality natively. Place .plugin files in the import folder to configure them."))
-    
-    return entries
-}
 
-class DocumentPickerDelegate: NSObject, UIDocumentPickerDelegate {
-    let completion: (URL) -> Void
-    init(completion: @escaping (URL) -> Void) {
-        self.completion = completion
-    }
-    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
-        if let url = urls.first {
-            completion(url)
+    entries.append(SosuzagramSettingsEntry(
+        section: SosuzagramSettingsSection.ghost.rawValue,
+        stableId: 0,
+        sortId: 0,
+        signature: "ghost-header",
+        buildItem: { presentationData, _ in
+            ItemListSectionHeaderItem(presentationData: presentationData, text: "Режим призрака", sectionId: SosuzagramSettingsSection.ghost.rawValue)
         }
+    ))
+    entries.append(SosuzagramSettingsEntry(
+        section: SosuzagramSettingsSection.ghost.rawValue,
+        stableId: 1,
+        sortId: 1,
+        signature: "skip:\(skipReadHistory)",
+        buildItem: { presentationData, arguments in
+            ItemListSwitchItem(presentationData: presentationData, systemStyle: .glass, title: "Не отмечать историю как прочитанную", value: skipReadHistory, sectionId: SosuzagramSettingsSection.ghost.rawValue, style: .blocks, updated: { value in
+                arguments.toggleSkipReadHistory(value)
+            })
+        }
+    ))
+    entries.append(SosuzagramSettingsEntry(
+        section: SosuzagramSettingsSection.ghost.rawValue,
+        stableId: 2,
+        sortId: 2,
+        signature: "storyviews:\(hideStoryViews)",
+        buildItem: { presentationData, arguments in
+            ItemListSwitchItem(presentationData: presentationData, systemStyle: .glass, title: "Скрывать просмотры историй", value: hideStoryViews, sectionId: SosuzagramSettingsSection.ghost.rawValue, style: .blocks, updated: { value in
+                arguments.toggleHideStoryViews(value)
+            })
+        }
+    ))
+    entries.append(SosuzagramSettingsEntry(
+        section: SosuzagramSettingsSection.ghost.rawValue,
+        stableId: 3,
+        sortId: 3,
+        signature: "typing:\(hideTyping)",
+        buildItem: { presentationData, arguments in
+            ItemListSwitchItem(presentationData: presentationData, systemStyle: .glass, title: "Скрывать статус набора текста", value: hideTyping, sectionId: SosuzagramSettingsSection.ghost.rawValue, style: .blocks, updated: { value in
+                arguments.toggleHideTyping(value)
+            })
+        }
+    ))
+    entries.append(SosuzagramSettingsEntry(
+        section: SosuzagramSettingsSection.ghost.rawValue,
+        stableId: 4,
+        sortId: 4,
+        signature: "ghost-info",
+        buildItem: { presentationData, _ in
+            ItemListTextItem(presentationData: presentationData, text: .plain("Позволяет читать сообщения, смотреть истории и писать без лишних уведомлений для собеседника."), sectionId: SosuzagramSettingsSection.ghost.rawValue)
+        }
+    ))
+
+    entries.append(SosuzagramSettingsEntry(
+        section: SosuzagramSettingsSection.antiDelete.rawValue,
+        stableId: 5,
+        sortId: 5,
+        signature: "anti-header",
+        buildItem: { presentationData, _ in
+            ItemListSectionHeaderItem(presentationData: presentationData, text: "Антиудаление", sectionId: SosuzagramSettingsSection.antiDelete.rawValue)
+        }
+    ))
+    entries.append(SosuzagramSettingsEntry(
+        section: SosuzagramSettingsSection.antiDelete.rawValue,
+        stableId: 6,
+        sortId: 6,
+        signature: "history:\(keepLocalHistory)",
+        buildItem: { presentationData, arguments in
+            ItemListSwitchItem(presentationData: presentationData, systemStyle: .glass, title: "Сохранять удалённые сообщения", value: keepLocalHistory, sectionId: SosuzagramSettingsSection.antiDelete.rawValue, style: .blocks, updated: { value in
+                arguments.toggleKeepLocalHistory(value)
+            })
+        }
+    ))
+    entries.append(SosuzagramSettingsEntry(
+        section: SosuzagramSettingsSection.antiDelete.rawValue,
+        stableId: 7,
+        sortId: 7,
+        signature: "marker:\(showMarker)",
+        buildItem: { presentationData, arguments in
+            ItemListSwitchItem(presentationData: presentationData, systemStyle: .glass, title: "Показывать метку удаления", value: showMarker, sectionId: SosuzagramSettingsSection.antiDelete.rawValue, style: .blocks, updated: { value in
+                arguments.toggleShowMarker(value)
+            })
+        }
+    ))
+    entries.append(SosuzagramSettingsEntry(
+        section: SosuzagramSettingsSection.antiDelete.rawValue,
+        stableId: 8,
+        sortId: 8,
+        signature: "anti-info",
+        buildItem: { presentationData, _ in
+            ItemListTextItem(presentationData: presentationData, text: .plain("Локально сохраняет удалённые и отредактированные сообщения. Удалённые сообщения можно помечать отдельной меткой."), sectionId: SosuzagramSettingsSection.antiDelete.rawValue)
+        }
+    ))
+
+    entries.append(SosuzagramSettingsEntry(
+        section: SosuzagramSettingsSection.ui.rawValue,
+        stableId: 9,
+        sortId: 9,
+        signature: "ui-header",
+        buildItem: { presentationData, _ in
+            ItemListSectionHeaderItem(presentationData: presentationData, text: "Интерфейс и подтверждения", sectionId: SosuzagramSettingsSection.ui.rawValue)
+        }
+    ))
+    entries.append(SosuzagramSettingsEntry(
+        section: SosuzagramSettingsSection.ui.rawValue,
+        stableId: 10,
+        sortId: 10,
+        signature: "stories:\(hideStories)",
+        buildItem: { presentationData, arguments in
+            ItemListSwitchItem(presentationData: presentationData, systemStyle: .glass, title: "Скрывать истории в списке чатов", value: hideStories, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
+                arguments.toggleHideStories(value)
+            })
+        }
+    ))
+    entries.append(SosuzagramSettingsEntry(
+        section: SosuzagramSettingsSection.ui.rawValue,
+        stableId: 11,
+        sortId: 11,
+        signature: "confirmcalls:\(confirmCalls)",
+        buildItem: { presentationData, arguments in
+            ItemListSwitchItem(presentationData: presentationData, systemStyle: .glass, title: "Подтверждать голосовые и видеозвонки", value: confirmCalls, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
+                arguments.toggleConfirmCalls(value)
+            })
+        }
+    ))
+    entries.append(SosuzagramSettingsEntry(
+        section: SosuzagramSettingsSection.ui.rawValue,
+        stableId: 12,
+        sortId: 12,
+        signature: "confirmvoice:\(confirmVoiceMessages)",
+        buildItem: { presentationData, arguments in
+            ItemListSwitchItem(presentationData: presentationData, systemStyle: .glass, title: "Подтверждать отправку голосовых", value: confirmVoiceMessages, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
+                arguments.toggleConfirmVoiceMessages(value)
+            })
+        }
+    ))
+
+    let icons = [
+        ("Стандартная", "nil"),
+        ("Красная (Extera style)", "Red"),
+        ("Зелёная (Extera style)", "Green"),
+        ("Оранжевая (Extera style)", "Orange"),
+        ("Фиолетовая (Extera style)", "Purple")
+    ]
+    entries.append(SosuzagramSettingsEntry(
+        section: SosuzagramSettingsSection.icons.rawValue,
+        stableId: 13,
+        sortId: 13,
+        signature: "icons-header",
+        buildItem: { presentationData, _ in
+            ItemListSectionHeaderItem(presentationData: presentationData, text: "Иконки приложения", sectionId: SosuzagramSettingsSection.icons.rawValue)
+        }
+    ))
+    for (index, icon) in icons.enumerated() {
+        let isSelected = currentIcon == icon.1
+        entries.append(SosuzagramSettingsEntry(
+            section: SosuzagramSettingsSection.icons.rawValue,
+            stableId: UInt64(100 + index),
+            sortId: Int32(100 + index),
+            signature: "icon:\(icon.1):\(isSelected)",
+            buildItem: { presentationData, arguments in
+                ItemListDisclosureItem(
+                    presentationData: presentationData,
+                    systemStyle: .glass,
+                    title: icon.0,
+                    label: isSelected ? "Выбрано" : "",
+                    sectionId: SosuzagramSettingsSection.icons.rawValue,
+                    style: .blocks,
+                    disclosureStyle: .none,
+                    action: {
+                        arguments.selectIcon(icon.1)
+                    }
+                )
+            }
+        ))
     }
-}
 
-private var activePickerDelegate: DocumentPickerDelegate?
+    entries.append(SosuzagramSettingsEntry(
+        section: SosuzagramSettingsSection.plugins.rawValue,
+        stableId: 200,
+        sortId: 200,
+        signature: "plugins-header",
+        buildItem: { presentationData, _ in
+            ItemListSectionHeaderItem(presentationData: presentationData, text: "Плагины Extera (iOS)", sectionId: SosuzagramSettingsSection.plugins.rawValue)
+        }
+    ))
 
-private func sosuzagramSettingsPresenter() -> UIViewController? {
-    let rootController = UIApplication.shared.connectedScenes
-        .compactMap { $0 as? UIWindowScene }
-        .flatMap(\.windows)
-        .first(where: \.isKeyWindow)?
-        .rootViewController
-
-    var topController = rootController
-    while let presentedController = topController?.presentedViewController {
-        topController = presentedController
+    for (index, plugin) in plugins.enumerated() {
+        let status = sosuzagramPluginEnabled(plugin.id) ? "Вкл" : "Выкл"
+        entries.append(SosuzagramSettingsEntry(
+            section: SosuzagramSettingsSection.plugins.rawValue,
+            stableId: UInt64(1000 + index),
+            sortId: Int32(1000 + index),
+            signature: "plugin:\(plugin.id):\(status):\(plugin.desc)",
+            buildItem: { presentationData, arguments in
+                ItemListDisclosureItem(
+                    presentationData: presentationData,
+                    systemStyle: .glass,
+                    title: plugin.name,
+                    label: status,
+                    additionalDetailLabel: plugin.desc,
+                    sectionId: SosuzagramSettingsSection.plugins.rawValue,
+                    style: .blocks,
+                    disclosureStyle: .arrow,
+                    action: {
+                        arguments.openPlugin(plugin.id)
+                    }
+                )
+            }
+        ))
     }
-    return topController
+
+    entries.append(SosuzagramSettingsEntry(
+        section: SosuzagramSettingsSection.plugins.rawValue,
+        stableId: 2000,
+        sortId: 2000,
+        signature: "plugins-info",
+        buildItem: { presentationData, _ in
+            ItemListTextItem(presentationData: presentationData, text: .plain("Новые .plugin-файлы не импортируются автоматически. Для каждого нового плагина нужен отдельный нативный порт под Sosuzagram."), sectionId: SosuzagramSettingsSection.plugins.rawValue)
+        }
+    ))
+
+    _ = theme
+    return entries
 }
 
 public func sosuzagramSettingsController(context: AccountContext) -> ViewController {
     deployEmbeddedPluginsIfNeeded()
+
     let statePromise = ValuePromise<Bool>(true, ignoreRepeated: false)
-    
     var updateSettingsImpl: (() -> Void)?
-    
+    var openPluginImpl: ((String) -> Void)?
+
     let arguments = SosuzagramSettingsControllerArguments(
         context: context,
-        toggleSkipReadHistory: { val in
+        toggleSkipReadHistory: { value in
             let _ = updateExperimentalUISettingsInteractively(accountManager: context.sharedContext.accountManager, { settings in
                 var settings = settings
-                settings.skipReadHistory = val
+                settings.skipReadHistory = value
                 return settings
             }).start()
-            UserDefaults.standard.set(val, forKey: "sosuzagram_skip_read_history")
+            UserDefaults.standard.set(value, forKey: "sosuzagram_skip_read_history")
             updateSettingsImpl?()
         },
-        toggleHideStoryViews: { val in
-            UserDefaults.standard.set(val, forKey: "sosuzagram_hide_story_views")
+        toggleHideStoryViews: { value in
+            UserDefaults.standard.set(value, forKey: "sosuzagram_hide_story_views")
             updateSettingsImpl?()
         },
-        toggleHideTyping: { val in
-            UserDefaults.standard.set(val, forKey: "sosuzagram_hide_typing")
+        toggleHideTyping: { value in
+            UserDefaults.standard.set(value, forKey: "sosuzagram_hide_typing")
             updateSettingsImpl?()
         },
-        toggleKeepLocalHistory: { val in
-            UserDefaults.standard.set(val, forKey: "sosuzagram_local_history")
+        toggleKeepLocalHistory: { value in
+            UserDefaults.standard.set(value, forKey: "sosuzagram_local_history")
             updateSettingsImpl?()
         },
-        toggleShowMarker: { val in
-            UserDefaults.standard.set(val, forKey: "sosuzagram_show_marker")
+        toggleShowMarker: { value in
+            UserDefaults.standard.set(value, forKey: "sosuzagram_show_marker")
             updateSettingsImpl?()
         },
-        toggleHideStories: { val in
-            UserDefaults.standard.set(val, forKey: "sosuzagram_hide_stories")
+        toggleHideStories: { value in
+            UserDefaults.standard.set(value, forKey: "sosuzagram_hide_stories")
             updateSettingsImpl?()
         },
-        toggleConfirmCalls: { val in
-            UserDefaults.standard.set(val, forKey: "sosuzagram_confirm_calls")
+        toggleConfirmCalls: { value in
+            UserDefaults.standard.set(value, forKey: "sosuzagram_confirm_calls")
             updateSettingsImpl?()
         },
-        toggleConfirmVoiceMessages: { val in
-            UserDefaults.standard.set(val, forKey: "sosuzagram_confirm_voice_messages")
+        toggleConfirmVoiceMessages: { value in
+            UserDefaults.standard.set(value, forKey: "sosuzagram_confirm_voice_messages")
             updateSettingsImpl?()
         },
         selectIcon: { iconName in
-            let targetName = (iconName == "nil" ? nil : iconName)
+            let targetName = iconName == "nil" ? nil : iconName
             if UIApplication.shared.supportsAlternateIcons {
                 UIApplication.shared.setAlternateIconName(targetName) { error in
-                    if let error = error {
+                    if let error {
                         print("Error setting alternate icon: \(error.localizedDescription)")
                     }
                 }
@@ -458,36 +354,11 @@ public func sosuzagramSettingsController(context: AccountContext) -> ViewControl
             UserDefaults.standard.set(iconName, forKey: "sosuzagram_current_icon")
             updateSettingsImpl?()
         },
-        importPlugins: {
-            let delegate = DocumentPickerDelegate { url in
-                let targetURL = getPluginsDirectory().appendingPathComponent(url.lastPathComponent)
-                try? FileManager.default.removeItem(at: targetURL)
-                try? FileManager.default.copyItem(at: url, to: targetURL)
-                
-                // Set default plugin value to true
-                if let p = parsePlugin(at: targetURL) {
-                    UserDefaults.standard.set(true, forKey: "sosuzagram_plugin_enabled_\(p.id)")
-                }
-                
-                updateSettingsImpl?()
-            }
-
-            let picker: UIDocumentPickerViewController
-            if #available(iOS 14.0, *) {
-                picker = UIDocumentPickerViewController(forOpeningContentTypes: [UTType.data, UTType.item], asCopy: true)
-            } else {
-                picker = UIDocumentPickerViewController(documentTypes: ["public.data", "public.item"], in: .import)
-            }
-            activePickerDelegate = delegate
-            picker.delegate = delegate
-            sosuzagramSettingsPresenter()?.present(picker, animated: true)
-        },
-        togglePlugin: { id, val in
-            UserDefaults.standard.set(val, forKey: "sosuzagram_plugin_enabled_\(id)")
-            updateSettingsImpl?()
+        openPlugin: { pluginId in
+            openPluginImpl?(pluginId)
         }
     )
-    
+
     let signal = combineLatest(
         context.sharedContext.presentationData,
         context.sharedContext.accountManager.sharedData(keys: [ApplicationSpecificSharedDataKeys.experimentalUISettings]),
@@ -496,7 +367,6 @@ public func sosuzagramSettingsController(context: AccountContext) -> ViewControl
     |> map { presentationData, sharedData, _ -> (ItemListControllerState, (ItemListNodeState, Any)) in
         let experimentalSettings = sharedData.entries[ApplicationSpecificSharedDataKeys.experimentalUISettings]?.get(ExperimentalUISettings.self) ?? ExperimentalUISettings.defaultSettings
         let skipReadHistory = experimentalSettings.skipReadHistory
-        
         let hideStoryViews = UserDefaults.standard.bool(forKey: "sosuzagram_hide_story_views")
         let hideTyping = UserDefaults.standard.bool(forKey: "sosuzagram_hide_typing")
         let keepLocalHistory = UserDefaults.standard.object(forKey: "sosuzagram_local_history") as? Bool ?? true
@@ -505,16 +375,16 @@ public func sosuzagramSettingsController(context: AccountContext) -> ViewControl
         let confirmCalls = UserDefaults.standard.bool(forKey: "sosuzagram_confirm_calls")
         let confirmVoiceMessages = UserDefaults.standard.bool(forKey: "sosuzagram_confirm_voice_messages")
         let currentIcon = UserDefaults.standard.string(forKey: "sosuzagram_current_icon") ?? "nil"
-        let plugins = getImportedPlugins()
-        
+        let plugins = sosuzagramBuiltInPlugins()
+
         let controllerState = ItemListControllerState(
             presentationData: ItemListPresentationData(presentationData),
-            title: .text("Sosuzagram Settings"),
+            title: .text("Настройки Sosuzagram"),
             leftNavigationButton: nil,
             rightNavigationButton: nil,
             backNavigationButton: ItemListBackButton(title: presentationData.strings.Common_Back)
         )
-        
+
         let entries = sosuzagramSettingsEntries(
             presentationData: presentationData,
             skipReadHistory: skipReadHistory,
@@ -528,21 +398,23 @@ public func sosuzagramSettingsController(context: AccountContext) -> ViewControl
             currentIcon: currentIcon,
             plugins: plugins
         )
-        
+
         let listState = ItemListNodeState(
             presentationData: ItemListPresentationData(presentationData),
             entries: entries,
             style: .blocks,
             animateChanges: false
         )
-        
+
         return (controllerState, (listState, arguments))
     }
-    
+
     let controller = ItemListController(context: context, state: signal)
     updateSettingsImpl = {
         statePromise.set(true)
     }
-    
+    openPluginImpl = { [weak controller] pluginId in
+        controller?.push(sosuzagramPluginSettingsController(context: context, pluginId: pluginId))
+    }
     return controller
 }

@@ -41,10 +41,26 @@ index bebd6915..56a5ec07 100644
                          if let operation = entry.contents as? SynchronizeViewStoriesOperation {
                              if let peer = transaction.getPeer(entry.peerId) {
 diff --git a/submodules/TelegramUI/Components/Chat/ChatMessageBubbleItemNode/Sources/ChatMessageBubbleItemNode.swift b/submodules/TelegramUI/Components/Chat/ChatMessageBubbleItemNode/Sources/ChatMessageBubbleItemNode.swift
-index 60c7f868..8be4ea83 100644
+index 60c7f868..1e30b4d2 100644
 --- a/submodules/TelegramUI/Components/Chat/ChatMessageBubbleItemNode/Sources/ChatMessageBubbleItemNode.swift
 +++ b/submodules/TelegramUI/Components/Chat/ChatMessageBubbleItemNode/Sources/ChatMessageBubbleItemNode.swift
-@@ -1024,36 +1024,41 @@ public class ChatMessageBubbleItemNode: ChatMessageItemView, ChatMessagePreviewI
+@@ -87,6 +87,15 @@ import LottieMetal
+ import AvatarNode
+ import ChatMessageSuggestedPostInfoNode
+ import PremiumAlertController
++import SosuzagramIOSCore
++
++private func sosuzagramTextAnimationSeconds(_ key: String, defaultMilliseconds: Double) -> Double {
++    return max(0.05, sosuzagramPluginSettingDouble(pluginId: "text_animation", key: key, defaultValue: defaultMilliseconds) / 1000.0)
++}
++
++private func sosuzagramTextAnimationValue(_ key: String, defaultValue: Double) -> CGFloat {
++    return CGFloat(sosuzagramPluginSettingDouble(pluginId: "text_animation", key: key, defaultValue: defaultValue))
++}
+ 
+ private struct BubbleItemAttributes {
+     var index: Int?
+@@ -1024,60 +1033,111 @@ public class ChatMessageBubbleItemNode: ChatMessageItemView, ChatMessagePreviewI
      override public func animateInsertion(_ currentTimestamp: Double, duration: Double, options: ListViewItemAnimationOptions) {
          super.animateInsertion(currentTimestamp, duration: duration, options: options)
          
@@ -53,13 +69,21 @@ index 60c7f868..8be4ea83 100644
 -        func process(node: ASDisplayNode) {
 -            if node === self.accessoryItemNode {
 -                return
--            }
-+        if UserDefaults.standard.object(forKey: "sosuzagram_plugin_enabled_text_animation") as? Bool ?? true {
-+            self.layer.animateAlpha(from: 0.0, to: 1.0, duration: 0.35)
-+            self.layer.animatePosition(from: CGPoint(x: 0.0, y: 30.0), to: CGPoint(), duration: 0.35, timingFunction: CAMediaTimingFunctionName.easeOut.rawValue, additive: true)
-+        } else {
-+            self.shadowNode.layer.animateAlpha(from: 0.0, to: 1.0, duration: 0.2)
-             
++        if sosuzagramPluginEnabled("text_animation") {
++            let duration = sosuzagramTextAnimationSeconds("duration", defaultMilliseconds: 300.0)
++            let blurDuration = sosuzagramTextAnimationSeconds("blur_duration", defaultMilliseconds: 300.0)
++            let slideEnabled = sosuzagramPluginSettingBool(pluginId: "text_animation", key: "slide_enabled", defaultValue: true)
++            let scaleEnabled = sosuzagramPluginSettingBool(pluginId: "text_animation", key: "scale_enabled", defaultValue: false)
++            let rotateEnabled = sosuzagramPluginSettingBool(pluginId: "text_animation", key: "rotate_enabled", defaultValue: false)
++            let blurEnabled = sosuzagramPluginSettingBool(pluginId: "text_animation", key: "blur_enabled", defaultValue: true)
++
++            self.layer.animateAlpha(from: 0.0, to: 1.0, duration: blurEnabled ? blurDuration : duration)
++
++            if slideEnabled {
++                let slideDistance = sosuzagramTextAnimationValue("slide_dist", defaultValue: 20.0)
++                self.layer.animatePosition(from: CGPoint(x: 0.0, y: slideDistance), to: CGPoint(), duration: duration, timingFunction: CAMediaTimingFunctionName.easeOut.rawValue, additive: true)
+             }
+-            
 -            if node !== self {
 -                switch node {
 -                case _ as ContextExtractedContentContainingNode, _ as ContextControllerSourceNode, _ as ContextExtractedContentNode:
@@ -69,10 +93,32 @@ index 60c7f868..8be4ea83 100644
 -                    node.layer.animateAlpha(from: 0.0, to: 1.0, duration: 0.2, completion: { [weak node] _ in
 -                        node?.layer.allowsGroupOpacity = false
 -                    })
+-                    return
++
++            if scaleEnabled {
++                var startScale = sosuzagramTextAnimationValue("scale_start", defaultValue: 0.0)
++                if startScale <= 0.0 {
++                    startScale = 0.6
+                 }
++                self.layer.animateScale(from: startScale, to: 1.0, duration: duration)
+             }
+-            
+-            guard let subnodes = node.subnodes else {
+-                return
++
++            if rotateEnabled {
++                let angle = sosuzagramTextAnimationValue("rotate_angle", defaultValue: -15.0) * (CGFloat.pi / 180.0)
++                self.layer.animateRotation(from: angle, to: 0.0, duration: duration, timingFunction: CAMediaTimingFunctionName.easeOut.rawValue)
+             }
++        } else {
++            self.shadowNode.layer.animateAlpha(from: 0.0, to: 1.0, duration: 0.2)
+             
+-            for subnode in subnodes {
+-                process(node: subnode)
 +            func process(node: ASDisplayNode) {
 +                if node === self.accessoryItemNode {
-                     return
-                 }
++                    return
++                }
 +                
 +                if node !== self {
 +                    switch node {
@@ -95,14 +141,7 @@ index 60c7f868..8be4ea83 100644
 +                    process(node: subnode)
 +                }
              }
-             
--            guard let subnodes = node.subnodes else {
--                return
--            }
--            
--            for subnode in subnodes {
--                process(node: subnode)
--            }
++            
 +            process(node: self)
          }
 -        
@@ -110,8 +149,209 @@ index 60c7f868..8be4ea83 100644
      }
      
      override public func animateRemoved(_ currentTimestamp: Double, duration: Double) {
+         super.animateRemoved(currentTimestamp, duration: duration)
+-        
+-        self.allowsGroupOpacity = true
+-        self.layer.animateAlpha(from: 1.0, to: 0.0, duration: 0.15, removeOnCompletion: false, completion: { [weak self] _ in
+-            self?.allowsGroupOpacity = false
+-        })
+-        self.shadowNode.layer.animateAlpha(from: 1.0, to: 0.0, duration: 0.15, removeOnCompletion: false)
+-        self.layer.animateScale(from: 1.0, to: 0.1, duration: 0.15, removeOnCompletion: false)
+-        self.layer.animatePosition(from: CGPoint(), to: CGPoint(x: self.bounds.width / 2.0 - self.backgroundNode.frame.midX, y: self.backgroundNode.frame.midY), duration: 0.15, timingFunction: CAMediaTimingFunctionName.easeInEaseOut.rawValue, removeOnCompletion: false, additive: true)
++
++        if sosuzagramPluginEnabled("text_animation") && sosuzagramPluginSettingBool(pluginId: "text_animation", key: "delete_anim_enabled", defaultValue: true) {
++            let removeDuration = sosuzagramTextAnimationSeconds("duration", defaultMilliseconds: 300.0)
++            let rotation = sosuzagramPluginSettingBool(pluginId: "text_animation", key: "rotate_enabled", defaultValue: false) ? sosuzagramTextAnimationValue("rotate_angle", defaultValue: -15.0) * (CGFloat.pi / 180.0) : 0.0
++
++            self.allowsGroupOpacity = true
++            self.layer.animateAlpha(from: 1.0, to: 0.0, duration: removeDuration, removeOnCompletion: false, completion: { [weak self] _ in
++                self?.allowsGroupOpacity = false
++            })
++            self.shadowNode.layer.animateAlpha(from: 1.0, to: 0.0, duration: removeDuration, removeOnCompletion: false)
++            self.layer.animateScale(from: 1.0, to: 0.35, duration: removeDuration, removeOnCompletion: false)
++            if rotation != 0.0 {
++                self.layer.animateRotation(from: 0.0, to: rotation, duration: removeDuration, removeOnCompletion: false)
++            }
++            self.layer.animatePosition(from: CGPoint(), to: CGPoint(x: 0.0, y: 18.0), duration: removeDuration, timingFunction: CAMediaTimingFunctionName.easeInEaseOut.rawValue, removeOnCompletion: false, additive: true)
++        } else {
++            self.allowsGroupOpacity = true
++            self.layer.animateAlpha(from: 1.0, to: 0.0, duration: 0.15, removeOnCompletion: false, completion: { [weak self] _ in
++                self?.allowsGroupOpacity = false
++            })
++            self.shadowNode.layer.animateAlpha(from: 1.0, to: 0.0, duration: 0.15, removeOnCompletion: false)
++            self.layer.animateScale(from: 1.0, to: 0.1, duration: 0.15, removeOnCompletion: false)
++            self.layer.animatePosition(from: CGPoint(), to: CGPoint(x: self.bounds.width / 2.0 - self.backgroundNode.frame.midX, y: self.backgroundNode.frame.midY), duration: 0.15, timingFunction: CAMediaTimingFunctionName.easeInEaseOut.rawValue, removeOnCompletion: false, additive: true)
++        }
+     }
+     
+     override public func animateAdded(_ currentTimestamp: Double, duration: Double) {
+         super.animateAdded(currentTimestamp, duration: duration)
+-        
++
++        let assembleEnabled = sosuzagramPluginEnabled("text_animation") && sosuzagramPluginSettingBool(pluginId: "text_animation", key: "assemble_anim_enabled", defaultValue: false)
++        let assembleDuration = assembleEnabled ? sosuzagramTextAnimationSeconds("duration", defaultMilliseconds: 300.0) : 0.2
++
+         if let subnodes = self.subnodes {
+             for subnode in subnodes {
+                 let layer = subnode.layer
+                 layer.allowsGroupOpacity = true
+-                layer.animateAlpha(from: 0.0, to: 1.0, duration: 0.2, completion: { [weak layer] _ in
++                layer.animateAlpha(from: 0.0, to: 1.0, duration: assembleDuration, completion: { [weak layer] _ in
+                     layer?.allowsGroupOpacity = false
+                 })
++                if assembleEnabled {
++                    layer.animateScale(from: 0.85, to: 1.0, duration: assembleDuration)
++                }
+             }
+         }
+     }
+diff --git a/submodules/TelegramUI/Components/Chat/ChatMessageDateAndStatusNode/Sources/ChatMessageDateAndStatusNode.swift b/submodules/TelegramUI/Components/Chat/ChatMessageDateAndStatusNode/Sources/ChatMessageDateAndStatusNode.swift
+index d537ad2a..38eb6902 100644
+--- a/submodules/TelegramUI/Components/Chat/ChatMessageDateAndStatusNode/Sources/ChatMessageDateAndStatusNode.swift
++++ b/submodules/TelegramUI/Components/Chat/ChatMessageDateAndStatusNode/Sources/ChatMessageDateAndStatusNode.swift
+@@ -13,6 +13,7 @@ import ReactionImageComponent
+ import AnimationCache
+ import MultiAnimationRenderer
+ import TelegramStringFormatting
++import SosuzagramIOSCore
+ 
+ private func maybeAddRotationAnimation(_ layer: CALayer, duration: Double) {
+     if let _ = layer.animation(forKey: "clockFrameAnimation") {
+@@ -187,6 +188,7 @@ public class ChatMessageDateAndStatusNode: ASDisplayNode {
+         var dateText: String
+         var type: ChatMessageDateAndStatusType
+         var layoutInput: LayoutInput
++        var forwardCount: Int?
+         var constrainedSize: CGSize
+         var availableReactions: AvailableReactions?
+         var savedMessageTags: SavedMessageTags?
+@@ -229,7 +231,8 @@ public class ChatMessageDateAndStatusNode: ASDisplayNode {
+             hasAutoremove: Bool,
+             canViewReactionList: Bool,
+             animationCache: AnimationCache,
+-            animationRenderer: MultiAnimationRenderer
++            animationRenderer: MultiAnimationRenderer,
++            forwardCount: Int? = nil
+         ) {
+             self.context = context
+             self.presentationData = presentationData
+@@ -238,9 +241,9 @@ public class ChatMessageDateAndStatusNode: ASDisplayNode {
+             self.dateText = dateText
+             self.type = type
+             self.layoutInput = layoutInput
++            self.constrainedSize = constrainedSize
+             self.availableReactions = availableReactions
+             self.savedMessageTags = savedMessageTags
+-            self.constrainedSize = constrainedSize
+             self.reactions = reactions
+             self.reactionPeers = reactionPeers
+             self.displayAllReactionPeers = displayAllReactionPeers
+@@ -255,6 +258,7 @@ public class ChatMessageDateAndStatusNode: ASDisplayNode {
+             self.canViewReactionList = canViewReactionList
+             self.animationCache = animationCache
+             self.animationRenderer = animationRenderer
++            self.forwardCount = forwardCount
+         }
+     }
+     
+@@ -546,6 +550,12 @@ public class ChatMessageDateAndStatusNode: ASDisplayNode {
+                 updatedDateText = compactNumericCountString(impressionCount, decimalSeparator: arguments.presentationData.dateTimeFormat.decimalSeparator) + " " + updatedDateText
+             }
+             
++            let displayForwards = sosuzagramPluginEnabled("forwards")
++            if displayForwards, let forwardCount = arguments.forwardCount {
++                let formattedForwards = compactNumericCountString(forwardCount, decimalSeparator: arguments.presentationData.dateTimeFormat.decimalSeparator)
++                updatedDateText = "\u{27A1}\u{FE0F} \(formattedForwards)   " + updatedDateText
++            }
++            
+             let dateFont = Font.regular(floor(arguments.presentationData.fontSize.baseDisplaySize * 11.0 / 17.0))
+             let (date, dateApply) = dateLayout(TextNodeLayoutArguments(attributedString: NSAttributedString(string: updatedDateText, font: dateFont, textColor: dateColor), backgroundColor: nil, maximumNumberOfLines: 1, truncationType: .middle, constrainedSize: arguments.constrainedSize, alignment: .natural, cutout: nil, insets: UIEdgeInsets()))
+             
+diff --git a/submodules/TelegramUI/Components/Chat/ChatMessageTextBubbleContentNode/Sources/ChatMessageTextBubbleContentNode.swift b/submodules/TelegramUI/Components/Chat/ChatMessageTextBubbleContentNode/Sources/ChatMessageTextBubbleContentNode.swift
+index 8d8872cc..78f44f9e 100644
+--- a/submodules/TelegramUI/Components/Chat/ChatMessageTextBubbleContentNode/Sources/ChatMessageTextBubbleContentNode.swift
++++ b/submodules/TelegramUI/Components/Chat/ChatMessageTextBubbleContentNode/Sources/ChatMessageTextBubbleContentNode.swift
+@@ -310,6 +310,7 @@ public class ChatMessageTextBubbleContentNode: ChatMessageBubbleContentNode {
+                     edited = true
+                 }
+                 var viewCount: Int?
++                var forwardCount: Int?
+                 var dateReplies = 0
+                 var starsCount: Int64?
+                 var dateReactionsAndPeers = mergedMessageReactionsAndPeers(accountPeerId: item.context.account.peerId, accountPeer: item.associatedData.accountPeer, message: item.topMessage)
+@@ -322,6 +323,8 @@ public class ChatMessageTextBubbleContentNode: ChatMessageBubbleContentNode {
+                         edited = !attribute.isHidden
+                     } else if let attribute = attribute as? ViewCountMessageAttribute {
+                         viewCount = attribute.count
++                    } else if let attribute = attribute as? ForwardCountMessageAttribute {
++                        forwardCount = attribute.count
+                     } else if let attribute = attribute as? ReplyThreadMessageAttribute, case .peer = item.chatLocation {
+                         if let channel = item.message.peers[item.message.id.peerId] as? TelegramChannel, case .group = channel.info {
+                             dateReplies = Int(attribute.count)
+@@ -780,7 +783,8 @@ public class ChatMessageTextBubbleContentNode: ChatMessageBubbleContentNode {
+                         hasAutoremove: item.message.isSelfExpiring,
+                         canViewReactionList: canViewMessageReactionList(message: item.topMessage),
+                         animationCache: item.controllerInteraction.presentationContext.animationCache,
+-                        animationRenderer: item.controllerInteraction.presentationContext.animationRenderer
++                        animationRenderer: item.controllerInteraction.presentationContext.animationRenderer,
++                        forwardCount: !item.presentationData.isPreview ? forwardCount : nil
+                     ))
+                 }
+                 
+diff --git a/submodules/TelegramUI/Components/ChatListTitleView/Sources/ChatListTitleView.swift b/submodules/TelegramUI/Components/ChatListTitleView/Sources/ChatListTitleView.swift
+index 36bd2872..87d90a59 100644
+--- a/submodules/TelegramUI/Components/ChatListTitleView/Sources/ChatListTitleView.swift
++++ b/submodules/TelegramUI/Components/ChatListTitleView/Sources/ChatListTitleView.swift
+@@ -11,6 +11,7 @@ import MultiAnimationRenderer
+ import TelegramCore
+ import ComponentDisplayAdapters
+ import AccountContext
++import SosuzagramIOSCore
+ 
+ private let titleFont = Font.with(size: 17.0, design: .regular, weight: .semibold, traits: [.monospacedNumbers])
+ 
+@@ -81,8 +82,20 @@ public final class ChatListTitleView: UIView, NavigationBarTitleView, Navigation
+         let oldValue = self._title
+         self._title = title
+         
++        var titleText = title.text
++        let serverStatusEnabled = sosuzagramPluginEnabled("server_status")
++        if serverStatusEnabled {
++            let dcId = self.context.account.masterDatacenterId
++            if let ping = SosuzagramServerStatus.shared.currentPing {
++                titleText += " (DC\(dcId) - \(ping)ms)"
++            } else {
++                titleText += " (DC\(dcId))"
++            }
++        }
++        
++        self.titleNode.attributedText = NSAttributedString(string: titleText, font: titleFont, textColor: self.theme.rootController.navigationBar.primaryTextColor)
++        
+         if self._title != oldValue {
+-            self.titleNode.attributedText = NSAttributedString(string: self.title.text, font: titleFont, textColor: self.theme.rootController.navigationBar.primaryTextColor)
+             self.buttonView.accessibilityLabel = self.title.text
+             self.activityIndicator.isHidden = !self.title.activity
+            
+@@ -313,6 +326,9 @@ public final class ChatListTitleView: UIView, NavigationBarTitleView, Navigation
+         }
+         
+         self.proxyButton.addTarget(self, action: #selector(self.proxyButtonPressed), for: .touchUpInside)
++        
++        NotificationCenter.default.addObserver(self, selector: #selector(self.pingUpdated), name: NSNotification.Name("SosuzagramPingUpdated"), object: nil)
++        SosuzagramServerStatus.shared.startPinging(datacenterId: self.context.account.masterDatacenterId)
+     }
+     
+     required public init?(coder aDecoder: NSCoder) {
+@@ -508,4 +524,7 @@ public final class ChatListTitleView: UIView, NavigationBarTitleView, Navigation
+         }
+         return super.hitTest(point, with: event)
+     }
++    @objc private func pingUpdated() {
++        self.setTitle(self._title, animated: false)
++    }
+ }
 diff --git a/submodules/TelegramUI/Sources/Chat/ChatControllerMediaRecording.swift b/submodules/TelegramUI/Sources/Chat/ChatControllerMediaRecording.swift
-index 57ba2cac..c571c33c 100644
+index 57ba2cac..a05e1d96 100644
 --- a/submodules/TelegramUI/Sources/Chat/ChatControllerMediaRecording.swift
 +++ b/submodules/TelegramUI/Sources/Chat/ChatControllerMediaRecording.swift
 @@ -343,65 +343,94 @@ extension ChatControllerImpl {
@@ -240,8 +480,8 @@ index 57ba2cac..c571c33c 100644
 +                    let alertController = textAlertController(
 +                        context: self.context,
 +                        updatedPresentationData: self.updatedPresentationData,
-+                        title: "Confirm Voice Message",
-+                        text: "Do you want to send this voice message?",
++                        title: "\u{041F}\u{043E}\u{0434}\u{0442}\u{0432}\u{0435}\u{0440}\u{0436}\u{0434}\u{0435}\u{043D}\u{0438}\u{0435} \u{043E}\u{0442}\u{043F}\u{0440}\u{0430}\u{0432}\u{043A}\u{0438}",
++                        text: "\u{041E}\u{0442}\u{043F}\u{0440}\u{0430}\u{0432}\u{0438}\u{0442}\u{044C} \u{044D}\u{0442}\u{043E} \u{0433}\u{043E}\u{043B}\u{043E}\u{0441}\u{043E}\u{0432}\u{043E}\u{0435} \u{0441}\u{043E}\u{043E}\u{0431}\u{0449}\u{0435}\u{043D}\u{0438}\u{0435}?",
 +                        actions: [
 +                            TextAlertAction(type: .genericAction, title: self.presentationData.strings.Common_Cancel, action: { [weak self] in
 +                                if let strongSelf = self {
@@ -263,36 +503,3 @@ index 57ba2cac..c571c33c 100644
              }
          } else if let videoRecorderValue = self.videoRecorderValue {
              if case .send = updatedAction {
-diff --git a/submodules/TelegramUI/Sources/ChatController.swift b/submodules/TelegramUI/Sources/ChatController.swift
-index f48dc84e..a0c2979d 100644
---- a/submodules/TelegramUI/Sources/ChatController.swift
-+++ b/submodules/TelegramUI/Sources/ChatController.swift
-@@ -3416,7 +3416,27 @@ public final class ChatControllerImpl: TelegramBaseController, ChatController, G
-                             return
-                         }
-                         
--                        context.requestCall(peerId: peer.id, isVideo: isVideo, completion: {})
-+                        let performCall = {
-+                            context.requestCall(peerId: peer.id, isVideo: isVideo, completion: {})
-+                        }
-+                        if UserDefaults.standard.bool(forKey: "sosuzagram_confirm_calls") {
-+                            let text = isVideo ? "Do you want to make a video call?" : "Do you want to make a voice call?"
-+                            let alertController = textAlertController(
-+                                context: strongSelf.context,
-+                                updatedPresentationData: strongSelf.updatedPresentationData,
-+                                title: "Confirm Call",
-+                                text: text,
-+                                actions: [
-+                                    TextAlertAction(type: .genericAction, title: strongSelf.presentationData.strings.Common_Cancel, action: {}),
-+                                    TextAlertAction(type: .defaultAction, title: strongSelf.presentationData.strings.Common_OK, action: {
-+                                        performCall()
-+                                    })
-+                                ]
-+                            )
-+                            strongSelf.present(alertController, in: .window(.root))
-+                        } else {
-+                            performCall()
-+                        }
-                     })
-                 })
-             }

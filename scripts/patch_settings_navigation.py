@@ -48,7 +48,7 @@ def main():
             
         # Add menu item in advanced settings
         target_item = 'interaction.openSettings(.privacyAndSecurity)\n    }))'
-        replacement = 'interaction.openSettings(.privacyAndSecurity)\n    }))\n    items[.advanced]!.append(PeerInfoScreenDisclosureItem(id: 100, text: "Sosuzagram Settings", icon: PresentationResourcesSettings.security, action: {\n        interaction.openSettings(.sosuzagramSettings)\n    }))'
+        replacement = 'interaction.openSettings(.privacyAndSecurity)\n    }))\n    items[.advanced]!.append(PeerInfoScreenDisclosureItem(id: 100, text: "Настройки Sosuzagram", icon: PresentationResourcesSettings.security, action: {\n        interaction.openSettings(.sosuzagramSettings)\n    }))'
         
         if 'interaction.openSettings(.sosuzagramSettings)' not in content:
             content = content.replace(target_item, replacement)
