@@ -112,7 +112,11 @@ content = content.replace(
                 return ItemListSectionHeaderItem(presentationData: presentationData, text: text, sectionId: self.section)
             case let .sosuzagramHistoryToggle(_, text, value):
                 return ItemListSwitchItem(presentationData: presentationData, systemStyle: .glass, title: text, value: value, sectionId: self.section, style: .blocks, updated: { value in
-                    UserDefaults.standard.set(value, forKey: "sosuzagram_local_history")
+                    if text == "Save Deleted Messages" {
+                        UserDefaults.standard.set(value, forKey: "sosuzagram_local_history")
+                    } else if text == "Show Deletion Marker" {
+                        UserDefaults.standard.set(value, forKey: "sosuzagram_show_marker")
+                    }
                 })
             case let .sosuzagramHistoryInfo(_, text):
                 return ItemListTextItem(presentationData: presentationData, text: .plain(text), sectionId: self.section)
@@ -133,7 +137,9 @@ content = content.replace(
     entries.append(.sosuzagramHeader(presentationData.theme, "SOSUZAGRAM SETTINGS"))
     let localHistoryValue = UserDefaults.standard.object(forKey: "sosuzagram_local_history") as? Bool ?? true
     entries.append(.sosuzagramHistoryToggle(presentationData.theme, "Save Deleted Messages", localHistoryValue))
-    entries.append(.sosuzagramHistoryInfo(presentationData.theme, "If enabled, messages deleted by the other party will be saved locally in Sosuzagram."))
+    let showMarkerValue = UserDefaults.standard.object(forKey: "sosuzagram_show_marker") as? Bool ?? true
+    entries.append(.sosuzagramHistoryToggle(presentationData.theme, "Show Deletion Marker", showMarkerValue))
+    entries.append(.sosuzagramHistoryInfo(presentationData.theme, "If enabled, messages deleted by the other party will be saved locally in Sosuzagram. Deletion marker will show a trash icon next to deleted messages."))
     
     return entries
 }""")
