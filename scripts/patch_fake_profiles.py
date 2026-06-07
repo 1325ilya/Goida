@@ -19,9 +19,17 @@ target_bundle_id = config["bundle_id"]
 target_team_id = config["team_id"]
 print(f"Patching fake profiles for Bundle ID: {target_bundle_id}, Team ID: {target_team_id}")
 
-# 2. Extract signing identity from SelfSigned.p12
-p12_path = "upstream/Telegram-iOS/build-system/fake-codesigning/certs/SelfSigned.p12"
-p12_password = ""
+# 2. Set static signing identity and read Public.cer directly
+cert_path = "upstream/Telegram-iOS/build-system/fake-codesigning/certs/Public.cer"
+if not os.path.exists(cert_path):
+    print(f"Error: {cert_path} not found")
+    sys.exit(1)
+
+with open(cert_path, "rb") as f:
+    cert_base64 = base64.b64encode(f.read()).decode("utf-8")
+
+signing_identity = "Apple Distribution: Telegram FZ-LLC (C67CF9S4VU)"
+print(f"Using signing identity: {signing_identity}")
 
 def run_cmd(cmd, check=True):
     res = subprocess.run(cmd, capture_output=True, text=True, errors="ignore")
@@ -31,38 +39,6 @@ def run_cmd(cmd, check=True):
         print("Stderr:", res.stderr)
         sys.exit(1)
     return res.stdout
-
-# Extract cert in PEM format
-proc = subprocess.Popen(
-    ['openssl', 'pkcs12', '-in', p12_path, '-passin', 'pass:' + p12_password, '-nokeys', '-legacy'],
-    stdout=subprocess.PIPE, stderr=subprocess.PIPE
-)
-cert_pem, _ = proc.communicate()
-
-proc2 = subprocess.Popen(
-    ['openssl', 'x509', '-noout', '-subject', '-nameopt', 'oneline,-esc_msb'],
-    stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE
-)
-subject, _ = proc2.communicate(cert_pem)
-subject = subject.decode('utf-8').strip()
-
-signing_identity = None
-if 'CN = ' in subject:
-    signing_identity = subject.split('CN = ')[-1].split(',')[0].strip()
-
-if not signing_identity:
-    print("Error: Could not extract signing identity")
-    sys.exit(1)
-
-print(f"Using signing identity: {signing_identity}")
-
-# Extract base64 cert
-proc3 = subprocess.Popen(
-    ['openssl', 'x509', '-outform', 'DER'],
-    stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE
-)
-cert_der, _ = proc3.communicate(cert_pem)
-cert_base64 = base64.b64encode(cert_der).decode('utf-8')
 
 # 3. Patch each profile
 profiles_dir = "upstream/Telegram-iOS/build-system/fake-codesigning/profiles"
