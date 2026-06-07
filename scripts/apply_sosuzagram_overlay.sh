@@ -43,6 +43,7 @@ swift_library(
         "//submodules/ItemListUI:ItemListUI",
         "//submodules/AccountContext:AccountContext",
         "//submodules/PresentationDataUtils:PresentationDataUtils",
+        "//submodules/TelegramUIPreferences:TelegramUIPreferences",
     ],
     visibility = ["//visibility:public"],
 )
