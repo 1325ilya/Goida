@@ -12,7 +12,7 @@ index 00000000..17ed050c
 +    public static var recordMessageRemoval: ((_ peerId: Int64, _ messageIds: [Int32]) -> Void)?
 +}
 diff --git a/submodules/TelegramCore/Sources/State/AccountStateManagementUtils.swift b/submodules/TelegramCore/Sources/State/AccountStateManagementUtils.swift
-index 89eb1516..ccf107bf 100644
+index 89eb1516..a89a6ac4 100644
 --- a/submodules/TelegramCore/Sources/State/AccountStateManagementUtils.swift
 +++ b/submodules/TelegramCore/Sources/State/AccountStateManagementUtils.swift
 @@ -4246,6 +4246,12 @@ func replayFinalState(
@@ -114,7 +114,7 @@ index 89eb1516..ccf107bf 100644
 +                        }
 +                    }
 +                    
-+                    let updatedMessage = message.withUpdatedText(updatedText)
++                    let updatedMessage = StoreMessage(id: message.id, customStableId: message.customStableId, globallyUniqueId: message.globallyUniqueId, groupingKey: message.groupingKey, threadId: message.threadId, timestamp: message.timestamp, flags: message.flags, tags: message.tags, globalTags: message.globalTags, localTags: message.localTags, forwardInfo: message.forwardInfo, authorId: message.authorId, text: updatedText, attributes: message.attributes, media: message.media)
 +                    
 +                    if previousMessage.text == updatedMessage.text {
                          let previousEntities = previousMessage.textEntitiesAttribute?.entities ?? []
