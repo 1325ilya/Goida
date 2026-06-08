@@ -274,7 +274,7 @@ index 234f378b..feef7865 100644
      visibility = [
          "//visibility:public",
 diff --git a/submodules/TelegramUI/Components/Chat/ChatTextInputPanelNode/Sources/ChatTextInputPanelNode.swift b/submodules/TelegramUI/Components/Chat/ChatTextInputPanelNode/Sources/ChatTextInputPanelNode.swift
-index f7707747..aabb43c5 100644
+index fb68474d..d2e428c1 100644
 --- a/submodules/TelegramUI/Components/Chat/ChatTextInputPanelNode/Sources/ChatTextInputPanelNode.swift
 +++ b/submodules/TelegramUI/Components/Chat/ChatTextInputPanelNode/Sources/ChatTextInputPanelNode.swift
 @@ -1233,8 +1233,9 @@ public class ChatTextInputPanelNode: ChatInputPanelNode, ASEditableTextNodeDeleg
@@ -288,8 +288,11 @@ index f7707747..aabb43c5 100644
              hasSendAsButton = true
          }
          
-@@ -1614,7 +1615,7 @@ public class ChatTextInputPanelNode: ChatInputPanelNode, ASEditableTextNodeDeleg
+@@ -1612,9 +1613,10 @@ public class ChatTextInputPanelNode: ChatInputPanelNode, ASEditableTextNodeDeleg
+             shouldDisplayMenuButton = true
+         }
          
++        let hideSendAsButton = UserDefaults.standard.bool(forKey: "sosuzagram_hide_send_as_button")
          var displaySendAsAvatarButton = false
          let mediaRecordingState = interfaceState.inputTextPanelState.mediaRecordingState
 -        if let sendAsPeers = interfaceState.sendAsPeers, !sendAsPeers.isEmpty && interfaceState.editMessageState == nil {

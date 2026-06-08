@@ -1,5 +1,5 @@
 diff --git a/submodules/TelegramUI/Components/Chat/ChatTextInputPanelNode/Sources/ChatTextInputPanelNode.swift b/submodules/TelegramUI/Components/Chat/ChatTextInputPanelNode/Sources/ChatTextInputPanelNode.swift
-index fcb5d7a3..f7707747 100644
+index fcb5d7a3..fb68474d 100644
 --- a/submodules/TelegramUI/Components/Chat/ChatTextInputPanelNode/Sources/ChatTextInputPanelNode.swift
 +++ b/submodules/TelegramUI/Components/Chat/ChatTextInputPanelNode/Sources/ChatTextInputPanelNode.swift
 @@ -38,6 +38,7 @@ import SolidRoundedButtonNode
@@ -10,6 +10,15 @@ index fcb5d7a3..f7707747 100644
  import ChatInputTextNode
  import ChatInputPanelNode
  import TelegramNotices
+@@ -4959,7 +4960,7 @@ public class ChatTextInputPanelNode: ChatInputPanelNode, ASEditableTextNodeDeleg
+         
+         if editableTextNode.attributedText == nil || editableTextNode.attributedText!.length == 0 || editableTextNode.selectedRange.length == 0 {
+         } else {
+-            var children: [UIAction] = []
++            var children: [UIMenuElement] = []
+             
+             var hasSpoilers = true
+             if self.presentationInterfaceState?.chatLocation.peerId?.namespace == Namespaces.Peer.SecretChat {
 @@ -5032,6 +5033,117 @@ public class ChatTextInputPanelNode: ChatInputPanelNode, ASEditableTextNodeDeleg
                  }
              })
