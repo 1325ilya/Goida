@@ -223,7 +223,7 @@ private func sosuzagramPluginSettingsEntries(
     if plugin.id == "server_status" {
         sectionId += 1
         let currentSection = sectionId
-        let dcId = context.account.masterDatacenterId
+        let dcId = 0
         let pingText: String
         if let ping = SosuzagramServerStatus.shared.currentPing {
             pingText = "Текущий датацентр: DC\(dcId), пинг \(ping) мс."
@@ -258,7 +258,7 @@ private func sosuzagramPluginSettingsEntries(
 public func sosuzagramPluginSettingsController(context: AccountContext, pluginId: String) -> ViewController {
     guard let plugin = sosuzagramBuiltInPlugin(id: pluginId) else {
         let presentationData = context.sharedContext.currentPresentationData.with { $0 }
-        let signal = Signal.single((
+        let signal: Signal<(ItemListControllerState, (ItemListNodeState, Void)), NoError> = .single((
             ItemListControllerState(
                 presentationData: ItemListPresentationData(presentationData),
                 title: .text("Plugin"),
