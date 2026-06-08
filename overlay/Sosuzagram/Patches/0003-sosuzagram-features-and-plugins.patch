@@ -317,7 +317,7 @@ index 36bd2872..87d90a59 100644
 +        var titleText = title.text
 +        let serverStatusEnabled = sosuzagramPluginEnabled("server_status")
 +        if serverStatusEnabled {
-+            let dcId = self.context.account.masterDatacenterId
++            let dcId = Int32(self.context.account.network.datacenterId)
 +            if let ping = SosuzagramServerStatus.shared.currentPing {
 +                titleText += " (DC\(dcId) - \(ping)ms)"
 +            } else {
@@ -338,7 +338,7 @@ index 36bd2872..87d90a59 100644
          self.proxyButton.addTarget(self, action: #selector(self.proxyButtonPressed), for: .touchUpInside)
 +        
 +        NotificationCenter.default.addObserver(self, selector: #selector(self.pingUpdated), name: NSNotification.Name("SosuzagramPingUpdated"), object: nil)
-+        SosuzagramServerStatus.shared.startPinging(datacenterId: self.context.account.masterDatacenterId)
++        SosuzagramServerStatus.shared.startPinging(datacenterId: Int32(self.context.account.network.datacenterId))
      }
      
      required public init?(coder aDecoder: NSCoder) {
