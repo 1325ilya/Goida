@@ -87,7 +87,9 @@ private func sosuzagramSanitizedPluginComponent(_ value: String) -> String {
 
 private func sosuzagramImportPluginFile(from sourceURL: URL) throws -> ImportedPlugin {
     let fileManager = FileManager.default
-    let plugin = try parsePlugin(at: sourceURL)
+    guard let plugin = parsePlugin(at: sourceURL) else {
+        throw NSError(domain: "SosuzagramPluginImport", code: 2, userInfo: [NSLocalizedDescriptionKey: "Файл не содержит корректные метаданные плагина."])
+    }
     let directory = try sosuzagramPluginImportDirectory()
     let fileName = "\(sosuzagramSanitizedPluginComponent(plugin.id))_\(sosuzagramSanitizedPluginComponent(plugin.version)).sosuzagramplugin"
     let targetURL = directory.appendingPathComponent(fileName, isDirectory: false)
