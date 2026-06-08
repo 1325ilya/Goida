@@ -1,5 +1,6 @@
 import Foundation
 import UIKit
+import UniformTypeIdentifiers
 import Display
 import SwiftSignalKit
 import Postbox
@@ -9,6 +10,8 @@ import ItemListUI
 import AccountContext
 import PresentationDataUtils
 import TelegramUIPreferences
+import LegacyMediaPickerUI
+import AlertUI
 
 private struct SosuzagramSettingsControllerArguments {
     let context: AccountContext
@@ -31,6 +34,7 @@ private struct SosuzagramSettingsControllerArguments {
     let toggleHideStickerTimestamp: (Bool) -> Void
     let selectIcon: (String) -> Void
     let openPlugin: (String) -> Void
+    let importPlugin: () -> Void
 }
 
 private enum SosuzagramSettingsSection: Int32 {
@@ -62,6 +66,36 @@ private struct SosuzagramSettingsEntry: ItemListNodeEntry {
     func item(presentationData: ItemListPresentationData, arguments: Any) -> ListViewItem {
         return self.buildItem(presentationData, arguments as! SosuzagramSettingsControllerArguments)
     }
+}
+
+private func sosuzagramPluginImportDirectory() throws -> URL {
+    let fileManager = FileManager.default
+    guard let documentsDirectory = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first else {
+        throw NSError(domain: "SosuzagramPluginImport", code: 1, userInfo: [NSLocalizedDescriptionKey: "Documents directory is unavailable."])
+    }
+    let pluginDirectory = documentsDirectory.appendingPathComponent("SosuzagramPlugins", isDirectory: true)
+    try fileManager.createDirectory(at: pluginDirectory, withIntermediateDirectories: true, attributes: nil)
+    return pluginDirectory
+}
+
+private func sosuzagramSanitizedPluginComponent(_ value: String) -> String {
+    let allowed = CharacterSet.alphanumerics.union(CharacterSet(charactersIn: "_-"))
+    let sanitized = value.unicodeScalars.map { allowed.contains($0) ? String($0) : "_" }.joined()
+    let trimmed = sanitized.trimmingCharacters(in: CharacterSet(charactersIn: "_"))
+    return trimmed.isEmpty ? "plugin" : trimmed
+}
+
+private func sosuzagramImportPluginFile(from sourceURL: URL) throws -> ImportedPlugin {
+    let fileManager = FileManager.default
+    let plugin = try parsePlugin(at: sourceURL)
+    let directory = try sosuzagramPluginImportDirectory()
+    let fileName = "\(sosuzagramSanitizedPluginComponent(plugin.id))_\(sosuzagramSanitizedPluginComponent(plugin.version)).sosuzagramplugin"
+    let targetURL = directory.appendingPathComponent(fileName, isDirectory: false)
+    if fileManager.fileExists(atPath: targetURL.path) {
+        try fileManager.removeItem(at: targetURL)
+    }
+    try fileManager.copyItem(at: sourceURL, to: targetURL)
+    return plugin
 }
 
 private func sosuzagramSettingsEntries(
@@ -373,6 +407,26 @@ private func sosuzagramSettingsEntries(
             ItemListSectionHeaderItem(presentationData: presentationData, text: "Плагины Extera (iOS)", sectionId: SosuzagramSettingsSection.plugins.rawValue)
         }
     ))
+    entries.append(SosuzagramSettingsEntry(
+        section: SosuzagramSettingsSection.plugins.rawValue,
+        stableId: 201,
+        sortId: 201,
+        signature: "plugins-import",
+        buildItem: { presentationData, arguments in
+            ItemListActionItem(
+                presentationData: presentationData,
+                systemStyle: .glass,
+                title: "Загрузить .plugin",
+                kind: .generic,
+                alignment: .natural,
+                sectionId: SosuzagramSettingsSection.plugins.rawValue,
+                style: .blocks,
+                action: {
+                    arguments.importPlugin()
+                }
+            )
+        }
+    ))
 
     for (index, plugin) in plugins.enumerated() {
         let status = sosuzagramPluginEnabled(plugin.id) ? "Вкл" : "Выкл"
@@ -419,6 +473,7 @@ public func sosuzagramSettingsController(context: AccountContext) -> ViewControl
     let statePromise = ValuePromise<Bool>(true, ignoreRepeated: false)
     var updateSettingsImpl: (() -> Void)?
     var openPluginImpl: ((String) -> Void)?
+    var importPluginImpl: (() -> Void)?
 
     let arguments = SosuzagramSettingsControllerArguments(
         context: context,
@@ -509,6 +564,9 @@ public func sosuzagramSettingsController(context: AccountContext) -> ViewControl
         },
         openPlugin: { pluginId in
             openPluginImpl?(pluginId)
+        },
+        importPlugin: {
+            importPluginImpl?()
         }
     )
 
@@ -586,6 +644,71 @@ public func sosuzagramSettingsController(context: AccountContext) -> ViewControl
     }
     openPluginImpl = { [weak controller] pluginId in
         controller?.push(sosuzagramPluginSettingsController(context: context, pluginId: pluginId))
+    }
+    importPluginImpl = { [weak controller] in
+        guard let controller else {
+            return
+        }
+        let presentationData = context.sharedContext.currentPresentationData.with { $0 }
+        var documentTypes = ["public.item"]
+        if #available(iOS 14.0, *) {
+            for fileExtension in ["plugin", "sosuzagramplugin"] {
+                if let identifier = UTType(filenameExtension: fileExtension)?.identifier, !documentTypes.contains(identifier) {
+                    documentTypes.append(identifier)
+                }
+            }
+        }
+        
+        let pickerController = legacyICloudFilePicker(theme: presentationData.theme, mode: .import, documentTypes: documentTypes, completion: { [weak controller] urls in
+            guard let controller, let url = urls.first else {
+                return
+            }
+            let scopedAccess = url.startAccessingSecurityScopedResource()
+            defer {
+                if scopedAccess {
+                    url.stopAccessingSecurityScopedResource()
+                }
+            }
+            
+            let allowedExtensions: Set<String> = ["plugin", "sosuzagramplugin"]
+            guard allowedExtensions.contains(url.pathExtension.lowercased()) else {
+                controller.present(textAlertController(context: context, title: "Импорт плагина", text: "Выбери файл с расширением .plugin или .sosuzagramplugin.", actions: [
+                    TextAlertAction(type: .defaultAction, title: presentationData.strings.Common_OK, action: {})
+                ]), in: .window(.root))
+                return
+            }
+            
+            do {
+                let importedPlugin = try sosuzagramImportPluginFile(from: url)
+                let supportedPlugin = sosuzagramBuiltInPlugin(id: importedPlugin.id)
+                if supportedPlugin != nil {
+                    sosuzagramSetPluginEnabled(importedPlugin.id, true)
+                }
+                updateSettingsImpl?()
+                
+                var actions: [TextAlertAction] = []
+                if supportedPlugin != nil {
+                    actions.append(TextAlertAction(type: .genericAction, title: "Открыть", action: {
+                        controller.push(sosuzagramPluginSettingsController(context: context, pluginId: importedPlugin.id))
+                    }))
+                }
+                actions.append(TextAlertAction(type: .defaultAction, title: presentationData.strings.Common_OK, action: {}))
+                
+                let message: String
+                if supportedPlugin != nil {
+                    message = "Плагин \(importedPlugin.name) импортирован и включён. Его настройки уже доступны в Sosuzagram."
+                } else {
+                    message = "Файл \(importedPlugin.name) импортирован в SosuzagramPlugins, но для работы нужен отдельный нативный порт под iOS."
+                }
+                
+                controller.present(textAlertController(context: context, title: "Импорт плагина", text: message, actions: actions), in: .window(.root))
+            } catch {
+                controller.present(textAlertController(context: context, title: "Импорт плагина", text: "Не удалось импортировать файл: \(error.localizedDescription)", actions: [
+                    TextAlertAction(type: .defaultAction, title: presentationData.strings.Common_OK, action: {})
+                ]), in: .window(.root))
+            }
+        })
+        controller.present(pickerController, in: .window(.root))
     }
     return controller
 }

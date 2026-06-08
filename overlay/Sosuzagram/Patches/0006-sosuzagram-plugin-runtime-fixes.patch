@@ -1,0 +1,458 @@
+diff --git a/submodules/TelegramUI/Components/Chat/ChatMessageBubbleItemNode/Sources/ChatMessageBubbleItemNode.swift b/submodules/TelegramUI/Components/Chat/ChatMessageBubbleItemNode/Sources/ChatMessageBubbleItemNode.swift
+index 4398084..f0a93ee 100644
+--- a/submodules/TelegramUI/Components/Chat/ChatMessageBubbleItemNode/Sources/ChatMessageBubbleItemNode.swift
++++ b/submodules/TelegramUI/Components/Chat/ChatMessageBubbleItemNode/Sources/ChatMessageBubbleItemNode.swift
+@@ -1033,100 +1033,54 @@ public class ChatMessageBubbleItemNode: ChatMessageItemView, ChatMessagePreviewI
+     override public func animateInsertion(_ currentTimestamp: Double, duration: Double, options: ListViewItemAnimationOptions) {
+         super.animateInsertion(currentTimestamp, duration: duration, options: options)
+         
+-        if sosuzagramPluginEnabled("text_animation") {
+-            let duration = sosuzagramTextAnimationSeconds("duration", defaultMilliseconds: 300.0)
+-            let blurDuration = sosuzagramTextAnimationSeconds("blur_duration", defaultMilliseconds: 300.0)
+-            let slideEnabled = sosuzagramPluginSettingBool(pluginId: "text_animation", key: "slide_enabled", defaultValue: true)
+-            let scaleEnabled = sosuzagramPluginSettingBool(pluginId: "text_animation", key: "scale_enabled", defaultValue: false)
+-            let rotateEnabled = sosuzagramPluginSettingBool(pluginId: "text_animation", key: "rotate_enabled", defaultValue: false)
+-            let blurEnabled = sosuzagramPluginSettingBool(pluginId: "text_animation", key: "blur_enabled", defaultValue: true)
+-
+-            self.layer.animateAlpha(from: 0.0, to: 1.0, duration: blurEnabled ? blurDuration : duration)
+-
+-            if slideEnabled {
+-                let slideDistance = sosuzagramTextAnimationValue("slide_dist", defaultValue: 20.0)
+-                self.layer.animatePosition(from: CGPoint(x: 0.0, y: slideDistance), to: CGPoint(), duration: duration, timingFunction: CAMediaTimingFunctionName.easeOut.rawValue, additive: true)
+-            }
+-
+-            if scaleEnabled {
+-                var startScale = sosuzagramTextAnimationValue("scale_start", defaultValue: 0.0)
+-                if startScale <= 0.0 {
+-                    startScale = 0.6
+-                }
+-                self.layer.animateScale(from: startScale, to: 1.0, duration: duration)
+-            }
+-
+-            if rotateEnabled {
+-                let angle = sosuzagramTextAnimationValue("rotate_angle", defaultValue: -15.0) * (CGFloat.pi / 180.0)
+-                self.layer.animateRotation(from: angle, to: 0.0, duration: duration, timingFunction: CAMediaTimingFunctionName.easeOut.rawValue)
++        self.shadowNode.layer.animateAlpha(from: 0.0, to: 1.0, duration: 0.2)
++        
++        func process(node: ASDisplayNode) {
++            if node === self.accessoryItemNode {
++                return
+             }
+-        } else {
+-            self.shadowNode.layer.animateAlpha(from: 0.0, to: 1.0, duration: 0.2)
+             
+-            func process(node: ASDisplayNode) {
+-                if node === self.accessoryItemNode {
+-                    return
+-                }
+-                
+-                if node !== self {
+-                    switch node {
+-                    case _ as ContextExtractedContentContainingNode, _ as ContextControllerSourceNode, _ as ContextExtractedContentNode:
+-                        break
+-                    default:
+-                        node.layer.allowsGroupOpacity = true
+-                        node.layer.animateAlpha(from: 0.0, to: 1.0, duration: 0.2, completion: { [weak node] _ in
+-                            node?.layer.allowsGroupOpacity = false
+-                        })
+-                        return
+-                    }
+-                }
+-                
+-                guard let subnodes = node.subnodes else {
++            if node !== self {
++                switch node {
++                case _ as ContextExtractedContentContainingNode, _ as ContextControllerSourceNode, _ as ContextExtractedContentNode:
++                    break
++                default:
++                    node.layer.allowsGroupOpacity = true
++                    node.layer.animateAlpha(from: 0.0, to: 1.0, duration: 0.2, completion: { [weak node] _ in
++                        node?.layer.allowsGroupOpacity = false
++                    })
+                     return
+                 }
+-                
+-                for subnode in subnodes {
+-                    process(node: subnode)
+-                }
+             }
+             
+-            process(node: self)
++            guard let subnodes = node.subnodes else {
++                return
++            }
++            
++            for subnode in subnodes {
++                process(node: subnode)
++            }
+         }
++        
++        process(node: self)
+     }
+     
+     override public func animateRemoved(_ currentTimestamp: Double, duration: Double) {
+         super.animateRemoved(currentTimestamp, duration: duration)
+ 
+-        if sosuzagramPluginEnabled("text_animation") && sosuzagramPluginSettingBool(pluginId: "text_animation", key: "delete_anim_enabled", defaultValue: true) {
+-            let removeDuration = sosuzagramTextAnimationSeconds("duration", defaultMilliseconds: 300.0)
+-            let rotation = sosuzagramPluginSettingBool(pluginId: "text_animation", key: "rotate_enabled", defaultValue: false) ? sosuzagramTextAnimationValue("rotate_angle", defaultValue: -15.0) * (CGFloat.pi / 180.0) : 0.0
+-
+-            self.allowsGroupOpacity = true
+-            self.layer.animateAlpha(from: 1.0, to: 0.0, duration: removeDuration, removeOnCompletion: false, completion: { [weak self] _ in
+-                self?.allowsGroupOpacity = false
+-            })
+-            self.shadowNode.layer.animateAlpha(from: 1.0, to: 0.0, duration: removeDuration, removeOnCompletion: false)
+-            self.layer.animateScale(from: 1.0, to: 0.35, duration: removeDuration, removeOnCompletion: false)
+-            if rotation != 0.0 {
+-                self.layer.animateRotation(from: 0.0, to: rotation, duration: removeDuration, removeOnCompletion: false)
+-            }
+-            self.layer.animatePosition(from: CGPoint(), to: CGPoint(x: 0.0, y: 18.0), duration: removeDuration, timingFunction: CAMediaTimingFunctionName.easeInEaseOut.rawValue, removeOnCompletion: false, additive: true)
+-        } else {
+-            self.allowsGroupOpacity = true
+-            self.layer.animateAlpha(from: 1.0, to: 0.0, duration: 0.15, removeOnCompletion: false, completion: { [weak self] _ in
+-                self?.allowsGroupOpacity = false
+-            })
+-            self.shadowNode.layer.animateAlpha(from: 1.0, to: 0.0, duration: 0.15, removeOnCompletion: false)
+-            self.layer.animateScale(from: 1.0, to: 0.1, duration: 0.15, removeOnCompletion: false)
+-            self.layer.animatePosition(from: CGPoint(), to: CGPoint(x: self.bounds.width / 2.0 - self.backgroundNode.frame.midX, y: self.backgroundNode.frame.midY), duration: 0.15, timingFunction: CAMediaTimingFunctionName.easeInEaseOut.rawValue, removeOnCompletion: false, additive: true)
+-        }
++        self.allowsGroupOpacity = true
++        self.layer.animateAlpha(from: 1.0, to: 0.0, duration: 0.15, removeOnCompletion: false, completion: { [weak self] _ in
++            self?.allowsGroupOpacity = false
++        })
++        self.shadowNode.layer.animateAlpha(from: 1.0, to: 0.0, duration: 0.15, removeOnCompletion: false)
++        self.layer.animateScale(from: 1.0, to: 0.1, duration: 0.15, removeOnCompletion: false)
++        self.layer.animatePosition(from: CGPoint(), to: CGPoint(x: self.bounds.width / 2.0 - self.backgroundNode.frame.midX, y: self.backgroundNode.frame.midY), duration: 0.15, timingFunction: CAMediaTimingFunctionName.easeInEaseOut.rawValue, removeOnCompletion: false, additive: true)
+     }
+     
+     override public func animateAdded(_ currentTimestamp: Double, duration: Double) {
+         super.animateAdded(currentTimestamp, duration: duration)
+ 
+-        let assembleEnabled = sosuzagramPluginEnabled("text_animation") && sosuzagramPluginSettingBool(pluginId: "text_animation", key: "assemble_anim_enabled", defaultValue: false)
+-        let assembleDuration = assembleEnabled ? sosuzagramTextAnimationSeconds("duration", defaultMilliseconds: 300.0) : 0.2
++        let assembleDuration = 0.2
+ 
+         if let subnodes = self.subnodes {
+             for subnode in subnodes {
+@@ -1135,9 +1089,6 @@ public class ChatMessageBubbleItemNode: ChatMessageItemView, ChatMessagePreviewI
+                 layer.animateAlpha(from: 0.0, to: 1.0, duration: assembleDuration, completion: { [weak layer] _ in
+                     layer?.allowsGroupOpacity = false
+                 })
+-                if assembleEnabled {
+-                    layer.animateScale(from: 0.85, to: 1.0, duration: assembleDuration)
+-                }
+             }
+         }
+     }
+diff --git a/submodules/TelegramUI/Components/Chat/ChatTextInputPanelNode/Sources/ChatTextInputPanelNode.swift b/submodules/TelegramUI/Components/Chat/ChatTextInputPanelNode/Sources/ChatTextInputPanelNode.swift
+index d2e428c..1750db9 100644
+--- a/submodules/TelegramUI/Components/Chat/ChatTextInputPanelNode/Sources/ChatTextInputPanelNode.swift
++++ b/submodules/TelegramUI/Components/Chat/ChatTextInputPanelNode/Sources/ChatTextInputPanelNode.swift
+@@ -119,6 +119,14 @@ private func calculateTextFieldRealInsets(presentationInterfaceState: ChatPresen
+     return UIEdgeInsets(top: 4.5 + top, left: 0.0, bottom: 5.5 + bottom, right: right)
+ }
+ 
++private func sosuzagramTypingAnimationSeconds(_ key: String, defaultMilliseconds: Double) -> Double {
++    return max(0.05, sosuzagramPluginSettingDouble(pluginId: "text_animation", key: key, defaultValue: defaultMilliseconds) / 1000.0)
++}
++
++private func sosuzagramTypingAnimationValue(_ key: String, defaultValue: Double) -> CGFloat {
++    return CGFloat(sosuzagramPluginSettingDouble(pluginId: "text_animation", key: key, defaultValue: defaultValue))
++}
++
+ public enum ChatTextInputPanelPasteData {
+     case images([UIImage])
+     case video(Data)
+@@ -334,6 +342,8 @@ public class ChatTextInputPanelNode: ChatInputPanelNode, ASEditableTextNodeDeleg
+     private var recordingPaused = false
+     
+     private let inputMenu: TextInputMenu
++    private var sosuzagramTypingSnapshotView: UIView?
++    private var sosuzagramTypingAnimationIsDeletion = false
+     
+     private var theme: PresentationTheme?
+     private var strings: PresentationStrings?
+@@ -3740,6 +3750,7 @@ public class ChatTextInputPanelNode: ChatInputPanelNode, ASEditableTextNodeDeleg
+             self.interfaceInteraction?.updateTextInputStateAndMode({ _, inputMode in return (inputTextState, inputMode) })
+             self.interfaceInteraction?.updateInputLanguage({ _ in return textInputNode.textInputMode?.primaryLanguage })
+             self.updateTextNodeText(animated: true)
++            self.playSosuzagramTypingAnimationIfNeeded()
+         }
+     }
+     
+@@ -3747,6 +3758,84 @@ public class ChatTextInputPanelNode: ChatInputPanelNode, ASEditableTextNodeDeleg
+         self.chatInputTextNodeDidUpdateText()
+     }
+     
++    private func prepareSosuzagramTypingAnimation(replacementText: String, range: NSRange) {
++        guard sosuzagramPluginEnabled("text_animation"), let textInputNode = self.textInputNode else {
++            return
++        }
++        let isDeletion = replacementText.isEmpty && range.length > 0
++        if isDeletion && !sosuzagramPluginSettingBool(pluginId: "text_animation", key: "delete_anim_enabled", defaultValue: true) {
++            return
++        }
++        
++        self.sosuzagramTypingSnapshotView?.removeFromSuperview()
++        
++        let caretColor = textInputNode.textView.tintColor
++        textInputNode.textView.tintColor = .clear
++        guard let snapshotView = textInputNode.view.snapshotView(afterScreenUpdates: false) else {
++            textInputNode.textView.tintColor = caretColor
++            return
++        }
++        textInputNode.textView.tintColor = caretColor
++        
++        snapshotView.frame = textInputNode.frame
++        self.textInputNodeClippingContainer.addSubview(snapshotView)
++        self.textInputNodeClippingContainer.bringSubviewToFront(textInputNode.view)
++        self.sosuzagramTypingSnapshotView = snapshotView
++        self.sosuzagramTypingAnimationIsDeletion = isDeletion
++    }
++    
++    private func playSosuzagramTypingAnimationIfNeeded() {
++        guard sosuzagramPluginEnabled("text_animation"), let textInputNode = self.textInputNode, let snapshotView = self.sosuzagramTypingSnapshotView else {
++            self.sosuzagramTypingSnapshotView?.removeFromSuperview()
++            self.sosuzagramTypingSnapshotView = nil
++            return
++        }
++        
++        self.sosuzagramTypingSnapshotView = nil
++        let isDeletion = self.sosuzagramTypingAnimationIsDeletion
++        self.sosuzagramTypingAnimationIsDeletion = false
++        
++        let duration = sosuzagramTypingAnimationSeconds("duration", defaultMilliseconds: 300.0)
++        let slideEnabled = sosuzagramPluginSettingBool(pluginId: "text_animation", key: "slide_enabled", defaultValue: true)
++        let scaleEnabled = sosuzagramPluginSettingBool(pluginId: "text_animation", key: "scale_enabled", defaultValue: false)
++        let rotateEnabled = sosuzagramPluginSettingBool(pluginId: "text_animation", key: "rotate_enabled", defaultValue: false)
++        let slideDistance = sosuzagramTypingAnimationValue("slide_dist", defaultValue: 20.0)
++        var startScale = sosuzagramTypingAnimationValue("scale_start", defaultValue: 0.0)
++        if startScale <= 0.0 {
++            startScale = 0.92
++        }
++        let rotationAngle = sosuzagramTypingAnimationValue("rotate_angle", defaultValue: -15.0) * (CGFloat.pi / 180.0)
++        
++        snapshotView.layer.animateAlpha(from: 1.0, to: 0.0, duration: duration, removeOnCompletion: false, completion: { [weak snapshotView] _ in
++            snapshotView?.removeFromSuperview()
++        })
++        if slideEnabled {
++            let snapshotOffset = isDeletion ? slideDistance : -slideDistance
++            snapshotView.layer.animatePosition(from: CGPoint(), to: CGPoint(x: 0.0, y: snapshotOffset), duration: duration, timingFunction: CAMediaTimingFunctionName.easeInEaseOut.rawValue, removeOnCompletion: false, additive: true)
++        }
++        if scaleEnabled {
++            let targetScale = isDeletion ? max(0.7, startScale) : 1.04
++            snapshotView.layer.animateScale(from: 1.0, to: targetScale, duration: duration, removeOnCompletion: false)
++        }
++        if rotateEnabled {
++            let targetRotation = isDeletion ? -rotationAngle : rotationAngle
++            snapshotView.layer.animateRotation(from: 0.0, to: targetRotation, duration: duration, removeOnCompletion: false)
++        }
++        
++        if !isDeletion {
++            textInputNode.layer.animateAlpha(from: 0.55, to: 1.0, duration: duration)
++            if slideEnabled {
++                textInputNode.layer.animatePosition(from: CGPoint(x: 0.0, y: slideDistance), to: CGPoint(), duration: duration, timingFunction: CAMediaTimingFunctionName.easeOut.rawValue, additive: true)
++            }
++            if scaleEnabled {
++                textInputNode.layer.animateScale(from: startScale, to: 1.0, duration: duration)
++            }
++            if rotateEnabled {
++                textInputNode.layer.animateRotation(from: rotationAngle, to: 0.0, duration: duration, timingFunction: CAMediaTimingFunctionName.easeOut.rawValue)
++            }
++        }
++    }
++    
+     private func updateSpoiler() {
+         guard let textInputNode = self.textInputNode, let presentationInterfaceState = self.presentationInterfaceState else {
+             return
+@@ -4960,7 +5049,93 @@ public class ChatTextInputPanelNode: ChatInputPanelNode, ASEditableTextNodeDeleg
+             }
+         }
+         
+-        if editableTextNode.attributedText == nil || editableTextNode.attributedText!.length == 0 || editableTextNode.selectedRange.length == 0 {
++        let hasSelectedText = !(editableTextNode.attributedText == nil || editableTextNode.attributedText!.length == 0 || editableTextNode.selectedRange.length == 0)
++        let toolbarEnabled = sosuzagramPluginEnabled("text_toolbar")
++        if !hasSelectedText && toolbarEnabled {
++            let managementMode = sosuzagramPluginSettingInt(pluginId: "text_toolbar", key: "set_20", defaultValue: 1)
++            let mentionEnabled = sosuzagramPluginSettingInt(pluginId: "text_toolbar", key: "set_0", defaultValue: 1) > 0
++            let quickEmojiMode = sosuzagramPluginSettingInt(pluginId: "text_toolbar", key: "set_60", defaultValue: 1)
++            let repeatEnabled = sosuzagramPluginSettingInt(pluginId: "text_toolbar", key: "set_40", defaultValue: 1) > 0
++            let hideKeyboardEnabled = sosuzagramPluginSettingInt(pluginId: "text_toolbar", key: "set_50", defaultValue: 1) > 0
++            
++            var managementActions: [UIMenuElement] = []
++            if mentionEnabled {
++                managementActions.append(UIAction(title: "Mention", image: nil) { [weak self] _ in
++                    if let strongSelf = self {
++                        strongSelf.formatInsertMention(strongSelf)
++                    }
++                })
++            }
++            managementActions.append(UIAction(title: "Select All", image: nil) { [weak self] _ in
++                if let strongSelf = self {
++                    strongSelf.formatSelectAllText(strongSelf)
++                }
++            })
++            managementActions.append(UIAction(title: "Cursor to Start", image: nil) { [weak self] _ in
++                if let strongSelf = self {
++                    strongSelf.formatMoveCursorToStart(strongSelf)
++                }
++            })
++            managementActions.append(UIAction(title: "Cursor to End", image: nil) { [weak self] _ in
++                if let strongSelf = self {
++                    strongSelf.formatMoveCursorToEnd(strongSelf)
++                }
++            })
++            managementActions.append(UIAction(title: "Paste", image: nil) { [weak self] _ in
++                if let strongSelf = self {
++                    strongSelf.formatPasteClipboard(strongSelf)
++                }
++            })
++            managementActions.append(UIAction(title: "Clear Text", image: nil) { [weak self] _ in
++                if let strongSelf = self {
++                    strongSelf.formatClearText(strongSelf)
++                }
++            })
++            if repeatEnabled, let lastMessage = UserDefaults.standard.string(forKey: "sosuzagram_last_sent_message"), !lastMessage.isEmpty {
++                managementActions.append(UIAction(title: "Repeat Last", image: nil) { [weak self] _ in
++                    if let strongSelf = self {
++                        strongSelf.formatRestoreLastMessage(strongSelf)
++                    }
++                })
++            }
++            if hideKeyboardEnabled {
++                managementActions.append(UIAction(title: "Hide Keyboard", image: nil) { [weak self] _ in
++                    if let strongSelf = self {
++                        strongSelf.formatHideKeyboard(strongSelf)
++                    }
++                })
++            }
++            
++            let emojiActions: [UIMenuElement]
++            if quickEmojiMode == 0 {
++                emojiActions = []
++            } else {
++                let quickEmojis = ["\u{1F642}", "\u{1F525}", "\u{1F602}", "\u{1F44D}", "\u{2764}\u{FE0F}"]
++                emojiActions = quickEmojis.map { emoji in
++                    UIAction(title: emoji, image: nil) { [weak self] _ in
++                        self?.formatInsertEmoji(emoji)
++                    }
++                }
++            }
++            
++            var pluginMenuChildren: [UIMenuElement] = []
++            if managementMode == 1 && !managementActions.isEmpty {
++                pluginMenuChildren.append(UIMenu(title: "Text Tools", image: nil, children: managementActions))
++            } else {
++                pluginMenuChildren.append(contentsOf: managementActions)
++            }
++            if quickEmojiMode == 1 && !emojiActions.isEmpty {
++                pluginMenuChildren.append(UIMenu(title: "Quick Emoji", image: nil, children: emojiActions))
++            } else {
++                pluginMenuChildren.append(contentsOf: emojiActions)
++            }
++            if !pluginMenuChildren.isEmpty {
++                let insertIndex = min(actions.count, 1)
++                actions.insert(UIMenu(title: "Sosuzagram", image: nil, children: pluginMenuChildren), at: insertIndex)
++            }
++        }
++        
++        if !hasSelectedText {
+         } else {
+             var children: [UIMenuElement] = []
+             
+@@ -5035,7 +5210,6 @@ public class ChatTextInputPanelNode: ChatInputPanelNode, ASEditableTextNodeDeleg
+                 }
+             })
+             
+-            let toolbarEnabled = sosuzagramPluginEnabled("text_toolbar")
+             if toolbarEnabled {
+                 let formattingMode = sosuzagramPluginSettingInt(pluginId: "text_toolbar", key: "set_10", defaultValue: 1)
+                 let managementMode = sosuzagramPluginSettingInt(pluginId: "text_toolbar", key: "set_20", defaultValue: 1)
+@@ -5448,6 +5622,9 @@ public class ChatTextInputPanelNode: ChatInputPanelNode, ASEditableTextNodeDeleg
+                 }
+             }
+         }
++        if cleanText != text || !cleanText.isEmpty || range.length > 0 {
++            self.prepareSosuzagramTypingAnimation(replacementText: cleanText, range: range)
++        }
+         
+         let string = NSMutableAttributedString(attributedString: editableTextNode.attributedText ?? NSAttributedString())
+         var textColor: UIColor = .black
+@@ -5485,7 +5662,7 @@ public class ChatTextInputPanelNode: ChatInputPanelNode, ASEditableTextNodeDeleg
+         if resetText {
+             self.textInputNode?.attributedText = string
+             self.textInputNode?.selectedRange = NSMakeRange(range.lowerBound + cleanReplacementString.length, 0)
+-            self.updateTextNodeText(animated: true)
++            self.chatInputTextNodeDidUpdateText()
+             return false
+         }
+         return true
+diff --git a/submodules/TelegramUI/Components/ChatListTitleView/Sources/ChatListTitleView.swift b/submodules/TelegramUI/Components/ChatListTitleView/Sources/ChatListTitleView.swift
+index 012c893..6da2bdb 100644
+--- a/submodules/TelegramUI/Components/ChatListTitleView/Sources/ChatListTitleView.swift
++++ b/submodules/TelegramUI/Components/ChatListTitleView/Sources/ChatListTitleView.swift
+@@ -78,21 +78,25 @@ public final class ChatListTitleView: UIView, NavigationBarTitleView, Navigation
+         }
+     }
+     
+-    public func setTitle(_ title: NetworkStatusTitle, animated: Bool) {
+-        let oldValue = self._title
+-        self._title = title
+-        
++    private func decoratedTitleText(for title: NetworkStatusTitle) -> String {
+         var titleText = title.text
+-        let serverStatusEnabled = sosuzagramPluginEnabled("server_status")
+-        if serverStatusEnabled {
++        if sosuzagramPluginEnabled("server_status") {
+             let dcId = Int32(self.context.account.network.datacenterId)
++            SosuzagramServerStatus.shared.startPinging(datacenterId: dcId)
+             if let ping = SosuzagramServerStatus.shared.currentPing {
+                 titleText += " (DC\(dcId) - \(ping)ms)"
+             } else {
+-                titleText += " (DC\(dcId))"
++                titleText += " (DC\(dcId) - ...)"
+             }
+         }
++        return titleText
++    }
++    
++    public func setTitle(_ title: NetworkStatusTitle, animated: Bool) {
++        let oldValue = self._title
++        self._title = title
+         
++        let titleText = self.decoratedTitleText(for: title)
+         self.titleNode.attributedText = NSAttributedString(string: titleText, font: titleFont, textColor: self.theme.rootController.navigationBar.primaryTextColor)
+         
+         if self._title != oldValue {
+@@ -224,7 +228,7 @@ public final class ChatListTitleView: UIView, NavigationBarTitleView, Navigation
+     public var theme: PresentationTheme {
+         didSet {
+             if self.theme !== oldValue {
+-                self.titleNode.attributedText = NSAttributedString(string: self.title.text, font: titleFont, textColor: self.theme.rootController.navigationBar.primaryTextColor)
++                self.titleNode.attributedText = NSAttributedString(string: self.decoratedTitleText(for: self.title), font: titleFont, textColor: self.theme.rootController.navigationBar.primaryTextColor)
+                 
+                 self.lockView.updateTheme(self.theme)
+                 
+@@ -327,14 +331,20 @@ public final class ChatListTitleView: UIView, NavigationBarTitleView, Navigation
+         
+         self.proxyButton.addTarget(self, action: #selector(self.proxyButtonPressed), for: .touchUpInside)
+         
+-        NotificationCenter.default.addObserver(self, selector: #selector(self.pingUpdated), name: NSNotification.Name("SosuzagramPingUpdated"), object: nil)
+-        SosuzagramServerStatus.shared.startPinging(datacenterId: Int32(self.context.account.network.datacenterId))
++        NotificationCenter.default.addObserver(self, selector: #selector(self.pingUpdated), name: sosuzagramPingUpdatedNotification, object: nil)
++        if sosuzagramPluginEnabled("server_status") {
++            SosuzagramServerStatus.shared.startPinging(datacenterId: Int32(self.context.account.network.datacenterId))
++        }
+     }
+     
+     required public init?(coder aDecoder: NSCoder) {
+         fatalError("init(coder:) has not been implemented")
+     }
+     
++    deinit {
++        NotificationCenter.default.removeObserver(self)
++    }
++    
+     override public func layoutSubviews() {
+         super.layoutSubviews()
+         

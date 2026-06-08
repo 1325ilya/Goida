@@ -44,6 +44,8 @@ swift_library(
         "//submodules/AccountContext:AccountContext",
         "//submodules/PresentationDataUtils:PresentationDataUtils",
         "//submodules/TelegramUIPreferences:TelegramUIPreferences",
+        "//submodules/LegacyMediaPickerUI:LegacyMediaPickerUI",
+        "//submodules/AlertUI:AlertUI",
     ],
     visibility = ["//visibility:public"],
 )
@@ -133,4 +135,3 @@ query --repository_cache=/Users/runner/telegram-bazel-cache/repository_cache
 EOF
 
 echo "Overlay and patches applied successfully!"
-

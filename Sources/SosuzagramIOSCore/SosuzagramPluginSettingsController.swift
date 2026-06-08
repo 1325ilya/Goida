@@ -223,10 +223,20 @@ private func sosuzagramPluginSettingsEntries(
     if plugin.id == "server_status" {
         sectionId += 1
         let currentSection = sectionId
-        let dcId = 0
-        let pingText: String
+        let dcId = SosuzagramServerStatus.shared.currentDatacenterId != 0 ? SosuzagramServerStatus.shared.currentDatacenterId : Int32(context.account.network.datacenterId)
+        if sosuzagramPluginEnabled("server_status") {
+            SosuzagramServerStatus.shared.startPinging(datacenterId: dcId)
+        }
+        var pingText: String
         if let ping = SosuzagramServerStatus.shared.currentPing {
             pingText = "Текущий датацентр: DC\(dcId), пинг \(ping) мс."
+        } else {
+            pingText = "Текущий датацентр: DC\(dcId), пинг ещё измеряется."
+        }
+        if let ping = SosuzagramServerStatus.shared.currentPing {
+            pingText = "Текущий датацентр: DC\(dcId), пинг \(ping) мс."
+        } else if let error = SosuzagramServerStatus.shared.lastErrorDescription, !error.isEmpty {
+            pingText = "Текущий датацентр: DC\(dcId), измерение не удалось (\(error))."
         } else {
             pingText = "Текущий датацентр: DC\(dcId), пинг ещё измеряется."
         }
