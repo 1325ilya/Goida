@@ -20,6 +20,15 @@ private struct SosuzagramSettingsControllerArguments {
     let toggleHideStories: (Bool) -> Void
     let toggleConfirmCalls: (Bool) -> Void
     let toggleConfirmVoiceMessages: (Bool) -> Void
+    let toggleHideShareButton: (Bool) -> Void
+    let togglePollResultsBeforeVoting: (Bool) -> Void
+    let toggleHideKeyboardOnScroll: (Bool) -> Void
+    let toggleHideSendAsButton: (Bool) -> Void
+    let toggleReplaceEditedWithIcon: (Bool) -> Void
+    let toggleHideFloatingButton: (Bool) -> Void
+    let toggleHideAllChatsTab: (Bool) -> Void
+    let toggleHideGreetingSticker: (Bool) -> Void
+    let toggleHideStickerTimestamp: (Bool) -> Void
     let selectIcon: (String) -> Void
     let openPlugin: (String) -> Void
 }
@@ -65,6 +74,15 @@ private func sosuzagramSettingsEntries(
     hideStories: Bool,
     confirmCalls: Bool,
     confirmVoiceMessages: Bool,
+    hideShareButton: Bool,
+    pollResultsBeforeVoting: Bool,
+    hideKeyboardOnScroll: Bool,
+    hideSendAsButton: Bool,
+    replaceEditedWithIcon: Bool,
+    hideFloatingButton: Bool,
+    hideAllChatsTab: Bool,
+    hideGreetingSticker: Bool,
+    hideStickerTimestamp: Bool,
     currentIcon: String,
     plugins: [SosuzagramPluginDescriptor]
 ) -> [SosuzagramSettingsEntry] {
@@ -206,6 +224,105 @@ private func sosuzagramSettingsEntries(
             })
         }
     ))
+    entries.append(SosuzagramSettingsEntry(
+        section: SosuzagramSettingsSection.ui.rawValue,
+        stableId: 13,
+        sortId: 13,
+        signature: "hideshare:\(hideShareButton)",
+        buildItem: { presentationData, arguments in
+            ItemListSwitchItem(presentationData: presentationData, systemStyle: .glass, title: "Скрывать боковую кнопку «Поделиться»", value: hideShareButton, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
+                arguments.toggleHideShareButton(value)
+            })
+        }
+    ))
+    entries.append(SosuzagramSettingsEntry(
+        section: SosuzagramSettingsSection.ui.rawValue,
+        stableId: 14,
+        sortId: 14,
+        signature: "pollpreview:\(pollResultsBeforeVoting)",
+        buildItem: { presentationData, arguments in
+            ItemListSwitchItem(presentationData: presentationData, systemStyle: .glass, title: "Показывать итоги опросов до голосования", value: pollResultsBeforeVoting, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
+                arguments.togglePollResultsBeforeVoting(value)
+            })
+        }
+    ))
+    entries.append(SosuzagramSettingsEntry(
+        section: SosuzagramSettingsSection.ui.rawValue,
+        stableId: 15,
+        sortId: 15,
+        signature: "hidekeyboard:\(hideKeyboardOnScroll)",
+        buildItem: { presentationData, arguments in
+            ItemListSwitchItem(presentationData: presentationData, systemStyle: .glass, title: "Скрывать клавиатуру при прокрутке", value: hideKeyboardOnScroll, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
+                arguments.toggleHideKeyboardOnScroll(value)
+            })
+        }
+    ))
+    entries.append(SosuzagramSettingsEntry(
+        section: SosuzagramSettingsSection.ui.rawValue,
+        stableId: 16,
+        sortId: 16,
+        signature: "hidesendas:\(hideSendAsButton)",
+        buildItem: { presentationData, arguments in
+            ItemListSwitchItem(presentationData: presentationData, systemStyle: .glass, title: "Скрыть кнопку «Отправить как...»", value: hideSendAsButton, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
+                arguments.toggleHideSendAsButton(value)
+            })
+        }
+    ))
+    entries.append(SosuzagramSettingsEntry(
+        section: SosuzagramSettingsSection.ui.rawValue,
+        stableId: 17,
+        sortId: 17,
+        signature: "editedicon:\(replaceEditedWithIcon)",
+        buildItem: { presentationData, arguments in
+            ItemListSwitchItem(presentationData: presentationData, systemStyle: .glass, title: "Заменять «изменено» иконкой", value: replaceEditedWithIcon, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
+                arguments.toggleReplaceEditedWithIcon(value)
+            })
+        }
+    ))
+    entries.append(SosuzagramSettingsEntry(
+        section: SosuzagramSettingsSection.ui.rawValue,
+        stableId: 18,
+        sortId: 18,
+        signature: "hidefloating:\(hideFloatingButton)",
+        buildItem: { presentationData, arguments in
+            ItemListSwitchItem(presentationData: presentationData, systemStyle: .glass, title: "Скрыть плавающую кнопку", value: hideFloatingButton, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
+                arguments.toggleHideFloatingButton(value)
+            })
+        }
+    ))
+    entries.append(SosuzagramSettingsEntry(
+        section: SosuzagramSettingsSection.ui.rawValue,
+        stableId: 19,
+        sortId: 19,
+        signature: "hideallchatstab:\(hideAllChatsTab)",
+        buildItem: { presentationData, arguments in
+            ItemListSwitchItem(presentationData: presentationData, systemStyle: .glass, title: "Скрыть вкладку «Все чаты»", value: hideAllChatsTab, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
+                arguments.toggleHideAllChatsTab(value)
+            })
+        }
+    ))
+    entries.append(SosuzagramSettingsEntry(
+        section: SosuzagramSettingsSection.ui.rawValue,
+        stableId: 20,
+        sortId: 20,
+        signature: "hidegreetingsticker:\(hideGreetingSticker)",
+        buildItem: { presentationData, arguments in
+            ItemListSwitchItem(presentationData: presentationData, systemStyle: .glass, title: "Скрыть приветственный стикер", value: hideGreetingSticker, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
+                arguments.toggleHideGreetingSticker(value)
+            })
+        }
+    ))
+    entries.append(SosuzagramSettingsEntry(
+        section: SosuzagramSettingsSection.ui.rawValue,
+        stableId: 21,
+        sortId: 21,
+        signature: "hidestickertimestamp:\(hideStickerTimestamp)",
+        buildItem: { presentationData, arguments in
+            ItemListSwitchItem(presentationData: presentationData, systemStyle: .glass, title: "Скрыть время на стикерах", value: hideStickerTimestamp, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
+                arguments.toggleHideStickerTimestamp(value)
+            })
+        }
+    ))
 
     let icons = [
         ("Стандартная", "nil"),
@@ -342,6 +459,42 @@ public func sosuzagramSettingsController(context: AccountContext) -> ViewControl
             UserDefaults.standard.set(value, forKey: "sosuzagram_confirm_voice_messages")
             updateSettingsImpl?()
         },
+        toggleHideShareButton: { value in
+            UserDefaults.standard.set(value, forKey: "sosuzagram_hide_share_button")
+            updateSettingsImpl?()
+        },
+        togglePollResultsBeforeVoting: { value in
+            UserDefaults.standard.set(value, forKey: "sosuzagram_poll_results_before_voting")
+            updateSettingsImpl?()
+        },
+        toggleHideKeyboardOnScroll: { value in
+            UserDefaults.standard.set(value, forKey: "sosuzagram_hide_keyboard_on_scroll")
+            updateSettingsImpl?()
+        },
+        toggleHideSendAsButton: { value in
+            UserDefaults.standard.set(value, forKey: "sosuzagram_hide_send_as_button")
+            updateSettingsImpl?()
+        },
+        toggleReplaceEditedWithIcon: { value in
+            UserDefaults.standard.set(value, forKey: "sosuzagram_replace_edited_with_icon")
+            updateSettingsImpl?()
+        },
+        toggleHideFloatingButton: { value in
+            UserDefaults.standard.set(value, forKey: "sosuzagram_hide_floating_button")
+            updateSettingsImpl?()
+        },
+        toggleHideAllChatsTab: { value in
+            UserDefaults.standard.set(value, forKey: "sosuzagram_hide_all_chats_tab")
+            updateSettingsImpl?()
+        },
+        toggleHideGreetingSticker: { value in
+            UserDefaults.standard.set(value, forKey: "sosuzagram_hide_greeting_sticker")
+            updateSettingsImpl?()
+        },
+        toggleHideStickerTimestamp: { value in
+            UserDefaults.standard.set(value, forKey: "sosuzagram_hide_sticker_timestamp")
+            updateSettingsImpl?()
+        },
         selectIcon: { iconName in
             let targetName = iconName == "nil" ? nil : iconName
             if UIApplication.shared.supportsAlternateIcons {
@@ -374,6 +527,15 @@ public func sosuzagramSettingsController(context: AccountContext) -> ViewControl
         let hideStories = UserDefaults.standard.bool(forKey: "sosuzagram_hide_stories")
         let confirmCalls = UserDefaults.standard.bool(forKey: "sosuzagram_confirm_calls")
         let confirmVoiceMessages = UserDefaults.standard.bool(forKey: "sosuzagram_confirm_voice_messages")
+        let hideShareButton = UserDefaults.standard.bool(forKey: "sosuzagram_hide_share_button")
+        let pollResultsBeforeVoting = UserDefaults.standard.bool(forKey: "sosuzagram_poll_results_before_voting")
+        let hideKeyboardOnScroll = UserDefaults.standard.bool(forKey: "sosuzagram_hide_keyboard_on_scroll")
+        let hideSendAsButton = UserDefaults.standard.bool(forKey: "sosuzagram_hide_send_as_button")
+        let replaceEditedWithIcon = UserDefaults.standard.bool(forKey: "sosuzagram_replace_edited_with_icon")
+        let hideFloatingButton = UserDefaults.standard.bool(forKey: "sosuzagram_hide_floating_button")
+        let hideAllChatsTab = UserDefaults.standard.bool(forKey: "sosuzagram_hide_all_chats_tab")
+        let hideGreetingSticker = UserDefaults.standard.bool(forKey: "sosuzagram_hide_greeting_sticker")
+        let hideStickerTimestamp = UserDefaults.standard.bool(forKey: "sosuzagram_hide_sticker_timestamp")
         let currentIcon = UserDefaults.standard.string(forKey: "sosuzagram_current_icon") ?? "nil"
         let plugins = sosuzagramBuiltInPlugins()
 
@@ -395,6 +557,15 @@ public func sosuzagramSettingsController(context: AccountContext) -> ViewControl
             hideStories: hideStories,
             confirmCalls: confirmCalls,
             confirmVoiceMessages: confirmVoiceMessages,
+            hideShareButton: hideShareButton,
+            pollResultsBeforeVoting: pollResultsBeforeVoting,
+            hideKeyboardOnScroll: hideKeyboardOnScroll,
+            hideSendAsButton: hideSendAsButton,
+            replaceEditedWithIcon: replaceEditedWithIcon,
+            hideFloatingButton: hideFloatingButton,
+            hideAllChatsTab: hideAllChatsTab,
+            hideGreetingSticker: hideGreetingSticker,
+            hideStickerTimestamp: hideStickerTimestamp,
             currentIcon: currentIcon,
             plugins: plugins
         )

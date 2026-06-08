@@ -1,0 +1,1382 @@
+diff --git a/submodules/ChatListUI/Sources/ChatListController.swift b/submodules/ChatListUI/Sources/ChatListController.swift
+index c9c94d32..6c937d7a 100644
+--- a/submodules/ChatListUI/Sources/ChatListController.swift
++++ b/submodules/ChatListUI/Sources/ChatListController.swift
+@@ -322,6 +322,7 @@ public class ChatListControllerImpl: TelegramBaseController, ChatListController
+         self.primaryInfoReady.set(primaryContext.ready.get())
+         
+         if !previewing {
++            let hideFloatingButton = UserDefaults.standard.bool(forKey: "sosuzagram_hide_floating_button")
+             switch self.location {
+             case let .chatList(groupId):
+                 if groupId == .root {
+@@ -348,12 +349,14 @@ public class ChatListControllerImpl: TelegramBaseController, ChatListController
+                         }
+                     )))
+                     
+-                    self.primaryContext?.rightButton = AnyComponentWithIdentity(id: "compose", component: AnyComponent(NavigationButtonComponent(
+-                        content: .icon(imageName: "Chat List/ComposeIcon"),
+-                        pressed: { [weak self] _ in
+-                            self?.composePressed()
+-                        }
+-                    )))
++                    if !hideFloatingButton {
++                        self.primaryContext?.rightButton = AnyComponentWithIdentity(id: "compose", component: AnyComponent(NavigationButtonComponent(
++                            content: .icon(imageName: "Chat List/ComposeIcon"),
++                            pressed: { [weak self] _ in
++                                self?.composePressed()
++                            }
++                        )))
++                    }
+                     
+                     //let backBarButtonItem = UIBarButtonItem(title: self.presentationData.strings.DialogList_Title, style: .plain, target: nil, action: nil)
+                     //backBarButtonItem.accessibilityLabel = self.presentationData.strings.Common_Back
+@@ -3957,6 +3960,23 @@ public class ChatListControllerImpl: TelegramBaseController, ChatListController
+                         filterItems.append(.filter(id: id, text: title, unread: ChatListFilterTabEntryUnreadCount(value: unreadCount, hasUnmuted: hasUnmutedUnread)))
+                 }
+             }
++            let hasCustomFilters = filterItems.contains(where: { entry in
++                if case .filter = entry {
++                    return true
++                } else {
++                    return false
++                }
++            })
++            let hideAllChatsTab = UserDefaults.standard.bool(forKey: "sosuzagram_hide_all_chats_tab") && hasCustomFilters
++            if hideAllChatsTab {
++                filterItems.removeAll(where: { entry in
++                    if case .all = entry {
++                        return true
++                    } else {
++                        return false
++                    }
++                })
++            }
+             
+             var resolvedItems = filterItems
+             if case .chatList(.root) = strongSelf.location {
+@@ -3964,14 +3984,7 @@ public class ChatListControllerImpl: TelegramBaseController, ChatListController
+                 resolvedItems = []
+             }
+             
+-            let firstItem = countAndFilterItems.1.first?.0 ?? .allChats
+-            let firstItemEntryId: ChatListFilterTabEntryId
+-            switch firstItem {
+-                case .allChats:
+-                    firstItemEntryId = .all
+-                case let .filter(id, _, _, _):
+-                    firstItemEntryId = .filter(id)
+-            }
++            let firstItemEntryId = resolvedItems.first?.id ?? .all
+             
+             var selectedEntryId = !strongSelf.initializedFilters ? firstItemEntryId : strongSelf.chatListDisplayNode.mainContainerNode.currentItemFilter
+             var resetCurrentEntry = false
+@@ -3980,7 +3993,7 @@ public class ChatListControllerImpl: TelegramBaseController, ChatListController
+                 if let tabContainerData = strongSelf.tabContainerData {
+                     var found = false
+                     if let index = tabContainerData.0.firstIndex(where: { $0.id == selectedEntryId }) {
+-                        for i in (0 ..< index - 1).reversed() {
++                        for i in stride(from: index - 1, through: 0, by: -1) {
+                             if resolvedItems.contains(where: { $0.id == tabContainerData.0[i].id }) {
+                                 selectedEntryId = tabContainerData.0[i].id
+                                 found = true
+@@ -3989,10 +4002,10 @@ public class ChatListControllerImpl: TelegramBaseController, ChatListController
+                         }
+                     }
+                     if !found {
+-                        selectedEntryId = .all
++                        selectedEntryId = resolvedItems.first?.id ?? .all
+                     }
+                 } else {
+-                    selectedEntryId = .all
++                    selectedEntryId = resolvedItems.first?.id ?? .all
+                 }
+             }
+             let filtersLimit = isPremium == false ? limits.maxFoldersCount : nil
+@@ -4002,17 +4015,19 @@ public class ChatListControllerImpl: TelegramBaseController, ChatListController
+             for item in items {
+                 switch item.0 {
+                     case .allChats:
+-                        hasAllChats = true
+-                        if let isPremium = isPremium, !isPremium && availableFilters.count > 0 {
+-                            availableFilters.insert(.all, at: 0)
+-                        } else {
+-                            availableFilters.append(.all)
++                        if !hideAllChatsTab {
++                            hasAllChats = true
++                            if let isPremium = isPremium, !isPremium && availableFilters.count > 0 {
++                                availableFilters.insert(.all, at: 0)
++                            } else {
++                                availableFilters.append(.all)
++                            }
+                         }
+                     case .filter:
+                         availableFilters.append(.filter(item.0))
+                 }
+             }
+-            if !hasAllChats {
++            if !hasAllChats && !hideAllChatsTab {
+                 availableFilters.insert(.all, at: 0)
+             }
+             strongSelf.chatListDisplayNode.mainContainerNode.updateAvailableFilters(availableFilters, limit: filtersLimit)
+@@ -7091,6 +7106,7 @@ private final class ChatListLocationContext {
+             var isRoot = false
+             if case .chatList(.root) = self.location {
+                 isRoot = true
++                let hideFloatingButton = UserDefaults.standard.bool(forKey: "sosuzagram_hide_floating_button")
+                 
+                 if isReorderingTabs {
+                     self.rightButton = AnyComponentWithIdentity(id: "done", component: AnyComponent(NavigationButtonComponent(
+@@ -7100,12 +7116,16 @@ private final class ChatListLocationContext {
+                         }
+                     )))
+                 } else {
+-                    self.rightButton = AnyComponentWithIdentity(id: "compose", component: AnyComponent(NavigationButtonComponent(
+-                        content: .icon(imageName: "Chat List/ComposeIcon"),
+-                        pressed: { [weak self] _ in
+-                            self?.parentController?.composePressed()
+-                        }
+-                    )))
++                    if hideFloatingButton {
++                        self.rightButton = nil
++                    } else {
++                        self.rightButton = AnyComponentWithIdentity(id: "compose", component: AnyComponent(NavigationButtonComponent(
++                            content: .icon(imageName: "Chat List/ComposeIcon"),
++                            pressed: { [weak self] _ in
++                                self?.parentController?.composePressed()
++                            }
++                        )))
++                    }
+                 }
+                 
+                 if isReorderingTabs {
+diff --git a/submodules/ChatListUI/Sources/ChatListControllerNode.swift b/submodules/ChatListUI/Sources/ChatListControllerNode.swift
+index 826aa80f..a75ba424 100644
+--- a/submodules/ChatListUI/Sources/ChatListControllerNode.swift
++++ b/submodules/ChatListUI/Sources/ChatListControllerNode.swift
+@@ -2398,6 +2398,9 @@ final class ChatListControllerNode: ASDisplayNode, ASGestureRecognizerDelegate {
+ }
+ 
+ func shouldDisplayStoriesInChatListHeader(storySubscriptions: EngineStorySubscriptions, isHidden: Bool) -> Bool {
++    if UserDefaults.standard.bool(forKey: "sosuzagram_hide_stories") {
++        return false
++    }
+     if !storySubscriptions.items.isEmpty {
+         return true
+     }
+diff --git a/submodules/TelegramCore/Sources/State/AccountStateManagementUtils.swift b/submodules/TelegramCore/Sources/State/AccountStateManagementUtils.swift
+index 89eb1516..a89a6ac4 100644
+--- a/submodules/TelegramCore/Sources/State/AccountStateManagementUtils.swift
++++ b/submodules/TelegramCore/Sources/State/AccountStateManagementUtils.swift
+@@ -4246,6 +4246,12 @@ func replayFinalState(
+                     }
+                 }
+             
++                // SOSUZAGRAM INCOMING MESSAGES HOOK
++                for message in messages {
++                    if message.flags.contains(.Incoming) {
++                        SosuzagramHooks.recordIncomingMessage?(message)
++                    }
++                }
+                 let _ = transaction.addMessages(messages, location: location)
+                 if case .UpperHistoryBlock = location {
+                     for message in messages {
+@@ -4429,18 +4435,65 @@ func replayFinalState(
+                     }
+                 }
+             case let .DeleteMessagesWithGlobalIds(ids):
++                let keepLocalHistory = UserDefaults.standard.object(forKey: "sosuzagram_local_history") as? Bool ?? true
++                let showMarker = UserDefaults.standard.object(forKey: "sosuzagram_show_marker") as? Bool ?? true
++                let resolvedIds = transaction.messageIdsForGlobalIds(ids)
++                var idsToDelete: [MessageId] = []
++                for id in resolvedIds {
++                    if keepLocalHistory, let message = transaction.getMessage(id), message.flags.contains(.Incoming) {
++                        let marker = showMarker ? " 🗑️" : ""
++                        if !marker.isEmpty && !message.text.contains(marker) {
++                            let updatedText = message.text + marker
++                            let storeForwardInfo = message.forwardInfo.flatMap(StoreMessageForwardInfo.init)
++                            let _ = transaction.updateMessage(id, update: { currentMessage in
++                                return .update(StoreMessage(id: currentMessage.id, customStableId: nil, globallyUniqueId: currentMessage.globallyUniqueId, groupingKey: currentMessage.groupingKey, threadId: currentMessage.threadId, timestamp: currentMessage.timestamp, flags: StoreMessageFlags(currentMessage.flags), tags: currentMessage.tags, globalTags: currentMessage.globalTags, localTags: currentMessage.localTags, forwardInfo: storeForwardInfo, authorId: currentMessage.author?.id, text: updatedText, attributes: currentMessage.attributes, media: currentMessage.media))
++                            })
++                        }
++                    } else {
++                        idsToDelete.append(id)
++                    }
++                }
+                 var resourceIds: [MediaResourceId] = []
+-                transaction.deleteMessagesWithGlobalIds(ids, forEachMedia: { media in
++                transaction.deleteMessages(idsToDelete, forEachMedia: { media in
+                     addMessageMediaResourceIdsToRemove(media: media, resourceIds: &resourceIds)
+                 })
+                 if !resourceIds.isEmpty {
+                     let _ = mediaBox.removeCachedResources(Array(Set(resourceIds)), force: true).start()
+                 }
++                // SOSUZAGRAM REMOVE HOOK (GLOBAL)
++                for id in ids {
++                    SosuzagramHooks.recordMessageRemoval?(0, [id])
++                }
+                 deletedMessageIds.append(contentsOf: ids.map { .global($0) })
+             case let .DeleteMessages(ids):
+-                _internal_deleteMessages(transaction: transaction, mediaBox: mediaBox, ids: ids, manualAddMessageThreadStatsDifference: { id, add, remove in
++                let keepLocalHistory = UserDefaults.standard.object(forKey: "sosuzagram_local_history") as? Bool ?? true
++                let showMarker = UserDefaults.standard.object(forKey: "sosuzagram_show_marker") as? Bool ?? true
++                var idsToDelete: [MessageId] = []
++                for id in ids {
++                    if keepLocalHistory, let message = transaction.getMessage(id), message.flags.contains(.Incoming) {
++                        let marker = showMarker ? " 🗑️" : ""
++                        if !marker.isEmpty && !message.text.contains(marker) {
++                            let updatedText = message.text + marker
++                            let storeForwardInfo = message.forwardInfo.flatMap(StoreMessageForwardInfo.init)
++                            let _ = transaction.updateMessage(id, update: { currentMessage in
++                                return .update(StoreMessage(id: currentMessage.id, customStableId: nil, globallyUniqueId: currentMessage.globallyUniqueId, groupingKey: currentMessage.groupingKey, threadId: currentMessage.threadId, timestamp: currentMessage.timestamp, flags: StoreMessageFlags(currentMessage.flags), tags: currentMessage.tags, globalTags: currentMessage.globalTags, localTags: currentMessage.localTags, forwardInfo: storeForwardInfo, authorId: currentMessage.author?.id, text: updatedText, attributes: currentMessage.attributes, media: currentMessage.media))
++                            })
++                        }
++                    } else {
++                        idsToDelete.append(id)
++                    }
++                }
++                _internal_deleteMessages(transaction: transaction, mediaBox: mediaBox, ids: idsToDelete, manualAddMessageThreadStatsDifference: { id, add, remove in
+                     addMessageThreadStatsDifference(threadKey: id, remove: remove, addedMessagePeer: nil, addedMessageId: nil, isOutgoing: false)
+                 })
++                // SOSUZAGRAM REMOVE HOOK
++                var byPeer: [Int64: [Int32]] = [:]
++                for id in ids {
++                    byPeer[id.peerId.toInt64(), default: []].append(id.id)
++                }
++                for (peerId, messageIds) in byPeer {
++                    SosuzagramHooks.recordMessageRemoval?(peerId, messageIds)
++                }
+                 deletedMessageIds.append(contentsOf: ids.map { .messageId($0) })
+             case let .UpdateMinAvailableMessage(id):
+                 if let message = transaction.getMessage(id) {
+@@ -4491,33 +4544,48 @@ func replayFinalState(
+                         return current
+                     })
+                     
+-                    if previousMessage.text == message.text {
++                    var updatedText = message.text
++                    let keepLocalHistory = UserDefaults.standard.object(forKey: "sosuzagram_local_history") as? Bool ?? true
++                    if keepLocalHistory, previousMessage.flags.contains(.Incoming) && previousMessage.text != message.text {
++                        let oldMarker = " (was: "
++                        if !previousMessage.text.isEmpty {
++                            var originalText = previousMessage.text
++                            if let range = previousMessage.text.range(of: oldMarker) {
++                                originalText = String(previousMessage.text[..<range.lowerBound])
++                            }
++                            updatedText = message.text + " (was: \(originalText))"
++                        }
++                    }
++                    
++                    let updatedMessage = StoreMessage(id: message.id, customStableId: message.customStableId, globallyUniqueId: message.globallyUniqueId, groupingKey: message.groupingKey, threadId: message.threadId, timestamp: message.timestamp, flags: message.flags, tags: message.tags, globalTags: message.globalTags, localTags: message.localTags, forwardInfo: message.forwardInfo, authorId: message.authorId, text: updatedText, attributes: message.attributes, media: message.media)
++                    
++                    if previousMessage.text == updatedMessage.text {
+                         let previousEntities = previousMessage.textEntitiesAttribute?.entities ?? []
+-                        let updatedEntities = (message.attributes.first(where: { $0 is TextEntitiesMessageAttribute }) as? TextEntitiesMessageAttribute)?.entities ?? []
++                        let updatedEntities = (updatedMessage.attributes.first(where: { $0 is TextEntitiesMessageAttribute }) as? TextEntitiesMessageAttribute)?.entities ?? []
+                         if previousEntities == updatedEntities, let translation = previousMessage.attributes.first(where: { $0 is TranslationMessageAttribute }) as? TranslationMessageAttribute {
+-                            if message.attributes.firstIndex(where: { $0 is TranslationMessageAttribute }) == nil {
++                            if updatedMessage.attributes.firstIndex(where: { $0 is TranslationMessageAttribute }) == nil {
+                                 updatedAttributes.append(translation)
+                             }
+                         }
+                     }
+                     
+-                    if let previousFactCheckAttribute = previousMessage.attributes.first(where: { $0 is FactCheckMessageAttribute }) as? FactCheckMessageAttribute, let updatedFactCheckAttribute = message.attributes.first(where: { $0 is FactCheckMessageAttribute }) as? FactCheckMessageAttribute {
++                    if let previousFactCheckAttribute = previousMessage.attributes.first(where: { $0 is FactCheckMessageAttribute }) as? FactCheckMessageAttribute, let updatedFactCheckAttribute = updatedMessage.attributes.first(where: { $0 is FactCheckMessageAttribute }) as? FactCheckMessageAttribute {
+                         if case .Pending = updatedFactCheckAttribute.content, updatedFactCheckAttribute.hash == previousFactCheckAttribute.hash {
+                             updatedAttributes.removeAll(where: { $0 is FactCheckMessageAttribute })
+                             updatedAttributes.append(previousFactCheckAttribute)
+                         }
+                     }
+                     
+-                    if let message = locallyRenderedMessage(message: message, peers: peers) {
+-                        generatedEvent = reactionGeneratedEvent(previousMessage.reactionsAttribute, message.reactionsAttribute, message: message, transaction: transaction)
++                    if let renderedMessage = locallyRenderedMessage(message: updatedMessage, peers: peers) {
++                        generatedEvent = reactionGeneratedEvent(previousMessage.reactionsAttribute, renderedMessage.reactionsAttribute, message: renderedMessage, transaction: transaction)
+                     }
+                     
+-                    var updatedMedia = message.media
++                    var updatedMedia = updatedMessage.media
+                     if let previousPaidContent = previousMessage.media.first(where: { $0 is TelegramMediaPaidContent }) as? TelegramMediaPaidContent, case .full = previousPaidContent.extendedMedia.first {
+                         updatedMedia = previousMessage.media
+                     }
+                     
+-                    return .update(message.withUpdatedLocalTags(updatedLocalTags).withUpdatedFlags(updatedFlags).withUpdatedAttributes(updatedAttributes).withUpdatedMedia(updatedMedia))
++                    return .update(updatedMessage.withUpdatedLocalTags(updatedLocalTags).withUpdatedFlags(updatedFlags).withUpdatedAttributes(updatedAttributes).withUpdatedMedia(updatedMedia))
+                 })
+                 if let generatedEvent = generatedEvent {
+                     addedReactionEvents.append(generatedEvent)
+diff --git a/submodules/TelegramCore/Sources/State/ManagedLocalInputActivities.swift b/submodules/TelegramCore/Sources/State/ManagedLocalInputActivities.swift
+index 7acc37a1..9150ed68 100644
+--- a/submodules/TelegramCore/Sources/State/ManagedLocalInputActivities.swift
++++ b/submodules/TelegramCore/Sources/State/ManagedLocalInputActivities.swift
+@@ -142,6 +142,9 @@ private func actionFromActivity(_ activity: PeerInputActivity?) -> Api.SendMessa
+ }
+ 
+ private func requestActivity(postbox: Postbox, network: Network, accountPeerId: PeerId, peerId: PeerId, threadId: Int64?, activity: PeerInputActivity?) -> Signal<Void, NoError> {
++    if UserDefaults.standard.bool(forKey: "sosuzagram_hide_typing") {
++        return .complete()
++    }
+     return postbox.transaction { transaction -> Signal<Void, NoError> in
+         if let peer = transaction.getPeer(peerId) {
+             if peerId == accountPeerId {
+diff --git a/submodules/TelegramCore/Sources/State/ManagedSynchronizeViewStoriesOperations.swift b/submodules/TelegramCore/Sources/State/ManagedSynchronizeViewStoriesOperations.swift
+index bebd6915..56a5ec07 100644
+--- a/submodules/TelegramCore/Sources/State/ManagedSynchronizeViewStoriesOperations.swift
++++ b/submodules/TelegramCore/Sources/State/ManagedSynchronizeViewStoriesOperations.swift
+@@ -85,6 +85,9 @@ func managedSynchronizeViewStoriesOperations(postbox: Postbox, network: Network,
+             
+             for (entry, disposable) in beginOperations {
+                 let signal = withTakenOperation(postbox: postbox, peerId: entry.peerId, tagLocalIndex: entry.tagLocalIndex, { transaction, entry -> Signal<Void, NoError> in
++                    if UserDefaults.standard.bool(forKey: "sosuzagram_hide_story_views") {
++                        return .complete()
++                    }
+                     if let entry = entry {
+                         if let operation = entry.contents as? SynchronizeViewStoriesOperation {
+                             if let peer = transaction.getPeer(entry.peerId) {
+diff --git a/submodules/TelegramUI/BUILD b/submodules/TelegramUI/BUILD
+index a3374276..f0647a4a 100644
+--- a/submodules/TelegramUI/BUILD
++++ b/submodules/TelegramUI/BUILD
+@@ -526,6 +526,7 @@ swift_library(
+         "//submodules/TelegramUI/Components/RankChatPreviewItem",
+         "//submodules/TelegramUI/Components/TextProcessingScreen",
+         "//submodules/TelegramUI/Components/CreateBotScreen",
++        "//submodules/SosuzagramIOSCore:SosuzagramIOSCore",
+     ] + select({
+         "@build_bazel_rules_apple//apple:ios_arm64": appcenter_targets,
+         "//build-system:ios_sim_arm64": [],
+diff --git a/submodules/TelegramUI/Components/Chat/ChatMessageBubbleItemNode/Sources/ChatMessageBubbleItemNode.swift b/submodules/TelegramUI/Components/Chat/ChatMessageBubbleItemNode/Sources/ChatMessageBubbleItemNode.swift
+index 60c7f868..4398084d 100644
+--- a/submodules/TelegramUI/Components/Chat/ChatMessageBubbleItemNode/Sources/ChatMessageBubbleItemNode.swift
++++ b/submodules/TelegramUI/Components/Chat/ChatMessageBubbleItemNode/Sources/ChatMessageBubbleItemNode.swift
+@@ -87,6 +87,15 @@ import LottieMetal
+ import AvatarNode
+ import ChatMessageSuggestedPostInfoNode
+ import PremiumAlertController
++import SosuzagramIOSCore
++
++private func sosuzagramTextAnimationSeconds(_ key: String, defaultMilliseconds: Double) -> Double {
++    return max(0.05, sosuzagramPluginSettingDouble(pluginId: "text_animation", key: key, defaultValue: defaultMilliseconds) / 1000.0)
++}
++
++private func sosuzagramTextAnimationValue(_ key: String, defaultValue: Double) -> CGFloat {
++    return CGFloat(sosuzagramPluginSettingDouble(pluginId: "text_animation", key: key, defaultValue: defaultValue))
++}
+ 
+ private struct BubbleItemAttributes {
+     var index: Int?
+@@ -1024,60 +1033,111 @@ public class ChatMessageBubbleItemNode: ChatMessageItemView, ChatMessagePreviewI
+     override public func animateInsertion(_ currentTimestamp: Double, duration: Double, options: ListViewItemAnimationOptions) {
+         super.animateInsertion(currentTimestamp, duration: duration, options: options)
+         
+-        self.shadowNode.layer.animateAlpha(from: 0.0, to: 1.0, duration: 0.2)
+-        
+-        func process(node: ASDisplayNode) {
+-            if node === self.accessoryItemNode {
+-                return
++        if sosuzagramPluginEnabled("text_animation") {
++            let duration = sosuzagramTextAnimationSeconds("duration", defaultMilliseconds: 300.0)
++            let blurDuration = sosuzagramTextAnimationSeconds("blur_duration", defaultMilliseconds: 300.0)
++            let slideEnabled = sosuzagramPluginSettingBool(pluginId: "text_animation", key: "slide_enabled", defaultValue: true)
++            let scaleEnabled = sosuzagramPluginSettingBool(pluginId: "text_animation", key: "scale_enabled", defaultValue: false)
++            let rotateEnabled = sosuzagramPluginSettingBool(pluginId: "text_animation", key: "rotate_enabled", defaultValue: false)
++            let blurEnabled = sosuzagramPluginSettingBool(pluginId: "text_animation", key: "blur_enabled", defaultValue: true)
++
++            self.layer.animateAlpha(from: 0.0, to: 1.0, duration: blurEnabled ? blurDuration : duration)
++
++            if slideEnabled {
++                let slideDistance = sosuzagramTextAnimationValue("slide_dist", defaultValue: 20.0)
++                self.layer.animatePosition(from: CGPoint(x: 0.0, y: slideDistance), to: CGPoint(), duration: duration, timingFunction: CAMediaTimingFunctionName.easeOut.rawValue, additive: true)
+             }
+-            
+-            if node !== self {
+-                switch node {
+-                case _ as ContextExtractedContentContainingNode, _ as ContextControllerSourceNode, _ as ContextExtractedContentNode:
+-                    break
+-                default:
+-                    node.layer.allowsGroupOpacity = true
+-                    node.layer.animateAlpha(from: 0.0, to: 1.0, duration: 0.2, completion: { [weak node] _ in
+-                        node?.layer.allowsGroupOpacity = false
+-                    })
+-                    return
++
++            if scaleEnabled {
++                var startScale = sosuzagramTextAnimationValue("scale_start", defaultValue: 0.0)
++                if startScale <= 0.0 {
++                    startScale = 0.6
+                 }
++                self.layer.animateScale(from: startScale, to: 1.0, duration: duration)
+             }
+-            
+-            guard let subnodes = node.subnodes else {
+-                return
++
++            if rotateEnabled {
++                let angle = sosuzagramTextAnimationValue("rotate_angle", defaultValue: -15.0) * (CGFloat.pi / 180.0)
++                self.layer.animateRotation(from: angle, to: 0.0, duration: duration, timingFunction: CAMediaTimingFunctionName.easeOut.rawValue)
+             }
++        } else {
++            self.shadowNode.layer.animateAlpha(from: 0.0, to: 1.0, duration: 0.2)
+             
+-            for subnode in subnodes {
+-                process(node: subnode)
++            func process(node: ASDisplayNode) {
++                if node === self.accessoryItemNode {
++                    return
++                }
++                
++                if node !== self {
++                    switch node {
++                    case _ as ContextExtractedContentContainingNode, _ as ContextControllerSourceNode, _ as ContextExtractedContentNode:
++                        break
++                    default:
++                        node.layer.allowsGroupOpacity = true
++                        node.layer.animateAlpha(from: 0.0, to: 1.0, duration: 0.2, completion: { [weak node] _ in
++                            node?.layer.allowsGroupOpacity = false
++                        })
++                        return
++                    }
++                }
++                
++                guard let subnodes = node.subnodes else {
++                    return
++                }
++                
++                for subnode in subnodes {
++                    process(node: subnode)
++                }
+             }
++            
++            process(node: self)
+         }
+-        
+-        process(node: self)
+     }
+     
+     override public func animateRemoved(_ currentTimestamp: Double, duration: Double) {
+         super.animateRemoved(currentTimestamp, duration: duration)
+-        
+-        self.allowsGroupOpacity = true
+-        self.layer.animateAlpha(from: 1.0, to: 0.0, duration: 0.15, removeOnCompletion: false, completion: { [weak self] _ in
+-            self?.allowsGroupOpacity = false
+-        })
+-        self.shadowNode.layer.animateAlpha(from: 1.0, to: 0.0, duration: 0.15, removeOnCompletion: false)
+-        self.layer.animateScale(from: 1.0, to: 0.1, duration: 0.15, removeOnCompletion: false)
+-        self.layer.animatePosition(from: CGPoint(), to: CGPoint(x: self.bounds.width / 2.0 - self.backgroundNode.frame.midX, y: self.backgroundNode.frame.midY), duration: 0.15, timingFunction: CAMediaTimingFunctionName.easeInEaseOut.rawValue, removeOnCompletion: false, additive: true)
++
++        if sosuzagramPluginEnabled("text_animation") && sosuzagramPluginSettingBool(pluginId: "text_animation", key: "delete_anim_enabled", defaultValue: true) {
++            let removeDuration = sosuzagramTextAnimationSeconds("duration", defaultMilliseconds: 300.0)
++            let rotation = sosuzagramPluginSettingBool(pluginId: "text_animation", key: "rotate_enabled", defaultValue: false) ? sosuzagramTextAnimationValue("rotate_angle", defaultValue: -15.0) * (CGFloat.pi / 180.0) : 0.0
++
++            self.allowsGroupOpacity = true
++            self.layer.animateAlpha(from: 1.0, to: 0.0, duration: removeDuration, removeOnCompletion: false, completion: { [weak self] _ in
++                self?.allowsGroupOpacity = false
++            })
++            self.shadowNode.layer.animateAlpha(from: 1.0, to: 0.0, duration: removeDuration, removeOnCompletion: false)
++            self.layer.animateScale(from: 1.0, to: 0.35, duration: removeDuration, removeOnCompletion: false)
++            if rotation != 0.0 {
++                self.layer.animateRotation(from: 0.0, to: rotation, duration: removeDuration, removeOnCompletion: false)
++            }
++            self.layer.animatePosition(from: CGPoint(), to: CGPoint(x: 0.0, y: 18.0), duration: removeDuration, timingFunction: CAMediaTimingFunctionName.easeInEaseOut.rawValue, removeOnCompletion: false, additive: true)
++        } else {
++            self.allowsGroupOpacity = true
++            self.layer.animateAlpha(from: 1.0, to: 0.0, duration: 0.15, removeOnCompletion: false, completion: { [weak self] _ in
++                self?.allowsGroupOpacity = false
++            })
++            self.shadowNode.layer.animateAlpha(from: 1.0, to: 0.0, duration: 0.15, removeOnCompletion: false)
++            self.layer.animateScale(from: 1.0, to: 0.1, duration: 0.15, removeOnCompletion: false)
++            self.layer.animatePosition(from: CGPoint(), to: CGPoint(x: self.bounds.width / 2.0 - self.backgroundNode.frame.midX, y: self.backgroundNode.frame.midY), duration: 0.15, timingFunction: CAMediaTimingFunctionName.easeInEaseOut.rawValue, removeOnCompletion: false, additive: true)
++        }
+     }
+     
+     override public func animateAdded(_ currentTimestamp: Double, duration: Double) {
+         super.animateAdded(currentTimestamp, duration: duration)
+-        
++
++        let assembleEnabled = sosuzagramPluginEnabled("text_animation") && sosuzagramPluginSettingBool(pluginId: "text_animation", key: "assemble_anim_enabled", defaultValue: false)
++        let assembleDuration = assembleEnabled ? sosuzagramTextAnimationSeconds("duration", defaultMilliseconds: 300.0) : 0.2
++
+         if let subnodes = self.subnodes {
+             for subnode in subnodes {
+                 let layer = subnode.layer
+                 layer.allowsGroupOpacity = true
+-                layer.animateAlpha(from: 0.0, to: 1.0, duration: 0.2, completion: { [weak layer] _ in
++                layer.animateAlpha(from: 0.0, to: 1.0, duration: assembleDuration, completion: { [weak layer] _ in
+                     layer?.allowsGroupOpacity = false
+                 })
++                if assembleEnabled {
++                    layer.animateScale(from: 0.85, to: 1.0, duration: assembleDuration)
++                }
+             }
+         }
+     }
+@@ -1899,10 +1959,14 @@ public class ChatMessageBubbleItemNode: ChatMessageItemView, ChatMessagePreviewI
+         if let subject = item.associatedData.subject, case .messageOptions = subject {
+             needsShareButton = false
+         }
+-        
++
+         if isInlinePage {
+             needsShareButton = false
+         }
++
++        if UserDefaults.standard.bool(forKey: "sosuzagram_hide_share_button") {
++            needsShareButton = false
++        }
+                         
+         var tmpWidth: CGFloat
+         if allowFullWidth {
+diff --git a/submodules/TelegramUI/Components/Chat/ChatMessageDateAndStatusNode/Sources/ChatMessageDateAndStatusNode.swift b/submodules/TelegramUI/Components/Chat/ChatMessageDateAndStatusNode/Sources/ChatMessageDateAndStatusNode.swift
+index d537ad2a..96c54800 100644
+--- a/submodules/TelegramUI/Components/Chat/ChatMessageDateAndStatusNode/Sources/ChatMessageDateAndStatusNode.swift
++++ b/submodules/TelegramUI/Components/Chat/ChatMessageDateAndStatusNode/Sources/ChatMessageDateAndStatusNode.swift
+@@ -13,6 +13,7 @@ import ReactionImageComponent
+ import AnimationCache
+ import MultiAnimationRenderer
+ import TelegramStringFormatting
++import SosuzagramIOSCore
+ 
+ private func maybeAddRotationAnimation(_ layer: CALayer, duration: Double) {
+     if let _ = layer.animation(forKey: "clockFrameAnimation") {
+@@ -187,6 +188,7 @@ public class ChatMessageDateAndStatusNode: ASDisplayNode {
+         var dateText: String
+         var type: ChatMessageDateAndStatusType
+         var layoutInput: LayoutInput
++        var forwardCount: Int?
+         var constrainedSize: CGSize
+         var availableReactions: AvailableReactions?
+         var savedMessageTags: SavedMessageTags?
+@@ -229,7 +231,8 @@ public class ChatMessageDateAndStatusNode: ASDisplayNode {
+             hasAutoremove: Bool,
+             canViewReactionList: Bool,
+             animationCache: AnimationCache,
+-            animationRenderer: MultiAnimationRenderer
++            animationRenderer: MultiAnimationRenderer,
++            forwardCount: Int? = nil
+         ) {
+             self.context = context
+             self.presentationData = presentationData
+@@ -238,9 +241,9 @@ public class ChatMessageDateAndStatusNode: ASDisplayNode {
+             self.dateText = dateText
+             self.type = type
+             self.layoutInput = layoutInput
++            self.constrainedSize = constrainedSize
+             self.availableReactions = availableReactions
+             self.savedMessageTags = savedMessageTags
+-            self.constrainedSize = constrainedSize
+             self.reactions = reactions
+             self.reactionPeers = reactionPeers
+             self.displayAllReactionPeers = displayAllReactionPeers
+@@ -255,6 +258,7 @@ public class ChatMessageDateAndStatusNode: ASDisplayNode {
+             self.canViewReactionList = canViewReactionList
+             self.animationCache = animationCache
+             self.animationRenderer = animationRenderer
++            self.forwardCount = forwardCount
+         }
+     }
+     
+@@ -540,12 +544,22 @@ public class ChatMessageDateAndStatusNode: ASDisplayNode {
+             
+             var updatedDateText = arguments.dateText
+             if arguments.edited {
+-                updatedDateText = "\(arguments.presentationData.strings.Conversation_MessageEditedLabel) \(updatedDateText)"
++                if UserDefaults.standard.bool(forKey: "sosuzagram_replace_edited_with_icon") {
++                    updatedDateText = "\u{270E} \(updatedDateText)"
++                } else {
++                    updatedDateText = "\(arguments.presentationData.strings.Conversation_MessageEditedLabel) \(updatedDateText)"
++                }
+             }
+             if let impressionCount = arguments.impressionCount {
+                 updatedDateText = compactNumericCountString(impressionCount, decimalSeparator: arguments.presentationData.dateTimeFormat.decimalSeparator) + " " + updatedDateText
+             }
+             
++            let displayForwards = sosuzagramPluginEnabled("forwards")
++            if displayForwards, let forwardCount = arguments.forwardCount {
++                let formattedForwards = compactNumericCountString(forwardCount, decimalSeparator: arguments.presentationData.dateTimeFormat.decimalSeparator)
++                updatedDateText = "\u{27A1}\u{FE0F} \(formattedForwards)   " + updatedDateText
++            }
++            
+             let dateFont = Font.regular(floor(arguments.presentationData.fontSize.baseDisplaySize * 11.0 / 17.0))
+             let (date, dateApply) = dateLayout(TextNodeLayoutArguments(attributedString: NSAttributedString(string: updatedDateText, font: dateFont, textColor: dateColor), backgroundColor: nil, maximumNumberOfLines: 1, truncationType: .middle, constrainedSize: arguments.constrainedSize, alignment: .natural, cutout: nil, insets: UIEdgeInsets()))
+             
+diff --git a/submodules/TelegramUI/Components/Chat/ChatMessagePollBubbleContentNode/Sources/ChatMessagePollBubbleContentNode.swift b/submodules/TelegramUI/Components/Chat/ChatMessagePollBubbleContentNode/Sources/ChatMessagePollBubbleContentNode.swift
+index 3ef4bd9c..9d4c4865 100644
+--- a/submodules/TelegramUI/Components/Chat/ChatMessagePollBubbleContentNode/Sources/ChatMessagePollBubbleContentNode.swift
++++ b/submodules/TelegramUI/Components/Chat/ChatMessagePollBubbleContentNode/Sources/ChatMessagePollBubbleContentNode.swift
+@@ -2364,12 +2364,18 @@ public class ChatMessagePollBubbleContentNode: ChatMessageBubbleContentNode {
+             }
+         }
+         
+-        let canAlwaysViewResults = poll.isCreator
++        let previewResultsBeforeVoting = UserDefaults.standard.bool(forKey: "sosuzagram_poll_results_before_voting") && !poll.hideResultsUntilClose
++        let canAlwaysViewResults = poll.isCreator || previewResultsBeforeVoting
+         if !hasSelection || (canAlwaysViewResults && selectedOpaqueIdentifiers.isEmpty) {
+             if !Namespaces.Message.allNonRegular.contains(item.message.id.namespace) {
+                 switch poll.publicity {
+                 case .public:
+-                    item.controllerInteraction.requestOpenMessagePollResults(item.message.id, pollId)
++                    if previewResultsBeforeVoting {
++                        self.isPreviewingResults = !self.isPreviewingResults
++                        item.controllerInteraction.requestMessageUpdate(item.message.id, false)
++                    } else {
++                        item.controllerInteraction.requestOpenMessagePollResults(item.message.id, pollId)
++                    }
+                 case .anonymous:
+                     self.isPreviewingResults = !self.isPreviewingResults
+                     item.controllerInteraction.requestMessageUpdate(item.message.id, false)
+@@ -2625,9 +2631,14 @@ public class ChatMessagePollBubbleContentNode: ChatMessageBubbleContentNode {
+                 let (votersLayout, votersApply) = makeVotersLayout(TextNodeLayoutArguments(attributedString: NSAttributedString(string: votersString ?? "", font: labelsFont, textColor: messageTheme.secondaryTextColor), backgroundColor: nil, maximumNumberOfLines: 0, truncationType: .end, constrainedSize: textConstrainedSize, alignment: .natural, cutout: nil, insets: textInsets))
+                                 
+                 let viewResultsString: String
++                let previewResultsBeforeVoting = UserDefaults.standard.bool(forKey: "sosuzagram_poll_results_before_voting") && !(poll?.hideResultsUntilClose ?? true)
+                 if let poll, let totalVoters = poll.results.totalVoters {
+                     if case .public = poll.publicity {
+-                        viewResultsString = item.presentationData.strings.MessagePoll_ViewVotes(compactNumericCountString(Int(totalVoters), decimalSeparator: item.presentationData.dateTimeFormat.decimalSeparator)).string
++                        if previewResultsBeforeVoting && isPreviewingResults {
++                            viewResultsString = item.presentationData.strings.MessagePoll_BackToVote
++                        } else {
++                            viewResultsString = item.presentationData.strings.MessagePoll_ViewVotes(compactNumericCountString(Int(totalVoters), decimalSeparator: item.presentationData.dateTimeFormat.decimalSeparator)).string
++                        }
+                     } else {
+                         if isPreviewingResults {
+                             viewResultsString = item.presentationData.strings.MessagePoll_BackToVote
+@@ -3332,7 +3343,7 @@ public class ChatMessagePollBubbleContentNode: ChatMessageBubbleContentNode {
+ 
+         let isClosed = isPollEffectivelyClosed(message: item.message, poll: poll)
+         
+-        let canAlwaysViewResults = !poll.hideResultsUntilClose && poll.isCreator
++        let canAlwaysViewResults = !poll.hideResultsUntilClose && (poll.isCreator || UserDefaults.standard.bool(forKey: "sosuzagram_poll_results_before_voting"))
+         var hasAnyVotes = false
+         var hasResults = false
+         if isClosed {
+diff --git a/submodules/TelegramUI/Components/Chat/ChatMessageTextBubbleContentNode/Sources/ChatMessageTextBubbleContentNode.swift b/submodules/TelegramUI/Components/Chat/ChatMessageTextBubbleContentNode/Sources/ChatMessageTextBubbleContentNode.swift
+index 8d8872cc..78f44f9e 100644
+--- a/submodules/TelegramUI/Components/Chat/ChatMessageTextBubbleContentNode/Sources/ChatMessageTextBubbleContentNode.swift
++++ b/submodules/TelegramUI/Components/Chat/ChatMessageTextBubbleContentNode/Sources/ChatMessageTextBubbleContentNode.swift
+@@ -310,6 +310,7 @@ public class ChatMessageTextBubbleContentNode: ChatMessageBubbleContentNode {
+                     edited = true
+                 }
+                 var viewCount: Int?
++                var forwardCount: Int?
+                 var dateReplies = 0
+                 var starsCount: Int64?
+                 var dateReactionsAndPeers = mergedMessageReactionsAndPeers(accountPeerId: item.context.account.peerId, accountPeer: item.associatedData.accountPeer, message: item.topMessage)
+@@ -322,6 +323,8 @@ public class ChatMessageTextBubbleContentNode: ChatMessageBubbleContentNode {
+                         edited = !attribute.isHidden
+                     } else if let attribute = attribute as? ViewCountMessageAttribute {
+                         viewCount = attribute.count
++                    } else if let attribute = attribute as? ForwardCountMessageAttribute {
++                        forwardCount = attribute.count
+                     } else if let attribute = attribute as? ReplyThreadMessageAttribute, case .peer = item.chatLocation {
+                         if let channel = item.message.peers[item.message.id.peerId] as? TelegramChannel, case .group = channel.info {
+                             dateReplies = Int(attribute.count)
+@@ -780,7 +783,8 @@ public class ChatMessageTextBubbleContentNode: ChatMessageBubbleContentNode {
+                         hasAutoremove: item.message.isSelfExpiring,
+                         canViewReactionList: canViewMessageReactionList(message: item.topMessage),
+                         animationCache: item.controllerInteraction.presentationContext.animationCache,
+-                        animationRenderer: item.controllerInteraction.presentationContext.animationRenderer
++                        animationRenderer: item.controllerInteraction.presentationContext.animationRenderer,
++                        forwardCount: !item.presentationData.isPreview ? forwardCount : nil
+                     ))
+                 }
+                 
+diff --git a/submodules/TelegramUI/Components/Chat/ChatTextInputPanelNode/Sources/ChatTextInputPanelNode.swift b/submodules/TelegramUI/Components/Chat/ChatTextInputPanelNode/Sources/ChatTextInputPanelNode.swift
+index fcb5d7a3..aabb43c5 100644
+--- a/submodules/TelegramUI/Components/Chat/ChatTextInputPanelNode/Sources/ChatTextInputPanelNode.swift
++++ b/submodules/TelegramUI/Components/Chat/ChatTextInputPanelNode/Sources/ChatTextInputPanelNode.swift
+@@ -38,6 +38,7 @@ import SolidRoundedButtonNode
+ import TooltipUI
+ import ChatTextInputMediaRecordingButton
+ import ChatContextQuery
++import SosuzagramIOSCore
+ import ChatInputTextNode
+ import ChatInputPanelNode
+ import TelegramNotices
+@@ -1232,8 +1233,9 @@ public class ChatTextInputPanelNode: ChatInputPanelNode, ASEditableTextNodeDeleg
+             textInputViewRealInsets = calculateTextFieldRealInsets(presentationInterfaceState: presentationInterfaceState, accessoryButtonsWidth: accessoryButtonsWidth, actionControlsWidth: sendActionControlsWidth)
+         }
+         
++        let hideSendAsButton = UserDefaults.standard.bool(forKey: "sosuzagram_hide_send_as_button")
+         var hasSendAsButton = false
+-        if let sendAsPeers = interfaceState.sendAsPeers, !sendAsPeers.isEmpty && interfaceState.editMessageState == nil {
++        if !hideSendAsButton, let sendAsPeers = interfaceState.sendAsPeers, !sendAsPeers.isEmpty && interfaceState.editMessageState == nil {
+             hasSendAsButton = true
+         }
+         
+@@ -1613,7 +1615,7 @@ public class ChatTextInputPanelNode: ChatInputPanelNode, ASEditableTextNodeDeleg
+         
+         var displaySendAsAvatarButton = false
+         let mediaRecordingState = interfaceState.inputTextPanelState.mediaRecordingState
+-        if let sendAsPeers = interfaceState.sendAsPeers, !sendAsPeers.isEmpty && interfaceState.editMessageState == nil {
++        if !hideSendAsButton, let sendAsPeers = interfaceState.sendAsPeers, !sendAsPeers.isEmpty && interfaceState.editMessageState == nil {
+             menuButtonExpanded = false
+             displaySendAsAvatarButton = true
+             
+@@ -5032,6 +5034,117 @@ public class ChatTextInputPanelNode: ChatInputPanelNode, ASEditableTextNodeDeleg
+                 }
+             })
+             
++            let toolbarEnabled = sosuzagramPluginEnabled("text_toolbar")
++            if toolbarEnabled {
++                let formattingMode = sosuzagramPluginSettingInt(pluginId: "text_toolbar", key: "set_10", defaultValue: 1)
++                let managementMode = sosuzagramPluginSettingInt(pluginId: "text_toolbar", key: "set_20", defaultValue: 1)
++                let mentionEnabled = sosuzagramPluginSettingInt(pluginId: "text_toolbar", key: "set_0", defaultValue: 1) > 0
++                let quickEmojiMode = sosuzagramPluginSettingInt(pluginId: "text_toolbar", key: "set_60", defaultValue: 1)
++                let repeatEnabled = sosuzagramPluginSettingInt(pluginId: "text_toolbar", key: "set_40", defaultValue: 1) > 0
++                let hideKeyboardEnabled = sosuzagramPluginSettingInt(pluginId: "text_toolbar", key: "set_50", defaultValue: 1) > 0
++
++                let formattingActions: [UIMenuElement] = formattingMode == 0 ? [] : [
++                    UIAction(title: "Uppercase", image: nil) { [weak self] _ in
++                        if let strongSelf = self {
++                            strongSelf.formatAttributesUppercase(strongSelf)
++                        }
++                    },
++                    UIAction(title: "Lowercase", image: nil) { [weak self] _ in
++                        if let strongSelf = self {
++                            strongSelf.formatAttributesLowercase(strongSelf)
++                        }
++                    },
++                    UIAction(title: "Reverse", image: nil) { [weak self] _ in
++                        if let strongSelf = self {
++                            strongSelf.formatAttributesReverse(strongSelf)
++                        }
++                    }
++                ]
++
++                var managementActions: [UIMenuElement] = []
++                if mentionEnabled {
++                    managementActions.append(UIAction(title: "Mention", image: nil) { [weak self] _ in
++                        if let strongSelf = self {
++                            strongSelf.formatInsertMention(strongSelf)
++                        }
++                    })
++                }
++                managementActions.append(UIAction(title: "Select All", image: nil) { [weak self] _ in
++                    if let strongSelf = self {
++                        strongSelf.formatSelectAllText(strongSelf)
++                    }
++                })
++                managementActions.append(UIAction(title: "Cursor to Start", image: nil) { [weak self] _ in
++                    if let strongSelf = self {
++                        strongSelf.formatMoveCursorToStart(strongSelf)
++                    }
++                })
++                managementActions.append(UIAction(title: "Cursor to End", image: nil) { [weak self] _ in
++                    if let strongSelf = self {
++                        strongSelf.formatMoveCursorToEnd(strongSelf)
++                    }
++                })
++                managementActions.append(UIAction(title: "Copy Selection", image: nil) { [weak self] _ in
++                    if let strongSelf = self {
++                        strongSelf.formatCopySelection(strongSelf)
++                    }
++                })
++                managementActions.append(UIAction(title: "Paste", image: nil) { [weak self] _ in
++                    if let strongSelf = self {
++                        strongSelf.formatPasteClipboard(strongSelf)
++                    }
++                })
++                managementActions.append(UIAction(title: "Clear Text", image: nil) { [weak self] _ in
++                    if let strongSelf = self {
++                        strongSelf.formatClearText(strongSelf)
++                    }
++                })
++                if repeatEnabled, let lastMessage = UserDefaults.standard.string(forKey: "sosuzagram_last_sent_message"), !lastMessage.isEmpty {
++                    managementActions.append(UIAction(title: "Repeat Last", image: nil) { [weak self] _ in
++                        if let strongSelf = self {
++                            strongSelf.formatRestoreLastMessage(strongSelf)
++                        }
++                    })
++                }
++                if hideKeyboardEnabled {
++                    managementActions.append(UIAction(title: "Hide Keyboard", image: nil) { [weak self] _ in
++                        if let strongSelf = self {
++                            strongSelf.formatHideKeyboard(strongSelf)
++                        }
++                    })
++                }
++
++                let emojiActions: [UIMenuElement]
++                if quickEmojiMode == 0 {
++                    emojiActions = []
++                } else {
++                    let quickEmojis = ["\u{1F642}", "\u{1F525}", "\u{1F602}", "\u{1F44D}", "\u{2764}\u{FE0F}"]
++                    emojiActions = quickEmojis.map { emoji in
++                        UIAction(title: emoji, image: nil) { [weak self] _ in
++                            self?.formatInsertEmoji(emoji)
++                        }
++                    }
++                }
++
++                if formattingMode == 1 && !formattingActions.isEmpty {
++                    children.append(UIMenu(title: "Formatting+", image: nil, children: formattingActions))
++                } else {
++                    children.append(contentsOf: formattingActions)
++                }
++
++                if managementMode == 1 && !managementActions.isEmpty {
++                    children.append(UIMenu(title: "Text Tools", image: nil, children: managementActions))
++                } else {
++                    children.append(contentsOf: managementActions)
++                }
++
++                if quickEmojiMode == 1 && !emojiActions.isEmpty {
++                    children.append(UIMenu(title: "Quick Emoji", image: nil, children: emojiActions))
++                } else {
++                    children.append(contentsOf: emojiActions)
++                }
++            }
++            
+             let formatMenu = UIMenu(title: self.strings?.TextFormat_Format ?? "Format", image: nil, children: children)
+             actions.insert(formatMenu, at: 1)
+         }
+@@ -5157,6 +5270,147 @@ public class ChatTextInputPanelNode: ChatInputPanelNode, ASEditableTextNodeDeleg
+         }
+     }
+     
++    @objc public func formatAttributesUppercase(_ sender: Any) {
++        self.inputMenu.back()
++        self.interfaceInteraction?.updateTextInputStateAndMode { current, inputMode in
++            let nsRange = NSRange(current.selectionRange)
++            guard nsRange.location != NSNotFound, nsRange.length > 0, nsRange.location + nsRange.length <= current.inputText.length else {
++                return (current, inputMode)
++            }
++            let attributedText = NSMutableAttributedString(attributedString: current.inputText)
++            let selectedText = attributedText.attributedSubstring(from: nsRange).string
++            let transformedText = selectedText.uppercased()
++            attributedText.replaceCharacters(in: nsRange, with: transformedText)
++            var updated = current
++            updated.inputText = attributedText
++            updated.selectionRange = nsRange.location ..< (nsRange.location + transformedText.utf16.count)
++            return (updated, inputMode)
++        }
++    }
++    
++    @objc public func formatAttributesLowercase(_ sender: Any) {
++        self.inputMenu.back()
++        self.interfaceInteraction?.updateTextInputStateAndMode { current, inputMode in
++            let nsRange = NSRange(current.selectionRange)
++            guard nsRange.location != NSNotFound, nsRange.length > 0, nsRange.location + nsRange.length <= current.inputText.length else {
++                return (current, inputMode)
++            }
++            let attributedText = NSMutableAttributedString(attributedString: current.inputText)
++            let selectedText = attributedText.attributedSubstring(from: nsRange).string
++            let transformedText = selectedText.lowercased()
++            attributedText.replaceCharacters(in: nsRange, with: transformedText)
++            var updated = current
++            updated.inputText = attributedText
++            updated.selectionRange = nsRange.location ..< (nsRange.location + transformedText.utf16.count)
++            return (updated, inputMode)
++        }
++    }
++    
++    @objc public func formatAttributesReverse(_ sender: Any) {
++        self.inputMenu.back()
++        self.interfaceInteraction?.updateTextInputStateAndMode { current, inputMode in
++            let nsRange = NSRange(current.selectionRange)
++            guard nsRange.location != NSNotFound, nsRange.length > 0, nsRange.location + nsRange.length <= current.inputText.length else {
++                return (current, inputMode)
++            }
++            let attributedText = NSMutableAttributedString(attributedString: current.inputText)
++            let selectedText = attributedText.attributedSubstring(from: nsRange).string
++            let transformedText = String(selectedText.reversed())
++            attributedText.replaceCharacters(in: nsRange, with: transformedText)
++            var updated = current
++            updated.inputText = attributedText
++            updated.selectionRange = nsRange.location ..< (nsRange.location + transformedText.utf16.count)
++            return (updated, inputMode)
++        }
++    }
++
++    @objc public func formatInsertMention(_ sender: Any) {
++        self.inputMenu.back()
++        self.insertTextFragment("@")
++    }
++
++    @objc public func formatSelectAllText(_ sender: Any) {
++        self.inputMenu.back()
++        guard let textInputNode = self.textInputNode else {
++            return
++        }
++        let length = textInputNode.attributedText?.length ?? 0
++        textInputNode.selectedRange = NSRange(location: 0, length: length)
++    }
++
++    @objc public func formatMoveCursorToStart(_ sender: Any) {
++        self.inputMenu.back()
++        self.textInputNode?.selectedRange = NSRange(location: 0, length: 0)
++    }
++
++    @objc public func formatMoveCursorToEnd(_ sender: Any) {
++        self.inputMenu.back()
++        let length = self.textInputNode?.attributedText?.length ?? 0
++        self.textInputNode?.selectedRange = NSRange(location: length, length: 0)
++    }
++
++    @objc public func formatCopySelection(_ sender: Any) {
++        self.inputMenu.back()
++        self.interfaceInteraction?.updateTextInputStateAndMode { current, inputMode in
++            let nsRange = NSRange(current.selectionRange)
++            guard nsRange.location != NSNotFound, nsRange.length > 0, nsRange.location + nsRange.length <= current.inputText.length else {
++                return (current, inputMode)
++            }
++            UIPasteboard.general.string = current.inputText.attributedSubstring(from: nsRange).string
++            return (current, inputMode)
++        }
++    }
++
++    @objc public func formatPasteClipboard(_ sender: Any) {
++        self.inputMenu.back()
++        guard let text = UIPasteboard.general.string, !text.isEmpty else {
++            return
++        }
++        self.insertTextFragment(text)
++    }
++
++    @objc public func formatClearText(_ sender: Any) {
++        self.inputMenu.back()
++        self.interfaceInteraction?.updateTextInputStateAndMode { _, inputMode in
++            return (ChatTextInputState(inputText: NSAttributedString(string: "")), inputMode)
++        }
++    }
++
++    @objc public func formatRestoreLastMessage(_ sender: Any) {
++        self.inputMenu.back()
++        guard let lastMessage = UserDefaults.standard.string(forKey: "sosuzagram_last_sent_message"), !lastMessage.isEmpty else {
++            return
++        }
++        self.interfaceInteraction?.updateTextInputStateAndMode { _, inputMode in
++            let attributed = NSAttributedString(string: lastMessage)
++            let end = attributed.length
++            return (ChatTextInputState(inputText: attributed, selectionRange: end ..< end), inputMode)
++        }
++    }
++
++    @objc public func formatHideKeyboard(_ sender: Any) {
++        self.inputMenu.back()
++        self.textInputNode?.textView.resignFirstResponder()
++    }
++
++    private func formatInsertEmoji(_ emoji: String) {
++        self.inputMenu.back()
++        self.insertTextFragment(emoji)
++    }
++
++    private func insertTextFragment(_ text: String) {
++        self.interfaceInteraction?.updateTextInputStateAndMode { current, inputMode in
++            let nsRange = NSRange(current.selectionRange)
++            let attributedText = NSMutableAttributedString(attributedString: current.inputText)
++            attributedText.replaceCharacters(in: nsRange, with: text)
++            var updated = current
++            updated.inputText = attributedText
++            let location = nsRange.location + text.utf16.count
++            updated.selectionRange = location ..< location
++            return (updated, inputMode)
++        }
++    }
++    
+     @objc public func formatAttributesSpoiler(_ sender: Any) {
+         self.inputMenu.back()
+         
+@@ -5364,6 +5618,9 @@ public class ChatTextInputPanelNode: ChatInputPanelNode, ASEditableTextNodeDeleg
+             self.interfaceInteraction?.sendRecordedMedia(false, self.viewOnce)
+             self.viewOnce = false
+         } else {
++            if let text = self.textInputNode?.attributedText?.string.trimmingCharacters(in: .whitespacesAndNewlines), !text.isEmpty {
++                UserDefaults.standard.set(text, forKey: "sosuzagram_last_sent_message")
++            }
+             self.sendMessage()
+         }
+     }
+diff --git a/submodules/TelegramUI/Components/ChatListTitleView/Sources/ChatListTitleView.swift b/submodules/TelegramUI/Components/ChatListTitleView/Sources/ChatListTitleView.swift
+index 36bd2872..87d90a59 100644
+--- a/submodules/TelegramUI/Components/ChatListTitleView/Sources/ChatListTitleView.swift
++++ b/submodules/TelegramUI/Components/ChatListTitleView/Sources/ChatListTitleView.swift
+@@ -11,6 +11,7 @@ import MultiAnimationRenderer
+ import TelegramCore
+ import ComponentDisplayAdapters
+ import AccountContext
++import SosuzagramIOSCore
+ 
+ private let titleFont = Font.with(size: 17.0, design: .regular, weight: .semibold, traits: [.monospacedNumbers])
+ 
+@@ -81,8 +82,20 @@ public final class ChatListTitleView: UIView, NavigationBarTitleView, Navigation
+         let oldValue = self._title
+         self._title = title
+         
++        var titleText = title.text
++        let serverStatusEnabled = sosuzagramPluginEnabled("server_status")
++        if serverStatusEnabled {
++            let dcId = self.context.account.masterDatacenterId
++            if let ping = SosuzagramServerStatus.shared.currentPing {
++                titleText += " (DC\(dcId) - \(ping)ms)"
++            } else {
++                titleText += " (DC\(dcId))"
++            }
++        }
++        
++        self.titleNode.attributedText = NSAttributedString(string: titleText, font: titleFont, textColor: self.theme.rootController.navigationBar.primaryTextColor)
++        
+         if self._title != oldValue {
+-            self.titleNode.attributedText = NSAttributedString(string: self.title.text, font: titleFont, textColor: self.theme.rootController.navigationBar.primaryTextColor)
+             self.buttonView.accessibilityLabel = self.title.text
+             self.activityIndicator.isHidden = !self.title.activity
+            
+@@ -313,6 +326,9 @@ public final class ChatListTitleView: UIView, NavigationBarTitleView, Navigation
+         }
+         
+         self.proxyButton.addTarget(self, action: #selector(self.proxyButtonPressed), for: .touchUpInside)
++        
++        NotificationCenter.default.addObserver(self, selector: #selector(self.pingUpdated), name: NSNotification.Name("SosuzagramPingUpdated"), object: nil)
++        SosuzagramServerStatus.shared.startPinging(datacenterId: self.context.account.masterDatacenterId)
+     }
+     
+     required public init?(coder aDecoder: NSCoder) {
+@@ -508,4 +524,7 @@ public final class ChatListTitleView: UIView, NavigationBarTitleView, Navigation
+         }
+         return super.hitTest(point, with: event)
+     }
++    @objc private func pingUpdated() {
++        self.setTitle(self._title, animated: false)
++    }
+ }
+diff --git a/submodules/TelegramUI/Sources/AccountContext.swift b/submodules/TelegramUI/Sources/AccountContext.swift
+index 354ab8cf..eaabee05 100644
+--- a/submodules/TelegramUI/Sources/AccountContext.swift
++++ b/submodules/TelegramUI/Sources/AccountContext.swift
+@@ -834,6 +834,37 @@ public final class AccountContextImpl: AccountContext {
+     }
+     
+     public func requestCall(peerId: PeerId, isVideo: Bool, completion: @escaping () -> Void) {
++        if UserDefaults.standard.bool(forKey: "sosuzagram_confirm_calls") {
++            let presentationData = self.sharedContext.currentPresentationData.with { $0 }
++            let callText = isVideo ? "\u{0432}\u{0438}\u{0434}\u{0435}\u{043E}\u{0437}\u{0432}\u{043E}\u{043D}\u{043E}\u{043A}" : "\u{0433}\u{043E}\u{043B}\u{043E}\u{0441}\u{043E}\u{0432}\u{043E}\u{0439} \u{0437}\u{0432}\u{043E}\u{043D}\u{043E}\u{043A}"
++
++            let _ = (self.engine.data.get(TelegramEngine.EngineData.Item.Peer.Peer(id: peerId))
++            |> take(1)
++            |> deliverOnMainQueue).startStandalone(next: { [weak self] peer in
++                guard let strongSelf = self else {
++                    return
++                }
++
++                let peerTitle = peer?.compactDisplayTitle ?? callText
++                strongSelf.sharedContext.mainWindow?.present(textAlertController(
++                    context: strongSelf,
++                    title: "\u{041F}\u{043E}\u{0434}\u{0442}\u{0432}\u{0435}\u{0440}\u{0436}\u{0434}\u{0435}\u{043D}\u{0438}\u{0435} \u{0437}\u{0432}\u{043E}\u{043D}\u{043A}\u{0430}",
++                    text: "\u{041D}\u{0430}\u{0447}\u{0430}\u{0442}\u{044C} \(callText) \u{0441} \(peerTitle)?",
++                    actions: [
++                        TextAlertAction(type: .genericAction, title: presentationData.strings.Common_Cancel, action: {}),
++                        TextAlertAction(type: .defaultAction, title: presentationData.strings.Common_OK, action: {
++                            strongSelf.requestCallNow(peerId: peerId, isVideo: isVideo, completion: completion)
++                        })
++                    ]
++                ), on: .root)
++            })
++            return
++        }
++
++        self.requestCallNow(peerId: peerId, isVideo: isVideo, completion: completion)
++    }
++
++    private func requestCallNow(peerId: PeerId, isVideo: Bool, completion: @escaping () -> Void) {
+         guard let callResult = self.sharedContext.callManager?.requestCall(context: self, peerId: peerId, isVideo: isVideo, endCurrentIfAny: false) else {
+             return
+         }
+diff --git a/submodules/TelegramUI/Sources/AppDelegate.swift b/submodules/TelegramUI/Sources/AppDelegate.swift
+index 1c1631c7..8a056fc0 100644
+--- a/submodules/TelegramUI/Sources/AppDelegate.swift
++++ b/submodules/TelegramUI/Sources/AppDelegate.swift
+@@ -45,6 +45,7 @@ import RecaptchaEnterprise
+ import NavigationBarImpl
+ import ContextUI
+ import ContextControllerImpl
++import SosuzagramIOSCore
+ 
+ #if canImport(AppCenter)
+ import AppCenter
+@@ -323,6 +324,34 @@ private func extractAccountManagerState(records: AccountRecordsView<TelegramAcco
+     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
+         precondition(!testIsLaunched)
+         testIsLaunched = true
++
++        // SOSUZAGRAM INITIALIZATION
++        let sharedStore = InMemoryLocalHistoryStore()
++        let sharedService = MessageHistoryService(store: sharedStore)
++        
++        SosuzagramHooks.recordIncomingMessage = { message in
++            if case let .Id(id) = message.id {
++                let snapshot = MessageSnapshot(
++                    peerId: id.peerId.toInt64(),
++                    messageId: Int64(id.id),
++                    chatKind: id.peerId.namespace == Namespaces.Peer.CloudUser ? .user : .group,
++                    senderId: message.authorId?.toInt64(),
++                    text: message.text,
++                    mediaLocalIdentifier: nil,
++                    originalTimestamp: Date(timeIntervalSince1970: TimeInterval(message.timestamp)),
++                    isOutgoing: false
++                )
++                Task {
++                    try? await sharedService.recordIncomingMessage(snapshot)
++                }
++            }
++        }
++        
++        SosuzagramHooks.recordMessageRemoval = { peerId, messageIds in
++            Task {
++                try? await sharedService.recordMessageRemoval(peerId: peerId, messageIds: messageIds.map(Int64.init))
++            }
++        }
+         
+         let _ = voipTokenPromise.get().start(next: { token in
+             self.voipDeviceToken.set(.single(token))
+diff --git a/submodules/TelegramUI/Sources/ApplicationContext.swift b/submodules/TelegramUI/Sources/ApplicationContext.swift
+index 29ed818c..50e66628 100644
+--- a/submodules/TelegramUI/Sources/ApplicationContext.swift
++++ b/submodules/TelegramUI/Sources/ApplicationContext.swift
+@@ -33,6 +33,7 @@ import PhoneNumberFormat
+ import AttachmentUI
+ import MinimizedContainer
+ import BrowserUI
++import SosuzagramIOSCore
+ 
+ final class UnauthorizedApplicationContext {
+     let sharedContext: SharedAccountContextImpl
+@@ -417,7 +418,59 @@ final class AuthorizedApplicationContext {
+                                 }
+                             }
+                             
+-                            if inAppNotificationSettings.displayPreviews {
++                            let inAppNotificationsPluginEnabled = sosuzagramPluginEnabled("in_app_notifications")
++                            var shouldDisplayNotification = inAppNotificationSettings.displayPreviews
++                            if inAppNotificationsPluginEnabled {
++                                let notifyAll = sosuzagramPluginSettingBool(pluginId: "in_app_notifications", key: "notify_all", defaultValue: false)
++                                let notifyMentions = sosuzagramPluginSettingBool(pluginId: "in_app_notifications", key: "notify_mentions", defaultValue: true)
++                                let notifyUnmuted = sosuzagramPluginSettingBool(pluginId: "in_app_notifications", key: "notify_unmuted", defaultValue: true)
++                                let notifyOnlyPrivate = sosuzagramPluginSettingBool(pluginId: "in_app_notifications", key: "notify_only_private", defaultValue: true)
++                                let sourceGroups = sosuzagramPluginSettingBool(pluginId: "in_app_notifications", key: "source_0", defaultValue: true)
++                                let sourceChannels = sosuzagramPluginSettingBool(pluginId: "in_app_notifications", key: "source_1", defaultValue: true)
++                                let sourcePrivate = sosuzagramPluginSettingBool(pluginId: "in_app_notifications", key: "source_2", defaultValue: true)
++                                let sourceBots = sosuzagramPluginSettingBool(pluginId: "in_app_notifications", key: "source_3", defaultValue: true)
++
++                                var sourceAllowed = true
++                                var matchedReason = notifyAll
++
++                                if let chatPeer = firstMessage.peers[firstMessage.id.peerId] {
++                                    if let user = chatPeer as? TelegramUser {
++                                        if user.botInfo != nil {
++                                            sourceAllowed = sourceBots
++                                        } else {
++                                            sourceAllowed = sourcePrivate
++                                            if notifyOnlyPrivate {
++                                                matchedReason = true
++                                            }
++                                        }
++                                    } else if let channel = chatPeer as? TelegramChannel {
++                                        switch channel.info {
++                                        case .broadcast:
++                                            sourceAllowed = sourceChannels
++                                        default:
++                                            sourceAllowed = sourceGroups
++                                        }
++                                    } else if chatPeer is TelegramGroup {
++                                        sourceAllowed = sourceGroups
++                                    }
++                                }
++
++                                if notifyUnmuted && !isMuted {
++                                    matchedReason = true
++                                }
++
++                                if notifyMentions,
++                                   let accountPeer = firstMessage.peers[context.account.peerId] as? TelegramUser,
++                                   let username = accountPeer.username?.lowercased(),
++                                   !username.isEmpty,
++                                   firstMessage.text.lowercased().contains("@\(username)") {
++                                    matchedReason = true
++                                }
++
++                                shouldDisplayNotification = shouldDisplayNotification || (sourceAllowed && matchedReason)
++                            }
++
++                            if shouldDisplayNotification {
+                                 let presentationData = strongSelf.context.sharedContext.currentPresentationData.with { $0 }
+                                 strongSelf.notificationController.enqueue(ChatMessageNotificationItem(context: strongSelf.context, strings: presentationData.strings, dateTimeFormat: presentationData.dateTimeFormat, nameDisplayOrder: presentationData.nameDisplayOrder, messages: messages, threadData: threadData, tapAction: {
+                                     if let strongSelf = self {
+@@ -869,7 +922,7 @@ final class AuthorizedApplicationContext {
+             guard let strongSelf = self else {
+                 return
+             }
+-            let _ = strongSelf.context.sharedContext.callManager?.requestCall(context: strongSelf.context, peerId: peerId, isVideo: isVideo, endCurrentIfAny: false)
++            strongSelf.context.requestCall(peerId: peerId, isVideo: isVideo, completion: {})
+         }))
+     }
+     
+diff --git a/submodules/TelegramUI/Sources/Chat/ChatControllerLoadDisplayNode.swift b/submodules/TelegramUI/Sources/Chat/ChatControllerLoadDisplayNode.swift
+index d99dbe3e..3244caf4 100644
+--- a/submodules/TelegramUI/Sources/Chat/ChatControllerLoadDisplayNode.swift
++++ b/submodules/TelegramUI/Sources/Chat/ChatControllerLoadDisplayNode.swift
+@@ -5493,6 +5493,10 @@ extension ChatControllerImpl {
+             }
+ 
+             //print("didScrollWithOffset offset: \(offset), itemNode: \(String(describing: itemNode))")
++
++            if isTracking && offset != 0.0 && UserDefaults.standard.bool(forKey: "sosuzagram_hide_keyboard_on_scroll") {
++                strongSelf.chatDisplayNode.dismissTextInput()
++            }
+             
+             if offset > 0.0 {
+                 if var scrolledToMessageIdValue = strongSelf.contentData?.scrolledToMessageIdValue {
+diff --git a/submodules/TelegramUI/Sources/Chat/ChatControllerMediaRecording.swift b/submodules/TelegramUI/Sources/Chat/ChatControllerMediaRecording.swift
+index 57ba2cac..a05e1d96 100644
+--- a/submodules/TelegramUI/Sources/Chat/ChatControllerMediaRecording.swift
++++ b/submodules/TelegramUI/Sources/Chat/ChatControllerMediaRecording.swift
+@@ -343,65 +343,94 @@ extension ChatControllerImpl {
+                 )
+             case let .send(viewOnce):
+                 self.chatDisplayNode.updateRecordedMediaDeleted(false)
+-                self.recorderDataDisposable.set((audioRecorderValue.takenRecordedData()
+-                |> deliverOnMainQueue).startStrict(next: { [weak self] data in
+-                    if let strongSelf = self, let data = data {
+-                        if data.duration < 0.5 {
+-                            strongSelf.recorderFeedback?.error()
+-                            strongSelf.recorderFeedback = nil
+-                            strongSelf.audioRecorder.set(.single(nil))
+-                            strongSelf.recorderDataDisposable.set(nil)
+-                        } else {
+-                            let randomId = Int64.random(in: Int64.min ... Int64.max)
+-                            
+-                            let resource = LocalFileMediaResource(fileId: randomId)
+-                            strongSelf.context.engine.resources.storeResourceData(id: EngineMediaResource.Id(resource.id), data: data.compressedData)
+-                            
+-                            let waveformBuffer: Data? = data.waveform
+-                            
+-                            let correlationId = Int64.random(in: 0 ..< Int64.max)
+-                            var usedCorrelationId = false
+-                            
+-                            var shouldAnimateMessageTransition = strongSelf.chatDisplayNode.shouldAnimateMessageTransition
+-                            if strongSelf.chatLocation.threadId == nil, let channel = strongSelf.presentationInterfaceState.renderedPeer?.peer as? TelegramChannel, channel.isMonoForum, let linkedMonoforumId = channel.linkedMonoforumId, let mainChannel = strongSelf.presentationInterfaceState.renderedPeer?.peers[linkedMonoforumId] as? TelegramChannel, mainChannel.hasPermission(.manageDirect) {
+-                                shouldAnimateMessageTransition = false
+-                            }
+-                            
+-                            if shouldAnimateMessageTransition, let textInputPanelNode = strongSelf.chatDisplayNode.textInputPanelNode, let micButton = textInputPanelNode.micButton {
+-                                usedCorrelationId = true
+-                                strongSelf.chatDisplayNode.messageTransitionNode.add(correlationId: correlationId, source: .audioMicInput(ChatMessageTransitionNodeImpl.Source.AudioMicInput(micButton: micButton)), initiated: {
+-                                    guard let strongSelf = self else {
+-                                        return
+-                                    }
+-                                    strongSelf.audioRecorder.set(.single(nil))
+-                                })
+-                            } else {
++                
++                let sendAction = { [weak self] in
++                    guard let strongSelf = self else { return }
++                    strongSelf.recorderDataDisposable.set((audioRecorderValue.takenRecordedData()
++                    |> deliverOnMainQueue).startStrict(next: { [weak self] data in
++                        if let strongSelf = self, let data = data {
++                            if data.duration < 0.5 {
++                                strongSelf.recorderFeedback?.error()
++                                strongSelf.recorderFeedback = nil
+                                 strongSelf.audioRecorder.set(.single(nil))
+-                            }
+-                            
+-                            strongSelf.chatDisplayNode.setupSendActionOnViewUpdate({
+-                                if let strongSelf = self {
+-                                    strongSelf.chatDisplayNode.collapseInput()
+-                                    
+-                                    strongSelf.updateChatPresentationInterfaceState(animated: true, interactive: false, {
+-                                        $0.updatedInterfaceState { $0.withUpdatedReplyMessageSubject(nil).withUpdatedSendMessageEffect(nil).withUpdatedPostSuggestionState(nil) }
++                                strongSelf.recorderDataDisposable.set(nil)
++                            } else {
++                                let randomId = Int64.random(in: Int64.min ... Int64.max)
++                                
++                                let resource = LocalFileMediaResource(fileId: randomId)
++                                strongSelf.context.engine.resources.storeResourceData(id: EngineMediaResource.Id(resource.id), data: data.compressedData)
++                                
++                                let waveformBuffer: Data? = data.waveform
++                                
++                                let correlationId = Int64.random(in: 0 ..< Int64.max)
++                                var usedCorrelationId = false
++                                
++                                var shouldAnimateMessageTransition = strongSelf.chatDisplayNode.shouldAnimateMessageTransition
++                                if strongSelf.chatLocation.threadId == nil, let channel = strongSelf.presentationInterfaceState.renderedPeer?.peer as? TelegramChannel, channel.isMonoForum, let linkedMonoforumId = channel.linkedMonoforumId, let mainChannel = strongSelf.presentationInterfaceState.renderedPeer?.peers[linkedMonoforumId] as? TelegramChannel, mainChannel.hasPermission(.manageDirect) {
++                                    shouldAnimateMessageTransition = false
++                                }
++                                
++                                if shouldAnimateMessageTransition, let textInputPanelNode = strongSelf.chatDisplayNode.textInputPanelNode, let micButton = textInputPanelNode.micButton {
++                                    usedCorrelationId = true
++                                    strongSelf.chatDisplayNode.messageTransitionNode.add(correlationId: correlationId, source: .audioMicInput(ChatMessageTransitionNodeImpl.Source.AudioMicInput(micButton: micButton)), initiated: {
++                                        guard let strongSelf = self else {
++                                            return
++                                        }
++                                        strongSelf.audioRecorder.set(.single(nil))
+                                     })
++                                } else {
++                                    strongSelf.audioRecorder.set(.single(nil))
++                                }
++                                
++                                strongSelf.chatDisplayNode.setupSendActionOnViewUpdate({
++                                    if let strongSelf = self {
++                                        strongSelf.chatDisplayNode.collapseInput()
++                                        
++                                        strongSelf.updateChatPresentationInterfaceState(animated: true, interactive: false, {
++                                            $0.updatedInterfaceState { $0.withUpdatedReplyMessageSubject(nil).withUpdatedSendMessageEffect(nil).withUpdatedPostSuggestionState(nil) }
++                                        })
++                                    }
++                                }, usedCorrelationId ? correlationId : nil)
++                                
++                                var attributes: [MessageAttribute] = []
++                                if viewOnce {
++                                    attributes.append(AutoremoveTimeoutMessageAttribute(timeout: viewOnceTimeout, countdownBeginTime: nil))
+                                 }
+-                            }, usedCorrelationId ? correlationId : nil)
+-                            
+-                            var attributes: [MessageAttribute] = []
+-                            if viewOnce {
+-                                attributes.append(AutoremoveTimeoutMessageAttribute(timeout: viewOnceTimeout, countdownBeginTime: nil))
++                                
++                                strongSelf.sendMessages([.message(text: "", attributes: attributes, inlineStickers: [:], mediaReference: .standalone(media: TelegramMediaFile(fileId: MediaId(namespace: Namespaces.Media.LocalFile, id: randomId), partialReference: nil, resource: resource, previewRepresentations: [], videoThumbnails: [], immediateThumbnailData: nil, mimeType: "audio/ogg", size: Int64(data.compressedData.count), attributes: [.Audio(isVoice: true, duration: Int(data.duration), title: nil, performer: nil, waveform: waveformBuffer)], alternativeRepresentations: [])), threadId: strongSelf.chatLocation.threadId, replyToMessageId: strongSelf.presentationInterfaceState.interfaceState.replyMessageSubject?.subjectModel, replyToStoryId: nil, localGroupingKey: nil, correlationId: correlationId, bubbleUpEmojiOrStickersets: [])])
++                                
++                                strongSelf.recorderFeedback?.tap()
++                                strongSelf.recorderFeedback = nil
++                                strongSelf.recorderDataDisposable.set(nil)
+                             }
+-                            
+-                            strongSelf.sendMessages([.message(text: "", attributes: attributes, inlineStickers: [:], mediaReference: .standalone(media: TelegramMediaFile(fileId: MediaId(namespace: Namespaces.Media.LocalFile, id: randomId), partialReference: nil, resource: resource, previewRepresentations: [], videoThumbnails: [], immediateThumbnailData: nil, mimeType: "audio/ogg", size: Int64(data.compressedData.count), attributes: [.Audio(isVoice: true, duration: Int(data.duration), title: nil, performer: nil, waveform: waveformBuffer)], alternativeRepresentations: [])), threadId: strongSelf.chatLocation.threadId, replyToMessageId: strongSelf.presentationInterfaceState.interfaceState.replyMessageSubject?.subjectModel, replyToStoryId: nil, localGroupingKey: nil, correlationId: correlationId, bubbleUpEmojiOrStickersets: [])])
+-                            
+-                            strongSelf.recorderFeedback?.tap()
+-                            strongSelf.recorderFeedback = nil
+-                            strongSelf.recorderDataDisposable.set(nil)
+                         }
+-                    }
+-                }))
++                    }))
++                }
++                
++                if UserDefaults.standard.bool(forKey: "sosuzagram_confirm_voice_messages") {
++                    let alertController = textAlertController(
++                        context: self.context,
++                        updatedPresentationData: self.updatedPresentationData,
++                        title: "\u{041F}\u{043E}\u{0434}\u{0442}\u{0432}\u{0435}\u{0440}\u{0436}\u{0434}\u{0435}\u{043D}\u{0438}\u{0435} \u{043E}\u{0442}\u{043F}\u{0440}\u{0430}\u{0432}\u{043A}\u{0438}",
++                        text: "\u{041E}\u{0442}\u{043F}\u{0440}\u{0430}\u{0432}\u{0438}\u{0442}\u{044C} \u{044D}\u{0442}\u{043E} \u{0433}\u{043E}\u{043B}\u{043E}\u{0441}\u{043E}\u{0432}\u{043E}\u{0435} \u{0441}\u{043E}\u{043E}\u{0431}\u{0449}\u{0435}\u{043D}\u{0438}\u{0435}?",
++                        actions: [
++                            TextAlertAction(type: .genericAction, title: self.presentationData.strings.Common_Cancel, action: { [weak self] in
++                                if let strongSelf = self {
++                                    strongSelf.audioRecorder.set(.single(nil))
++                                    strongSelf.recorderDataDisposable.set(nil)
++                                    strongSelf.recorderFeedback = nil
++                                    strongSelf.chatDisplayNode.updateRecordedMediaDeleted(true)
++                                }
++                            }),
++                            TextAlertAction(type: .defaultAction, title: self.presentationData.strings.Common_OK, action: {
++                                sendAction()
++                            })
++                        ]
++                    )
++                    self.present(alertController, in: .window(.root))
++                } else {
++                    sendAction()
++                }
+             }
+         } else if let videoRecorderValue = self.videoRecorderValue {
+             if case .send = updatedAction {
