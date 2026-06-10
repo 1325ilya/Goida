@@ -1,0 +1,12 @@
+diff --git a/submodules/TelegramUI/BUILD b/submodules/TelegramUI/BUILD
+index a3374276..f0647a4a 100644
+--- a/submodules/TelegramUI/BUILD
++++ b/submodules/TelegramUI/BUILD
+@@ -526,6 +526,7 @@ swift_library(
+         "//submodules/TelegramUI/Components/RankChatPreviewItem",
+         "//submodules/TelegramUI/Components/TextProcessingScreen",
+         "//submodules/TelegramUI/Components/CreateBotScreen",
++        "//submodules/SosuzagramIOSCore:SosuzagramIOSCore",
+     ] + select({
+         "@build_bazel_rules_apple//apple:ios_arm64": appcenter_targets,
+         "//build-system:ios_sim_arm64": [],
