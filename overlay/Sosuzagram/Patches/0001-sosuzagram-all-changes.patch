@@ -2517,10 +2517,18 @@ index c35771e6..f759f8c4 100644
      visibility = [
          "//visibility:public",
 diff --git a/submodules/TelegramUI/Components/PeerInfo/PeerInfoScreen/Sources/PeerInfoData.swift b/submodules/TelegramUI/Components/PeerInfo/PeerInfoScreen/Sources/PeerInfoData.swift
-index dea0dfbc..9dee6b55 100644
+index dea0dfbc..765fa22a 100644
 --- a/submodules/TelegramUI/Components/PeerInfo/PeerInfoScreen/Sources/PeerInfoData.swift
 +++ b/submodules/TelegramUI/Components/PeerInfo/PeerInfoScreen/Sources/PeerInfoData.swift
-@@ -27,6 +27,58 @@ enum AvatarUploadProgress {
+@@ -16,6 +16,7 @@ import PeerInfoVisualMediaPaneNode
+ import PhotoResources
+ import PeerInfoPaneNode
+ import WebUI
++import TextFormat
+ 
+ enum PeerInfoUpdatingAvatar {
+     case none
+@@ -27,6 +28,58 @@ enum AvatarUploadProgress {
      case indefinite
  }
  
@@ -2579,7 +2587,7 @@ index dea0dfbc..9dee6b55 100644
  final class PeerInfoState {
      let isEditing: Bool
      let selectedMessageIds: Set<MessageId>?
-@@ -1193,7 +1245,7 @@ func peerInfoScreenData(
+@@ -1193,7 +1246,7 @@ func peerInfoScreenData(
                      let data = manager.with { manager -> PeerInfoStatusData? in
                          if let presence = manager.currentValue {
                              let timestamp = CFAbsoluteTimeGetCurrent() + NSTimeIntervalSince1970
