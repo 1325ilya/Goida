@@ -572,7 +572,7 @@ index b30e6cab..eaf8e60d 100644
              return ""
          }
 diff --git a/submodules/LocationUI/Sources/LocationViewController.swift b/submodules/LocationUI/Sources/LocationViewController.swift
-index 637782af..2cc5cdfd 100644
+index 637782af..6f933c69 100644
 --- a/submodules/LocationUI/Sources/LocationViewController.swift
 +++ b/submodules/LocationUI/Sources/LocationViewController.swift
 @@ -156,6 +156,18 @@ public final class LocationViewController: ViewController {
@@ -580,7 +580,7 @@ index 637782af..2cc5cdfd 100644
              let item: OpenInItem = .location(location: location, directions: directions)
              let openInOptions = availableOpenInOptions(context: context, item: item)
 +            if UserDefaults.standard.bool(forKey: "sosuzagram_use_yandex_maps") {
-+                let preferredIdentifiers = directions == nil ? ["yandexMaps", "yangoMaps"] : ["yandexMaps", "yangoMaps", "yandexNavi"]
++                let preferredIdentifiers = ["yandexMaps", "yangoMaps", "yandexNavi"]
 +                if let preferredOption = openInOptions.first(where: { preferredIdentifiers.contains($0.identifier) }) {
 +                    switch preferredOption.action() {
 +                    case let .openUrl(url):
