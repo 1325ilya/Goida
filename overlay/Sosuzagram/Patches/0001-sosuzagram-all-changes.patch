@@ -193,7 +193,7 @@ index d97e8c71..53be3524 100644
      <dict>
          <key>CFBundleIconFiles</key>
 diff --git a/submodules/ChatListUI/Sources/ChatListController.swift b/submodules/ChatListUI/Sources/ChatListController.swift
-index c9c94d32..132546d5 100644
+index c9c94d32..52078761 100644
 --- a/submodules/ChatListUI/Sources/ChatListController.swift
 +++ b/submodules/ChatListUI/Sources/ChatListController.swift
 @@ -322,6 +322,7 @@ public class ChatListControllerImpl: TelegramBaseController, ChatListController
@@ -344,14 +344,14 @@ index c9c94d32..132546d5 100644
                  }
                  
                  if isReorderingTabs {
-@@ -7262,6 +7282,7 @@ private final class ChatListLocationContext {
+@@ -7261,6 +7281,7 @@ private final class ChatListLocationContext {
+         stateAndFilterId: (state: ChatListNodeState, filterId: Int32?),
          presentationData: PresentationData
      ) {
++        let hideChatListStatus = UserDefaults.standard.bool(forKey: "sosuzagram_hide_chat_list_status")
          if stateAndFilterId.state.editing && stateAndFilterId.state.selectedThreadIds.count > 0 {
-+            let hideChatListStatus = UserDefaults.standard.bool(forKey: "sosuzagram_hide_chat_list_status")
              self.chatTitleComponent = ChatTitleComponent(
                  context: self.context,
-                 theme: presentationData.theme,
 @@ -7287,7 +7308,7 @@ private final class ChatListLocationContext {
                  dateTimeFormat: presentationData.dateTimeFormat,
                  nameDisplayOrder: presentationData.nameDisplayOrder,
