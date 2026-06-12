@@ -32,6 +32,23 @@ private struct SosuzagramSettingsControllerArguments {
     let toggleHideAllChatsTab: (Bool) -> Void
     let toggleHideGreetingSticker: (Bool) -> Void
     let toggleHideStickerTimestamp: (Bool) -> Void
+    let toggleDisableCompactNumericCounts: (Bool) -> Void
+    let toggleFormatTimeWithSeconds: (Bool) -> Void
+    let toggleCommaAfterMention: (Bool) -> Void
+    let toggleShowOnlineIndicator: (Bool) -> Void
+    let toggleHideMessageTail: (Bool) -> Void
+    let toggleCenterChatListTitle: (Bool) -> Void
+    let toggleUseYandexMaps: (Bool) -> Void
+    let toggleHideChatListStatus: (Bool) -> Void
+    let toggleHideArchiveFromList: (Bool) -> Void
+    let toggleOpenArchiveOnPull: (Bool) -> Void
+    let toggleDisableArchiveReturnGesture: (Bool) -> Void
+    let toggleRelativeOnlineTime: (Bool) -> Void
+    let toggleHidePhoneNumber: (Bool) -> Void
+    let toggleShowIdDc: (Bool) -> Void
+    let toggleFilterZalgo: (Bool) -> Void
+    let toggleAppVibration: (Bool) -> Void
+    let toggleHideReactions: (Bool) -> Void
     let selectIcon: (String) -> Void
     let openPlugin: (String) -> Void
     let importPlugin: () -> Void
@@ -119,6 +136,23 @@ private func sosuzagramSettingsEntries(
     hideAllChatsTab: Bool,
     hideGreetingSticker: Bool,
     hideStickerTimestamp: Bool,
+    disableCompactNumericCounts: Bool,
+    formatTimeWithSeconds: Bool,
+    commaAfterMention: Bool,
+    showOnlineIndicator: Bool,
+    hideMessageTail: Bool,
+    centerChatListTitle: Bool,
+    useYandexMaps: Bool,
+    hideChatListStatus: Bool,
+    hideArchiveFromList: Bool,
+    openArchiveOnPull: Bool,
+    disableArchiveReturnGesture: Bool,
+    relativeOnlineTime: Bool,
+    hidePhoneNumber: Bool,
+    showIdDc: Bool,
+    filterZalgo: Bool,
+    appVibration: Bool,
+    hideReactions: Bool,
     currentIcon: String,
     plugins: [SosuzagramPluginDescriptor]
 ) -> [SosuzagramSettingsEntry] {
@@ -359,6 +393,193 @@ private func sosuzagramSettingsEntries(
             })
         }
     ))
+    entries.append(SosuzagramSettingsEntry(
+        section: SosuzagramSettingsSection.ui.rawValue,
+        stableId: 22,
+        sortId: 22,
+        signature: "compactcounts:\(disableCompactNumericCounts)",
+        buildItem: { presentationData, arguments in
+            ItemListSwitchItem(presentationData: presentationData, systemStyle: .glass, title: "Не округлять большие числа", value: disableCompactNumericCounts, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
+                arguments.toggleDisableCompactNumericCounts(value)
+            })
+        }
+    ))
+    entries.append(SosuzagramSettingsEntry(
+        section: SosuzagramSettingsSection.ui.rawValue,
+        stableId: 23,
+        sortId: 23,
+        signature: "seconds:\(formatTimeWithSeconds)",
+        buildItem: { presentationData, arguments in
+            ItemListSwitchItem(presentationData: presentationData, systemStyle: .glass, title: "Показывать время с секундами", value: formatTimeWithSeconds, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
+                arguments.toggleFormatTimeWithSeconds(value)
+            })
+        }
+    ))
+    entries.append(SosuzagramSettingsEntry(
+        section: SosuzagramSettingsSection.ui.rawValue,
+        stableId: 24,
+        sortId: 24,
+        signature: "commaaftermention:\(commaAfterMention)",
+        buildItem: { presentationData, arguments in
+            ItemListSwitchItem(presentationData: presentationData, systemStyle: .glass, title: "Запятая после упоминания", value: commaAfterMention, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
+                arguments.toggleCommaAfterMention(value)
+            })
+        }
+    ))
+    entries.append(SosuzagramSettingsEntry(
+        section: SosuzagramSettingsSection.ui.rawValue,
+        stableId: 25,
+        sortId: 25,
+        signature: "onlineindicator:\(showOnlineIndicator)",
+        buildItem: { presentationData, arguments in
+            ItemListSwitchItem(presentationData: presentationData, systemStyle: .glass, title: "Показывать индикатор онлайна", value: showOnlineIndicator, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
+                arguments.toggleShowOnlineIndicator(value)
+            })
+        }
+    ))
+    entries.append(SosuzagramSettingsEntry(
+        section: SosuzagramSettingsSection.ui.rawValue,
+        stableId: 26,
+        sortId: 26,
+        signature: "hidetail:\(hideMessageTail)",
+        buildItem: { presentationData, arguments in
+            ItemListSwitchItem(presentationData: presentationData, systemStyle: .glass, title: "Убрать хвост у сообщений", value: hideMessageTail, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
+                arguments.toggleHideMessageTail(value)
+            })
+        }
+    ))
+    entries.append(SosuzagramSettingsEntry(
+        section: SosuzagramSettingsSection.ui.rawValue,
+        stableId: 27,
+        sortId: 27,
+        signature: "centertitle:\(centerChatListTitle)",
+        buildItem: { presentationData, arguments in
+            ItemListSwitchItem(presentationData: presentationData, systemStyle: .glass, title: "Заголовок по центру", value: centerChatListTitle, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
+                arguments.toggleCenterChatListTitle(value)
+            })
+        }
+    ))
+    entries.append(SosuzagramSettingsEntry(
+        section: SosuzagramSettingsSection.ui.rawValue,
+        stableId: 28,
+        sortId: 28,
+        signature: "yandexmaps:\(useYandexMaps)",
+        buildItem: { presentationData, arguments in
+            ItemListSwitchItem(presentationData: presentationData, systemStyle: .glass, title: "Использовать Яндекс Карты", value: useYandexMaps, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
+                arguments.toggleUseYandexMaps(value)
+            })
+        }
+    ))
+    entries.append(SosuzagramSettingsEntry(
+        section: SosuzagramSettingsSection.ui.rawValue,
+        stableId: 29,
+        sortId: 29,
+        signature: "hidechatliststatus:\(hideChatListStatus)",
+        buildItem: { presentationData, arguments in
+            ItemListSwitchItem(presentationData: presentationData, systemStyle: .glass, title: "Скрывать статус в списке чатов", value: hideChatListStatus, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
+                arguments.toggleHideChatListStatus(value)
+            })
+        }
+    ))
+    entries.append(SosuzagramSettingsEntry(
+        section: SosuzagramSettingsSection.ui.rawValue,
+        stableId: 30,
+        sortId: 30,
+        signature: "hidearchive:\(hideArchiveFromList)",
+        buildItem: { presentationData, arguments in
+            ItemListSwitchItem(presentationData: presentationData, systemStyle: .glass, title: "Скрыть архив из списка чатов", value: hideArchiveFromList, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
+                arguments.toggleHideArchiveFromList(value)
+            })
+        }
+    ))
+    entries.append(SosuzagramSettingsEntry(
+        section: SosuzagramSettingsSection.ui.rawValue,
+        stableId: 31,
+        sortId: 31,
+        signature: "openarchivepull:\(openArchiveOnPull)",
+        buildItem: { presentationData, arguments in
+            ItemListSwitchItem(presentationData: presentationData, systemStyle: .glass, title: "Открывать архив свайпом вниз", value: openArchiveOnPull, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
+                arguments.toggleOpenArchiveOnPull(value)
+            })
+        }
+    ))
+    entries.append(SosuzagramSettingsEntry(
+        section: SosuzagramSettingsSection.ui.rawValue,
+        stableId: 32,
+        sortId: 32,
+        signature: "disablearchivereturn:\(disableArchiveReturnGesture)",
+        buildItem: { presentationData, arguments in
+            ItemListSwitchItem(presentationData: presentationData, systemStyle: .glass, title: "Отключить возврат из архива свайпом", value: disableArchiveReturnGesture, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
+                arguments.toggleDisableArchiveReturnGesture(value)
+            })
+        }
+    ))
+    entries.append(SosuzagramSettingsEntry(
+        section: SosuzagramSettingsSection.ui.rawValue,
+        stableId: 33,
+        sortId: 33,
+        signature: "relativeonline:\(relativeOnlineTime)",
+        buildItem: { presentationData, arguments in
+            ItemListSwitchItem(presentationData: presentationData, systemStyle: .glass, title: "Относительное время онлайна", value: relativeOnlineTime, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
+                arguments.toggleRelativeOnlineTime(value)
+            })
+        }
+    ))
+    entries.append(SosuzagramSettingsEntry(
+        section: SosuzagramSettingsSection.ui.rawValue,
+        stableId: 34,
+        sortId: 34,
+        signature: "hidephone:\(hidePhoneNumber)",
+        buildItem: { presentationData, arguments in
+            ItemListSwitchItem(presentationData: presentationData, systemStyle: .glass, title: "Скрывать номер телефона", value: hidePhoneNumber, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
+                arguments.toggleHidePhoneNumber(value)
+            })
+        }
+    ))
+    entries.append(SosuzagramSettingsEntry(
+        section: SosuzagramSettingsSection.ui.rawValue,
+        stableId: 35,
+        sortId: 35,
+        signature: "showiddc:\(showIdDc)",
+        buildItem: { presentationData, arguments in
+            ItemListSwitchItem(presentationData: presentationData, systemStyle: .glass, title: "Показывать ID / DC", value: showIdDc, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
+                arguments.toggleShowIdDc(value)
+            })
+        }
+    ))
+    entries.append(SosuzagramSettingsEntry(
+        section: SosuzagramSettingsSection.ui.rawValue,
+        stableId: 36,
+        sortId: 36,
+        signature: "zalgo:\(filterZalgo)",
+        buildItem: { presentationData, arguments in
+            ItemListSwitchItem(presentationData: presentationData, systemStyle: .glass, title: "Фильтр Zalgo", value: filterZalgo, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
+                arguments.toggleFilterZalgo(value)
+            })
+        }
+    ))
+    entries.append(SosuzagramSettingsEntry(
+        section: SosuzagramSettingsSection.ui.rawValue,
+        stableId: 37,
+        sortId: 37,
+        signature: "appvibration:\(appVibration)",
+        buildItem: { presentationData, arguments in
+            ItemListSwitchItem(presentationData: presentationData, systemStyle: .glass, title: "Вибрация приложения", value: appVibration, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
+                arguments.toggleAppVibration(value)
+            })
+        }
+    ))
+    entries.append(SosuzagramSettingsEntry(
+        section: SosuzagramSettingsSection.ui.rawValue,
+        stableId: 38,
+        sortId: 38,
+        signature: "hidereactions:\(hideReactions)",
+        buildItem: { presentationData, arguments in
+            ItemListSwitchItem(presentationData: presentationData, systemStyle: .glass, title: "Скрыть реакции", value: hideReactions, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
+                arguments.toggleHideReactions(value)
+            })
+        }
+    ))
 
     let icons = [
         ("Стандартная", "nil"),
@@ -552,6 +773,74 @@ public func sosuzagramSettingsController(context: AccountContext) -> ViewControl
             UserDefaults.standard.set(value, forKey: "sosuzagram_hide_sticker_timestamp")
             updateSettingsImpl?()
         },
+        toggleDisableCompactNumericCounts: { value in
+            UserDefaults.standard.set(value, forKey: "sosuzagram_disable_compact_numeric_counts")
+            updateSettingsImpl?()
+        },
+        toggleFormatTimeWithSeconds: { value in
+            UserDefaults.standard.set(value, forKey: "sosuzagram_format_time_with_seconds")
+            updateSettingsImpl?()
+        },
+        toggleCommaAfterMention: { value in
+            UserDefaults.standard.set(value, forKey: "sosuzagram_comma_after_mention")
+            updateSettingsImpl?()
+        },
+        toggleShowOnlineIndicator: { value in
+            UserDefaults.standard.set(value, forKey: "sosuzagram_show_online_indicator")
+            updateSettingsImpl?()
+        },
+        toggleHideMessageTail: { value in
+            UserDefaults.standard.set(value, forKey: "sosuzagram_hide_message_tail")
+            updateSettingsImpl?()
+        },
+        toggleCenterChatListTitle: { value in
+            UserDefaults.standard.set(value, forKey: "sosuzagram_center_chat_list_title")
+            updateSettingsImpl?()
+        },
+        toggleUseYandexMaps: { value in
+            UserDefaults.standard.set(value, forKey: "sosuzagram_use_yandex_maps")
+            updateSettingsImpl?()
+        },
+        toggleHideChatListStatus: { value in
+            UserDefaults.standard.set(value, forKey: "sosuzagram_hide_chat_list_status")
+            updateSettingsImpl?()
+        },
+        toggleHideArchiveFromList: { value in
+            UserDefaults.standard.set(value, forKey: "sosuzagram_hide_archive_from_list")
+            updateSettingsImpl?()
+        },
+        toggleOpenArchiveOnPull: { value in
+            UserDefaults.standard.set(value, forKey: "sosuzagram_open_archive_on_pull")
+            updateSettingsImpl?()
+        },
+        toggleDisableArchiveReturnGesture: { value in
+            UserDefaults.standard.set(value, forKey: "sosuzagram_disable_archive_return_gesture")
+            updateSettingsImpl?()
+        },
+        toggleRelativeOnlineTime: { value in
+            UserDefaults.standard.set(value, forKey: "sosuzagram_relative_online_time")
+            updateSettingsImpl?()
+        },
+        toggleHidePhoneNumber: { value in
+            UserDefaults.standard.set(value, forKey: "sosuzagram_hide_phone_number")
+            updateSettingsImpl?()
+        },
+        toggleShowIdDc: { value in
+            UserDefaults.standard.set(value, forKey: "sosuzagram_show_id_dc")
+            updateSettingsImpl?()
+        },
+        toggleFilterZalgo: { value in
+            UserDefaults.standard.set(value, forKey: "sosuzagram_filter_zalgo")
+            updateSettingsImpl?()
+        },
+        toggleAppVibration: { value in
+            UserDefaults.standard.set(value, forKey: "sosuzagram_app_vibration")
+            updateSettingsImpl?()
+        },
+        toggleHideReactions: { value in
+            UserDefaults.standard.set(value, forKey: "sosuzagram_hide_reactions")
+            updateSettingsImpl?()
+        },
         selectIcon: { iconName in
             let targetName = iconName == "nil" ? nil : iconName
             if UIApplication.shared.supportsAlternateIcons {
@@ -596,6 +885,23 @@ public func sosuzagramSettingsController(context: AccountContext) -> ViewControl
         let hideAllChatsTab = UserDefaults.standard.bool(forKey: "sosuzagram_hide_all_chats_tab")
         let hideGreetingSticker = UserDefaults.standard.bool(forKey: "sosuzagram_hide_greeting_sticker")
         let hideStickerTimestamp = UserDefaults.standard.bool(forKey: "sosuzagram_hide_sticker_timestamp")
+        let disableCompactNumericCounts = UserDefaults.standard.bool(forKey: "sosuzagram_disable_compact_numeric_counts")
+        let formatTimeWithSeconds = UserDefaults.standard.bool(forKey: "sosuzagram_format_time_with_seconds")
+        let commaAfterMention = UserDefaults.standard.bool(forKey: "sosuzagram_comma_after_mention")
+        let showOnlineIndicator = UserDefaults.standard.bool(forKey: "sosuzagram_show_online_indicator")
+        let hideMessageTail = UserDefaults.standard.bool(forKey: "sosuzagram_hide_message_tail")
+        let centerChatListTitle = UserDefaults.standard.bool(forKey: "sosuzagram_center_chat_list_title")
+        let useYandexMaps = UserDefaults.standard.bool(forKey: "sosuzagram_use_yandex_maps")
+        let hideChatListStatus = UserDefaults.standard.bool(forKey: "sosuzagram_hide_chat_list_status")
+        let hideArchiveFromList = UserDefaults.standard.bool(forKey: "sosuzagram_hide_archive_from_list")
+        let openArchiveOnPull = UserDefaults.standard.bool(forKey: "sosuzagram_open_archive_on_pull")
+        let disableArchiveReturnGesture = UserDefaults.standard.bool(forKey: "sosuzagram_disable_archive_return_gesture")
+        let relativeOnlineTime = UserDefaults.standard.bool(forKey: "sosuzagram_relative_online_time")
+        let hidePhoneNumber = UserDefaults.standard.bool(forKey: "sosuzagram_hide_phone_number")
+        let showIdDc = UserDefaults.standard.bool(forKey: "sosuzagram_show_id_dc")
+        let filterZalgo = UserDefaults.standard.bool(forKey: "sosuzagram_filter_zalgo")
+        let appVibration = UserDefaults.standard.object(forKey: "sosuzagram_app_vibration") as? Bool ?? true
+        let hideReactions = UserDefaults.standard.bool(forKey: "sosuzagram_hide_reactions")
         let currentIcon = UserDefaults.standard.string(forKey: "sosuzagram_current_icon") ?? "nil"
         let plugins = sosuzagramBuiltInPlugins()
 
@@ -626,6 +932,23 @@ public func sosuzagramSettingsController(context: AccountContext) -> ViewControl
             hideAllChatsTab: hideAllChatsTab,
             hideGreetingSticker: hideGreetingSticker,
             hideStickerTimestamp: hideStickerTimestamp,
+            disableCompactNumericCounts: disableCompactNumericCounts,
+            formatTimeWithSeconds: formatTimeWithSeconds,
+            commaAfterMention: commaAfterMention,
+            showOnlineIndicator: showOnlineIndicator,
+            hideMessageTail: hideMessageTail,
+            centerChatListTitle: centerChatListTitle,
+            useYandexMaps: useYandexMaps,
+            hideChatListStatus: hideChatListStatus,
+            hideArchiveFromList: hideArchiveFromList,
+            openArchiveOnPull: openArchiveOnPull,
+            disableArchiveReturnGesture: disableArchiveReturnGesture,
+            relativeOnlineTime: relativeOnlineTime,
+            hidePhoneNumber: hidePhoneNumber,
+            showIdDc: showIdDc,
+            filterZalgo: filterZalgo,
+            appVibration: appVibration,
+            hideReactions: hideReactions,
             currentIcon: currentIcon,
             plugins: plugins
         )
