@@ -206,7 +206,7 @@ index 2245bafe..a182e9b5 100644
      func makeChatRecentActionsController(context: AccountContext, peer: EnginePeer, adminPeerId: PeerId?, starsState: StarsRevenueStats?) -> ViewController
      func makePrivacyAndSecurityController(context: AccountContext) -> ViewController
 diff --git a/submodules/ChatListUI/Sources/ChatListController.swift b/submodules/ChatListUI/Sources/ChatListController.swift
-index c9c94d32..ac4ebf5a 100644
+index c9c94d32..96c07a9b 100644
 --- a/submodules/ChatListUI/Sources/ChatListController.swift
 +++ b/submodules/ChatListUI/Sources/ChatListController.swift
 @@ -60,6 +60,68 @@ import HeaderPanelContainerComponent
@@ -420,7 +420,7 @@ index c9c94d32..ac4ebf5a 100644
                  availableFilters.insert(.all, at: 0)
              }
              strongSelf.chatListDisplayNode.mainContainerNode.updateAvailableFilters(availableFilters, limit: filtersLimit)
-@@ -6735,6 +6813,18 @@ private final class ChatListLocationContext {
+@@ -6735,6 +6813,20 @@ private final class ChatListLocationContext {
              peerStatus = .single(nil)
          }
          
@@ -428,7 +428,9 @@ index c9c94d32..ac4ebf5a 100644
 +        switch self.location {
 +        case .chatList(.root):
 +            accountPeer = context.engine.data.subscribe(TelegramEngine.EngineData.Item.Peer.Peer(id: context.account.peerId))
-+            |> map(Optional.init)
++            |> map { peer -> EnginePeer? in
++                peer
++            }
 +            |> distinctUntilChanged(isEqual: { lhs, rhs in
 +                lhs == rhs
 +            })
@@ -439,7 +441,7 @@ index c9c94d32..ac4ebf5a 100644
          let networkState: Signal<AccountNetworkState, NoError>
          #if DEBUG && false
          networkState = .single(AccountNetworkState.connecting(proxy: nil)) |> then(.single(AccountNetworkState.updating(proxy: nil)) |> delay(2.0, queue: .mainQueue())) |> then(.single(AccountNetworkState.online(proxy: nil)) |> delay(2.0, queue: .mainQueue())) |> then(.complete() |> delay(2.0, queue: .mainQueue())) |> restart
-@@ -6782,9 +6872,10 @@ private final class ChatListLocationContext {
+@@ -6782,9 +6874,10 @@ private final class ChatListLocationContext {
                      containerNode.currentItemState,
                      isReorderingTabs,
                      peerStatus,
@@ -451,7 +453,7 @@ index c9c94d32..ac4ebf5a 100644
                      guard let self else {
                          return
                      }
-@@ -6796,6 +6887,7 @@ private final class ChatListLocationContext {
+@@ -6796,6 +6889,7 @@ private final class ChatListLocationContext {
                          stateAndFilterId: stateAndFilterId,
                          isReorderingTabs: isReorderingTabs,
                          peerStatus: peerStatus,
@@ -459,7 +461,7 @@ index c9c94d32..ac4ebf5a 100644
                          presentationData: presentationData,
                          storyPostingAvailable: storyPostingAvailable
                      )
-@@ -7023,10 +7115,11 @@ private final class ChatListLocationContext {
+@@ -7023,10 +7117,11 @@ private final class ChatListLocationContext {
          stateAndFilterId: (state: ChatListNodeState, filterId: Int32?),
          isReorderingTabs: Bool,
          peerStatus: NetworkStatusTitle.Status?,
@@ -472,7 +474,7 @@ index c9c94d32..ac4ebf5a 100644
          switch location {
          case let .chatList(groupId):
              if groupId == .root {
-@@ -7039,6 +7132,9 @@ private final class ChatListLocationContext {
+@@ -7039,6 +7134,9 @@ private final class ChatListLocationContext {
          case .savedMessagesChats:
              defaultTitle = ""
          }
@@ -482,7 +484,7 @@ index c9c94d32..ac4ebf5a 100644
          let previousEditingAndNetworkState = self.previousEditingAndNetworkStateValue.swap((stateAndFilterId.state.editing, networkState))
          
          var titleContent: NetworkStatusTitle
-@@ -7091,6 +7187,7 @@ private final class ChatListLocationContext {
+@@ -7091,6 +7189,7 @@ private final class ChatListLocationContext {
              var isRoot = false
              if case .chatList(.root) = self.location {
                  isRoot = true
@@ -490,7 +492,7 @@ index c9c94d32..ac4ebf5a 100644
                  
                  if isReorderingTabs {
                      self.rightButton = AnyComponentWithIdentity(id: "done", component: AnyComponent(NavigationButtonComponent(
-@@ -7100,12 +7197,16 @@ private final class ChatListLocationContext {
+@@ -7100,12 +7199,16 @@ private final class ChatListLocationContext {
                          }
                      )))
                  } else {
@@ -513,7 +515,7 @@ index c9c94d32..ac4ebf5a 100644
                  }
                  
                  if isReorderingTabs {
-@@ -7261,6 +7362,7 @@ private final class ChatListLocationContext {
+@@ -7261,6 +7364,7 @@ private final class ChatListLocationContext {
          stateAndFilterId: (state: ChatListNodeState, filterId: Int32?),
          presentationData: PresentationData
      ) {
@@ -521,7 +523,7 @@ index c9c94d32..ac4ebf5a 100644
          if stateAndFilterId.state.editing && stateAndFilterId.state.selectedThreadIds.count > 0 {
              self.chatTitleComponent = ChatTitleComponent(
                  context: self.context,
-@@ -7287,7 +7389,7 @@ private final class ChatListLocationContext {
+@@ -7287,7 +7391,7 @@ private final class ChatListLocationContext {
                  dateTimeFormat: presentationData.dateTimeFormat,
                  nameDisplayOrder: presentationData.nameDisplayOrder,
                  displayBackground: false,
@@ -531,9 +533,53 @@ index c9c94d32..ac4ebf5a 100644
                  networkState: nil,
                  tapped: { [weak self] in
 diff --git a/submodules/ChatListUI/Sources/ChatListControllerNode.swift b/submodules/ChatListUI/Sources/ChatListControllerNode.swift
-index 826aa80f..a75ba424 100644
+index 826aa80f..a84b0a81 100644
 --- a/submodules/ChatListUI/Sources/ChatListControllerNode.swift
 +++ b/submodules/ChatListUI/Sources/ChatListControllerNode.swift
+@@ -1526,8 +1526,8 @@ final class ChatListControllerNode: ASDisplayNode, ASGestureRecognizerDelegate {
+                 switch self.effectiveContainerNode.currentItemFilter {
+                 case .all:
+                     selectedTab = AnyHashable(Int32.min)
+-                case let .filter(id):
+-                    selectedTab = AnyHashable(id)
++                case let .filter(filter):
++                    selectedTab = AnyHashable(filter.id)
+                 }
+                 
+                 let isEditing = self.isReorderingFilters || (self.mainContainerNode.currentItemNode.currentState.editing && !self.didBeginSelectingChatsWhileEditing)
+@@ -1545,7 +1545,7 @@ final class ChatListControllerNode: ASDisplayNode, ASGestureRecognizerDelegate {
+                             id = Int32.min
+                             title = HorizontalTabsComponent.Tab.Title(text: self.presentationData.strings.ChatList_Tabs_All, entities: [], enableAnimations: false)
+                             isMainTab = true
+-                        case let .filter(idValue, text, unread):
++                        case let .filter(idValue, text, _, unread):
+                             id = AnyHashable(idValue)
+                             title = HorizontalTabsComponent.Tab.Title(text: text.text, entities: text.entities, enableAnimations: text.enableAnimations)
+                             if unread.value != 0 {
+@@ -1610,7 +1610,7 @@ final class ChatListControllerNode: ASDisplayNode, ASGestureRecognizerDelegate {
+                                 switch entry {
+                                 case .all:
+                                     mappedId = nil
+-                                case let .filter(idValue, _, _):
++                                case let .filter(idValue, _, _, _):
+                                     mappedId = idValue
+                                 }
+                                 
+@@ -1970,10 +1970,10 @@ final class ChatListControllerNode: ASDisplayNode, ASGestureRecognizerDelegate {
+             switch self.effectiveContainerNode.currentItemFilter {
+             case .all:
+                 break
+-            case let .filter(id):
+-                if let value = folders.first(where: { $0.id == .filter(id) }) {
+-                    if case let .filter(_, text, _) = value {
+-                        folder = (id, text.text)
++            case let .filter(filter):
++                if let value = folders.first(where: { $0.id == .filter(filter.id) }) {
++                    if case let .filter(_, text, _, _) = value {
++                        folder = (filter.id, text.text)
+                     }
+                 }
+             }
 @@ -2398,6 +2398,9 @@ final class ChatListControllerNode: ASDisplayNode, ASGestureRecognizerDelegate {
  }
  
