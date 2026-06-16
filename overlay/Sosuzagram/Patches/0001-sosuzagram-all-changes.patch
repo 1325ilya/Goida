@@ -3913,7 +3913,7 @@ index 44c99484..514a23e3 100644
  
          if self.lineNode.supernode == self {
 diff --git a/submodules/TelegramUI/Components/ChatList/ChatListFilterTabContainerNode/Sources/ChatListFilterTabContainerNode.swift b/submodules/TelegramUI/Components/ChatList/ChatListFilterTabContainerNode/Sources/ChatListFilterTabContainerNode.swift
-index d23452eb..21eba3f6 100644
+index d23452eb..bfd1329f 100644
 --- a/submodules/TelegramUI/Components/ChatList/ChatListFilterTabContainerNode/Sources/ChatListFilterTabContainerNode.swift
 +++ b/submodules/TelegramUI/Components/ChatList/ChatListFilterTabContainerNode/Sources/ChatListFilterTabContainerNode.swift
 @@ -10,6 +10,139 @@ import GlassBackgroundComponent
@@ -4035,9 +4035,9 @@ index d23452eb..21eba3f6 100644
 +            cornerRadius = 12.0
 +        case (_, "stacked"):
 +            cornerRadius = 18.0
-+        case 3:
++        case (3, _):
 +            cornerRadius = 14.0
-+        case 2:
++        case (2, _):
 +            cornerRadius = 15.0
 +        default:
 +            cornerRadius = 16.0
