@@ -4930,6 +4930,19 @@ index 32aa2f66..cad6ad68 100644
      var username = ""
      if let addressName = data.peer?.addressName, !addressName.isEmpty {
          username = "@\(addressName)"
+diff --git a/submodules/TelegramUI/Components/PeerSelectionController/Sources/PeerSelectionController.swift b/submodules/TelegramUI/Components/PeerSelectionController/Sources/PeerSelectionController.swift
+index fb257f92..1f03e940 100644
+--- a/submodules/TelegramUI/Components/PeerSelectionController/Sources/PeerSelectionController.swift
++++ b/submodules/TelegramUI/Components/PeerSelectionController/Sources/PeerSelectionController.swift
+@@ -502,7 +502,7 @@ public final class PeerSelectionControllerImpl: ViewController, PeerSelectionCon
+                             filterItems.append(.all(unreadCount: 0))
+                         }
+                     case let .filter(id, title, _, _):
+-                        filterItems.append(.filter(id: id, text: title, unread: ChatListFilterTabEntryUnreadCount(value: unreadCount, hasUnmuted: hasUnmutedUnread)))
++                        filterItems.append(.filter(id: id, title: title, shortTitle: title, unread: ChatListFilterTabEntryUnreadCount(value: unreadCount, hasUnmuted: hasUnmutedUnread)))
+                 }
+             }
+             
 diff --git a/submodules/TelegramUI/Sources/AccountContext.swift b/submodules/TelegramUI/Sources/AccountContext.swift
 index 354ab8cf..eaabee05 100644
 --- a/submodules/TelegramUI/Sources/AccountContext.swift
