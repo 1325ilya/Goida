@@ -1474,6 +1474,19 @@ index b761375c..e7df57ca 100644
          
          self.state = MultipartUploadState(encryptionKey: encryptionKey)
          
+diff --git a/submodules/TelegramCore/Sources/SosuzagramHooks.swift b/submodules/TelegramCore/Sources/SosuzagramHooks.swift
+new file mode 100644
+index 00000000..17ed050c
+--- /dev/null
++++ b/submodules/TelegramCore/Sources/SosuzagramHooks.swift
+@@ -0,0 +1,7 @@
++import Foundation
++import Postbox
++
++public struct SosuzagramHooks {
++    public static var recordIncomingMessage: ((_ message: StoreMessage) -> Void)?
++    public static var recordMessageRemoval: ((_ peerId: Int64, _ messageIds: [Int32]) -> Void)?
++}
 diff --git a/submodules/TelegramCore/Sources/State/AccountStateManagementUtils.swift b/submodules/TelegramCore/Sources/State/AccountStateManagementUtils.swift
 index 89eb1516..312d3d11 100644
 --- a/submodules/TelegramCore/Sources/State/AccountStateManagementUtils.swift
