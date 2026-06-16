@@ -153,30 +153,30 @@ private enum SosuzagramSettingsCategory: CaseIterable {
     var title: String {
         switch self {
         case .basics:
-            return "ÐžÑÐ½Ð¾Ð²Ð½Ñ‹Ðµ"
+            return "ÃÅ¾Ã‘ÂÃÂ½ÃÂ¾ÃÂ²ÃÂ½Ã‘â€¹ÃÂµ"
         case .appearance:
-            return "ÐžÑ„Ð¾Ñ€Ð¼Ð»ÐµÐ½Ð¸Ðµ"
+            return "ÃÅ¾Ã‘â€žÃÂ¾Ã‘â‚¬ÃÂ¼ÃÂ»ÃÂµÃÂ½ÃÂ¸ÃÂµ"
         case .chats:
-            return "Ð§Ð°Ñ‚Ñ‹"
+            return "ÃÂ§ÃÂ°Ã‘â€šÃ‘â€¹"
         case .plugins:
-            return "ÐŸÐ»Ð°Ð³Ð¸Ð½Ñ‹"
+            return "ÃÅ¸ÃÂ»ÃÂ°ÃÂ³ÃÂ¸ÃÂ½Ã‘â€¹"
         case .other:
-            return "Ð”Ñ€ÑƒÐ³Ð¾Ðµ"
+            return "Ãâ€Ã‘â‚¬Ã‘Æ’ÃÂ³ÃÂ¾ÃÂµ"
         }
     }
 
     var subtitle: String {
         switch self {
         case .basics:
-            return "ÐŸÐµÑ€ÐµÐ²Ð¾Ð´, Ð°Ñ€Ñ…Ð¸Ð², Ñ„Ð¾Ñ€Ð¼Ð°Ñ‚Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð¸Ðµ, Ð¿Ñ€Ð¸Ð²Ð°Ñ‚Ð½Ð¾ÑÑ‚ÑŒ Ð¿Ñ€Ð¾Ñ„Ð¸Ð»Ñ, ÐºÐ°Ñ€Ñ‚Ñ‹ Ð¸ Ð¾Ð±Ñ‰Ð¸Ðµ Ñ‚Ð²Ð¸ÐºÐ¸."
+            return "ÃÅ¸ÃÂµÃ‘â‚¬ÃÂµÃÂ²ÃÂ¾ÃÂ´, ÃÂ°Ã‘â‚¬Ã‘â€¦ÃÂ¸ÃÂ², Ã‘â€žÃÂ¾Ã‘â‚¬ÃÂ¼ÃÂ°Ã‘â€šÃÂ¸Ã‘â‚¬ÃÂ¾ÃÂ²ÃÂ°ÃÂ½ÃÂ¸ÃÂµ, ÃÂ¿Ã‘â‚¬ÃÂ¸ÃÂ²ÃÂ°Ã‘â€šÃÂ½ÃÂ¾Ã‘ÂÃ‘â€šÃ‘Å’ ÃÂ¿Ã‘â‚¬ÃÂ¾Ã‘â€žÃÂ¸ÃÂ»Ã‘Â, ÃÂºÃÂ°Ã‘â‚¬Ã‘â€šÃ‘â€¹ ÃÂ¸ ÃÂ¾ÃÂ±Ã‘â€°ÃÂ¸ÃÂµ Ã‘â€šÃÂ²ÃÂ¸ÃÂºÃÂ¸."
         case .appearance:
-            return "Ð˜ÐºÐ¾Ð½ÐºÐ¸, Ð¸ÑÑ‚Ð¾Ñ€Ð¸Ð¸, Ð²ÐºÐ»Ð°Ð´ÐºÐ¸, Ð·Ð°Ð³Ð¾Ð»Ð¾Ð²Ð¾Ðº Ð¸ Ð²Ð¸Ð·ÑƒÐ°Ð»ÑŒÐ½Ñ‹Ðµ Ð½Ð°ÑÑ‚Ñ€Ð¾Ð¹ÐºÐ¸ ÑÐ¿Ð¸ÑÐºÐ° Ñ‡Ð°Ñ‚Ð¾Ð²."
+            return "ÃËœÃÂºÃÂ¾ÃÂ½ÃÂºÃÂ¸, ÃÂ¸Ã‘ÂÃ‘â€šÃÂ¾Ã‘â‚¬ÃÂ¸ÃÂ¸, ÃÂ²ÃÂºÃÂ»ÃÂ°ÃÂ´ÃÂºÃÂ¸, ÃÂ·ÃÂ°ÃÂ³ÃÂ¾ÃÂ»ÃÂ¾ÃÂ²ÃÂ¾ÃÂº ÃÂ¸ ÃÂ²ÃÂ¸ÃÂ·Ã‘Æ’ÃÂ°ÃÂ»Ã‘Å’ÃÂ½Ã‘â€¹ÃÂµ ÃÂ½ÃÂ°Ã‘ÂÃ‘â€šÃ‘â‚¬ÃÂ¾ÃÂ¹ÃÂºÃÂ¸ Ã‘ÂÃÂ¿ÃÂ¸Ã‘ÂÃÂºÃÂ° Ã‘â€¡ÃÂ°Ã‘â€šÃÂ¾ÃÂ²."
         case .chats:
-            return "Ð¡Ð¾Ð¾Ð±Ñ‰ÐµÐ½Ð¸Ñ, Ñ€ÐµÐ°ÐºÑ†Ð¸Ð¸, ÑÑ‚Ð¸ÐºÐµÑ€Ñ‹, Ð¿Ð¾Ð´Ñ‚Ð²ÐµÑ€Ð¶Ð´ÐµÐ½Ð¸Ñ Ð¸ Ð¿Ð¾Ð²ÐµÐ´ÐµÐ½Ð¸Ðµ Ð²Ð½ÑƒÑ‚Ñ€Ð¸ Ñ‡Ð°Ñ‚Ð¾Ð²."
+            return "ÃÂ¡ÃÂ¾ÃÂ¾ÃÂ±Ã‘â€°ÃÂµÃÂ½ÃÂ¸Ã‘Â, Ã‘â‚¬ÃÂµÃÂ°ÃÂºÃ‘â€ ÃÂ¸ÃÂ¸, Ã‘ÂÃ‘â€šÃÂ¸ÃÂºÃÂµÃ‘â‚¬Ã‘â€¹, ÃÂ¿ÃÂ¾ÃÂ´Ã‘â€šÃÂ²ÃÂµÃ‘â‚¬ÃÂ¶ÃÂ´ÃÂµÃÂ½ÃÂ¸Ã‘Â ÃÂ¸ ÃÂ¿ÃÂ¾ÃÂ²ÃÂµÃÂ´ÃÂµÃÂ½ÃÂ¸ÃÂµ ÃÂ²ÃÂ½Ã‘Æ’Ã‘â€šÃ‘â‚¬ÃÂ¸ Ã‘â€¡ÃÂ°Ã‘â€šÃÂ¾ÃÂ²."
         case .plugins:
-            return "Ð’ÑÑ‚Ñ€Ð¾ÐµÐ½Ð½Ñ‹Ðµ Ð¿Ð»Ð°Ð³Ð¸Ð½Ñ‹ Extera Ð¸ Ð¸Ð¼Ð¿Ð¾Ñ€Ñ‚ .plugin Ñ„Ð°Ð¹Ð»Ð¾Ð²."
+            return "Ãâ€™Ã‘ÂÃ‘â€šÃ‘â‚¬ÃÂ¾ÃÂµÃÂ½ÃÂ½Ã‘â€¹ÃÂµ ÃÂ¿ÃÂ»ÃÂ°ÃÂ³ÃÂ¸ÃÂ½Ã‘â€¹ Extera ÃÂ¸ ÃÂ¸ÃÂ¼ÃÂ¿ÃÂ¾Ã‘â‚¬Ã‘â€š .plugin Ã‘â€žÃÂ°ÃÂ¹ÃÂ»ÃÂ¾ÃÂ²."
         case .other:
-            return "Ghost mode, Ð°Ð½Ñ‚Ð¸ÑƒÐ´Ð°Ð»ÐµÐ½Ð¸Ðµ Ð¸ Ð¿Ñ€Ð¾Ñ‡Ð¸Ðµ Ð´Ð¾Ð¿Ð¾Ð»Ð½Ð¸Ñ‚ÐµÐ»ÑŒÐ½Ñ‹Ðµ Ð²Ð¾Ð·Ð¼Ð¾Ð¶Ð½Ð¾ÑÑ‚Ð¸."
+            return "Ghost mode, ÃÂ°ÃÂ½Ã‘â€šÃÂ¸Ã‘Æ’ÃÂ´ÃÂ°ÃÂ»ÃÂµÃÂ½ÃÂ¸ÃÂµ ÃÂ¸ ÃÂ¿Ã‘â‚¬ÃÂ¾Ã‘â€¡ÃÂ¸ÃÂµ ÃÂ´ÃÂ¾ÃÂ¿ÃÂ¾ÃÂ»ÃÂ½ÃÂ¸Ã‘â€šÃÂµÃÂ»Ã‘Å’ÃÂ½Ã‘â€¹ÃÂµ ÃÂ²ÃÂ¾ÃÂ·ÃÂ¼ÃÂ¾ÃÂ¶ÃÂ½ÃÂ¾Ã‘ÂÃ‘â€šÃÂ¸."
         }
     }
 
@@ -228,21 +228,21 @@ private enum SosuzagramMessageMenuOption: String, CaseIterable {
     var title: String {
         switch self {
         case .reply:
-            return "Ответ"
+            return "ÐžÑ‚Ð²ÐµÑ‚"
         case .copy:
-            return "Копирование"
+            return "ÐšÐ¾Ð¿Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð¸Ðµ"
         case .translate:
-            return "Перевод"
+            return "ÐŸÐµÑ€ÐµÐ²Ð¾Ð´"
         case .speak:
-            return "Озвучивание"
+            return "ÐžÐ·Ð²ÑƒÑ‡Ð¸Ð²Ð°Ð½Ð¸Ðµ"
         case .save:
-            return "Сохранение"
+            return "Ð¡Ð¾Ñ…Ñ€Ð°Ð½ÐµÐ½Ð¸Ðµ"
         case .forward:
-            return "Пересылка"
+            return "ÐŸÐµÑ€ÐµÑÑ‹Ð»ÐºÐ°"
         case .select:
-            return "Выделение"
+            return "Ð’Ñ‹Ð´ÐµÐ»ÐµÐ½Ð¸Ðµ"
         case .delete:
-            return "Удаление"
+            return "Ð£Ð´Ð°Ð»ÐµÐ½Ð¸Ðµ"
         }
     }
 
@@ -273,44 +273,44 @@ private func sosuzagramMessageMenuEnabledCount() -> Int {
 private func sosuzagramStickerSizePresetLabel(_ value: String) -> String {
     switch value {
     case "small":
-        return "ÐœÐ°Ð»ÐµÐ½ÑŒÐºÐ¸Ð¹"
+        return "ÃÅ“ÃÂ°ÃÂ»ÃÂµÃÂ½Ã‘Å’ÃÂºÃÂ¸ÃÂ¹"
     case "large":
-        return "Ð‘Ð¾Ð»ÑŒÑˆÐ¾Ð¹"
+        return "Ãâ€˜ÃÂ¾ÃÂ»Ã‘Å’Ã‘Ë†ÃÂ¾ÃÂ¹"
     default:
-        return "Ð¡Ñ€ÐµÐ´Ð½Ð¸Ð¹"
+        return "ÃÂ¡Ã‘â‚¬ÃÂµÃÂ´ÃÂ½ÃÂ¸ÃÂ¹"
     }
 }
 
 private func sosuzagramDoubleTapActionLabel(_ action: SosuzagramDoubleTapAction) -> String {
     switch action {
     case .reactions:
-        return "Ð ÐµÐ°ÐºÑ†Ð¸Ð¸"
+        return "ÃÂ ÃÂµÃÂ°ÃÂºÃ‘â€ ÃÂ¸ÃÂ¸"
     case .none:
-        return "ÐÐµÑ‚"
+        return "ÃÂÃÂµÃ‘â€š"
     }
 }
 
 private func sosuzagramDownloadAccelerationLabel(_ value: String) -> String {
     switch value {
     case "fast":
-        return "Быстро"
+        return "Ð‘Ñ‹ÑÑ‚Ñ€Ð¾"
     case "faster":
-        return "Быстрее"
+        return "Ð‘Ñ‹ÑÑ‚Ñ€ÐµÐµ"
     default:
-        return "Обычная"
+        return "ÐžÐ±Ñ‹Ñ‡Ð½Ð°Ñ"
     }
 }
 
 private func sosuzagramVoiceRecognitionLocaleLabel(_ value: String) -> String {
     switch value {
     case "ru-RU":
-        return "Русский"
+        return "Ð ÑƒÑÑÐºÐ¸Ð¹"
     case "en-US":
         return "English"
     case "uk-UA":
-        return "Українська"
+        return "Ð£ÐºÑ€Ð°Ñ—Ð½ÑÑŒÐºÐ°"
     default:
-        return "Системный"
+        return "Ð¡Ð¸ÑÑ‚ÐµÐ¼Ð½Ñ‹Ð¹"
     }
 }
 
@@ -319,7 +319,7 @@ private func sosuzagramTranslationProviderLabel(_ value: String) -> String {
     case "google":
         return "Google"
     case "system":
-        return "Системный"
+        return "Ð¡Ð¸ÑÑ‚ÐµÐ¼Ð½Ñ‹Ð¹"
     default:
         return "Telegram"
     }
@@ -328,15 +328,15 @@ private func sosuzagramTranslationProviderLabel(_ value: String) -> String {
 private func sosuzagramTranslationTargetLabel(_ value: String) -> String {
     switch value {
     case "app":
-        return "Язык приложения"
+        return "Ð¯Ð·Ñ‹Ðº Ð¿Ñ€Ð¸Ð»Ð¾Ð¶ÐµÐ½Ð¸Ñ"
     case "system":
-        return "Язык системы"
+        return "Ð¯Ð·Ñ‹Ðº ÑÐ¸ÑÑ‚ÐµÐ¼Ñ‹"
     case "ru":
-        return "Русский"
+        return "Ð ÑƒÑÑÐºÐ¸Ð¹"
     case "en":
         return "English"
     case "uk":
-        return "Українська"
+        return "Ð£ÐºÑ€Ð°Ñ—Ð½ÑÑŒÐºÐ°"
     default:
         let normalizedValue = value.replacingOccurrences(of: "_", with: "-")
         let locale = Locale(identifier: Locale.current.identifier)
@@ -385,13 +385,13 @@ private func sosuzagramApplyAndroidDesignPreset(_ value: Bool) {
 private func sosuzagramVideoMessageCameraLabel(_ value: String) -> String {
     switch value {
     case "front":
-        return "Ð¤Ñ€Ð¾Ð½Ñ‚Ð°Ð»ÑŒÐ½Ð°Ñ"
+        return "ÃÂ¤Ã‘â‚¬ÃÂ¾ÃÂ½Ã‘â€šÃÂ°ÃÂ»Ã‘Å’ÃÂ½ÃÂ°Ã‘Â"
     case "back":
-        return "ÐžÑÐ½Ð¾Ð²Ð½Ð°Ñ"
+        return "ÃÅ¾Ã‘ÂÃÂ½ÃÂ¾ÃÂ²ÃÂ½ÃÂ°Ã‘Â"
     case "last":
-        return "ÐŸÐ¾ÑÐ»ÐµÐ´Ð½ÑÑ"
+        return "ÃÅ¸ÃÂ¾Ã‘ÂÃÂ»ÃÂµÃÂ´ÃÂ½Ã‘ÂÃ‘Â"
     default:
-        return "Ð¡Ð¸ÑÑ‚ÐµÐ¼Ð½Ð¾"
+        return "ÃÂ¡ÃÂ¸Ã‘ÂÃ‘â€šÃÂµÃÂ¼ÃÂ½ÃÂ¾"
     }
 }
 
@@ -402,20 +402,20 @@ private func sosuzagramCameraTypeLabel(_ value: String) -> String {
     case "camera2":
         return "Camera 2"
     default:
-        return "Системно"
+        return "Ð¡Ð¸ÑÑ‚ÐµÐ¼Ð½Ð¾"
     }
 }
 
 private func sosuzagramAvatarShapeLabel(_ value: String) -> String {
     switch value {
     case "circle":
-        return "ÐšÑ€ÑƒÐ³"
+        return "ÃÅ¡Ã‘â‚¬Ã‘Æ’ÃÂ³"
     case "rounded":
-        return "Ð¡ÐºÑ€ÑƒÐ³Ð»Ñ‘Ð½Ð½Ð°Ñ"
+        return "ÃÂ¡ÃÂºÃ‘â‚¬Ã‘Æ’ÃÂ³ÃÂ»Ã‘â€˜ÃÂ½ÃÂ½ÃÂ°Ã‘Â"
     case "square":
-        return "ÐšÐ²Ð°Ð´Ñ€Ð°Ñ‚"
+        return "ÃÅ¡ÃÂ²ÃÂ°ÃÂ´Ã‘â‚¬ÃÂ°Ã‘â€š"
     default:
-        return "Ð¡Ð¸ÑÑ‚ÐµÐ¼Ð½Ð¾"
+        return "ÃÂ¡ÃÂ¸Ã‘ÂÃ‘â€šÃÂµÃÂ¼ÃÂ½ÃÂ¾"
     }
 }
 
@@ -424,20 +424,20 @@ private func sosuzagramChatListTitleTextLabel(_ value: String) -> String {
     case "username":
         return "Username"
     case "name_and_username":
-        return "Ð˜Ð¼Ñ Ð¸ username"
+        return "ÃËœÃÂ¼Ã‘Â ÃÂ¸ username"
     default:
-        return "Ð˜Ð¼Ñ"
+        return "ÃËœÃÂ¼Ã‘Â"
     }
 }
 
 private func sosuzagramFolderTabTitlesLabel(_ value: String) -> String {
     switch value {
     case "icon":
-        return "Ð¢Ð¾Ð»ÑŒÐºÐ¾ Ð¸ÐºÐ¾Ð½ÐºÐ°"
+        return "ÃÂ¢ÃÂ¾ÃÂ»Ã‘Å’ÃÂºÃÂ¾ ÃÂ¸ÃÂºÃÂ¾ÃÂ½ÃÂºÃÂ°"
     case "title_and_icon":
-        return "ÐÐ°Ð·Ð²Ð°Ð½Ð¸Ðµ Ð¸ Ð¸ÐºÐ¾Ð½ÐºÐ°"
+        return "ÃÂÃÂ°ÃÂ·ÃÂ²ÃÂ°ÃÂ½ÃÂ¸ÃÂµ ÃÂ¸ ÃÂ¸ÃÂºÃÂ¾ÃÂ½ÃÂºÃÂ°"
     default:
-        return "ÐÐ°Ð·Ð²Ð°Ð½Ð¸Ðµ"
+        return "ÃÂÃÂ°ÃÂ·ÃÂ²ÃÂ°ÃÂ½ÃÂ¸ÃÂµ"
     }
 }
 
@@ -449,33 +449,33 @@ private func sosuzagramMaterialDesignLevelLabel(_ value: Int) -> String {
 private func sosuzagramReplyStyleLabel(_ value: String) -> String {
     switch value {
     case "rounded":
-        return "Закруглённые"
+        return "Ð—Ð°ÐºÑ€ÑƒÐ³Ð»Ñ‘Ð½Ð½Ñ‹Ðµ"
     case "message":
-        return "Сообщения"
+        return "Ð¡Ð¾Ð¾Ð±Ñ‰ÐµÐ½Ð¸Ñ"
     default:
-        return "По умолчанию"
+        return "ÐŸÐ¾ ÑƒÐ¼Ð¾Ð»Ñ‡Ð°Ð½Ð¸ÑŽ"
     }
 }
 
 private func sosuzagramStickerShapeLabel(_ value: String) -> String {
     switch value {
     case "rounded":
-        return "Закруглённая"
+        return "Ð—Ð°ÐºÑ€ÑƒÐ³Ð»Ñ‘Ð½Ð½Ð°Ñ"
     case "message":
-        return "Сообщение"
+        return "Ð¡Ð¾Ð¾Ð±Ñ‰ÐµÐ½Ð¸Ðµ"
     default:
-        return "По умолчанию"
+        return "ÐŸÐ¾ ÑƒÐ¼Ð¾Ð»Ñ‡Ð°Ð½Ð¸ÑŽ"
     }
 }
 
 private func sosuzagramPillStackModeLabel(_ value: String) -> String {
     switch value {
     case "compact":
-        return "Компактный"
+        return "ÐšÐ¾Ð¼Ð¿Ð°ÐºÑ‚Ð½Ñ‹Ð¹"
     case "stacked":
-        return "Стек"
+        return "Ð¡Ñ‚ÐµÐº"
     default:
-        return "Отключено"
+        return "ÐžÑ‚ÐºÐ»ÑŽÑ‡ÐµÐ½Ð¾"
     }
 }
 
@@ -663,11 +663,11 @@ private func sosuzagramLocalizedLanguageName(_ code: String) -> String {
 
 private func sosuzagramDoNotTranslateSummary(_ ignoredLanguages: [String]?) -> String {
     guard let ignoredLanguages else {
-        return "ÐÐ²Ñ‚Ð¾"
+        return "ÃÂÃÂ²Ã‘â€šÃÂ¾"
     }
     let normalized = ignoredLanguages.filter { !$0.isEmpty }
     guard !normalized.isEmpty else {
-        return "ÐÐ²Ñ‚Ð¾"
+        return "ÃÂÃÂ²Ã‘â€šÃÂ¾"
     }
     let names = normalized.map(sosuzagramLocalizedLanguageName)
     switch names.count {
@@ -692,7 +692,7 @@ private func sosuzagramOverviewEntries(
         sortId: 0,
         signature: "overview-header",
         buildItem: { presentationData, _ in
-            ItemListSectionHeaderItem(presentationData: presentationData, text: "ÐšÐ°Ñ‚ÐµÐ³Ð¾Ñ€Ð¸Ð¸", sectionId: 0)
+            ItemListSectionHeaderItem(presentationData: presentationData, text: "ÃÅ¡ÃÂ°Ã‘â€šÃÂµÃÂ³ÃÂ¾Ã‘â‚¬ÃÂ¸ÃÂ¸", sectionId: 0)
         }
     ))
 
@@ -732,7 +732,7 @@ private func sosuzagramOverviewEntries(
         buildItem: { presentationData, _ in
             ItemListTextItem(
                 presentationData: presentationData,
-                text: .plain("ÐÐ°ÑÑ‚Ñ€Ð¾Ð¹ÐºÐ¸ Sosuzagram Ñ€Ð°Ð·Ð»Ð¾Ð¶ÐµÐ½Ñ‹ Ð¿Ð¾ ÐºÐ°Ñ‚ÐµÐ³Ð¾Ñ€Ð¸ÑÐ¼. Ð’Ð½ÑƒÑ‚Ñ€Ð¸ Ñ€Ð°Ð·Ð´ÐµÐ»Ð¾Ð² Ð´Ð¾ÑÑ‚ÑƒÐ¿Ð½Ñ‹ Ð²ÑÐµ ÑƒÐ¶Ðµ Ð¿ÐµÑ€ÐµÐ½ÐµÑÑ‘Ð½Ð½Ñ‹Ðµ Ð½Ð°Ñ‚Ð¸Ð²Ð½Ñ‹Ðµ Ñ„ÑƒÐ½ÐºÑ†Ð¸Ð¸ Ð¸ Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ñ‹ Ð²ÑÑ‚Ñ€Ð¾ÐµÐ½Ð½Ñ‹Ñ… Ð¿Ð»Ð°Ð³Ð¸Ð½Ð¾Ð²."),
+                text: .plain("ÃÂÃÂ°Ã‘ÂÃ‘â€šÃ‘â‚¬ÃÂ¾ÃÂ¹ÃÂºÃÂ¸ Sosuzagram Ã‘â‚¬ÃÂ°ÃÂ·ÃÂ»ÃÂ¾ÃÂ¶ÃÂµÃÂ½Ã‘â€¹ ÃÂ¿ÃÂ¾ ÃÂºÃÂ°Ã‘â€šÃÂµÃÂ³ÃÂ¾Ã‘â‚¬ÃÂ¸Ã‘ÂÃÂ¼. Ãâ€™ÃÂ½Ã‘Æ’Ã‘â€šÃ‘â‚¬ÃÂ¸ Ã‘â‚¬ÃÂ°ÃÂ·ÃÂ´ÃÂµÃÂ»ÃÂ¾ÃÂ² ÃÂ´ÃÂ¾Ã‘ÂÃ‘â€šÃ‘Æ’ÃÂ¿ÃÂ½Ã‘â€¹ ÃÂ²Ã‘ÂÃÂµ Ã‘Æ’ÃÂ¶ÃÂµ ÃÂ¿ÃÂµÃ‘â‚¬ÃÂµÃÂ½ÃÂµÃ‘ÂÃ‘â€˜ÃÂ½ÃÂ½Ã‘â€¹ÃÂµ ÃÂ½ÃÂ°Ã‘â€šÃÂ¸ÃÂ²ÃÂ½Ã‘â€¹ÃÂµ Ã‘â€žÃ‘Æ’ÃÂ½ÃÂºÃ‘â€ ÃÂ¸ÃÂ¸ ÃÂ¸ ÃÂ¿ÃÂ°Ã‘â‚¬ÃÂ°ÃÂ¼ÃÂµÃ‘â€šÃ‘â‚¬Ã‘â€¹ ÃÂ²Ã‘ÂÃ‘â€šÃ‘â‚¬ÃÂ¾ÃÂµÃÂ½ÃÂ½Ã‘â€¹Ã‘â€¦ ÃÂ¿ÃÂ»ÃÂ°ÃÂ³ÃÂ¸ÃÂ½ÃÂ¾ÃÂ²."),
                 sectionId: 1
             )
         }
@@ -761,7 +761,7 @@ private func sosuzagramSanitizedPluginComponent(_ value: String) -> String {
 private func sosuzagramImportPluginFile(from sourceURL: URL) throws -> ImportedPlugin {
     let fileManager = FileManager.default
     guard let plugin = parsePlugin(at: sourceURL) else {
-        throw NSError(domain: "SosuzagramPluginImport", code: 2, userInfo: [NSLocalizedDescriptionKey: "Ð¤Ð°Ð¹Ð» Ð½Ðµ ÑÐ¾Ð´ÐµÑ€Ð¶Ð¸Ñ‚ ÐºÐ¾Ñ€Ñ€ÐµÐºÑ‚Ð½Ñ‹Ðµ Ð¼ÐµÑ‚Ð°Ð´Ð°Ð½Ð½Ñ‹Ðµ Ð¿Ð»Ð°Ð³Ð¸Ð½Ð°."])
+        throw NSError(domain: "SosuzagramPluginImport", code: 2, userInfo: [NSLocalizedDescriptionKey: "ÃÂ¤ÃÂ°ÃÂ¹ÃÂ» ÃÂ½ÃÂµ Ã‘ÂÃÂ¾ÃÂ´ÃÂµÃ‘â‚¬ÃÂ¶ÃÂ¸Ã‘â€š ÃÂºÃÂ¾Ã‘â‚¬Ã‘â‚¬ÃÂµÃÂºÃ‘â€šÃÂ½Ã‘â€¹ÃÂµ ÃÂ¼ÃÂµÃ‘â€šÃÂ°ÃÂ´ÃÂ°ÃÂ½ÃÂ½Ã‘â€¹ÃÂµ ÃÂ¿ÃÂ»ÃÂ°ÃÂ³ÃÂ¸ÃÂ½ÃÂ°."])
     }
     let directory = try sosuzagramPluginImportDirectory()
     let fileName = "\(sosuzagramSanitizedPluginComponent(plugin.id))_\(sosuzagramSanitizedPluginComponent(plugin.version)).sosuzagramplugin"
@@ -871,7 +871,7 @@ private func sosuzagramSettingsEntries(
         sortId: 0,
         signature: "ghost-header",
         buildItem: { presentationData, _ in
-            ItemListSectionHeaderItem(presentationData: presentationData, text: "Ð ÐµÐ¶Ð¸Ð¼ Ð¿Ñ€Ð¸Ð·Ñ€Ð°ÐºÐ°", sectionId: SosuzagramSettingsSection.ghost.rawValue)
+            ItemListSectionHeaderItem(presentationData: presentationData, text: "ÃÂ ÃÂµÃÂ¶ÃÂ¸ÃÂ¼ ÃÂ¿Ã‘â‚¬ÃÂ¸ÃÂ·Ã‘â‚¬ÃÂ°ÃÂºÃÂ°", sectionId: SosuzagramSettingsSection.ghost.rawValue)
         }
     ))
     entries.append(SosuzagramSettingsEntry(
@@ -880,7 +880,7 @@ private func sosuzagramSettingsEntries(
         sortId: 1,
         signature: "skip:\(skipReadHistory)",
         buildItem: { presentationData, arguments in
-            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "ÐÐµ Ð¾Ñ‚Ð¼ÐµÑ‡Ð°Ñ‚ÑŒ Ð¸ÑÑ‚Ð¾Ñ€Ð¸ÑŽ ÐºÐ°Ðº Ð¿Ñ€Ð¾Ñ‡Ð¸Ñ‚Ð°Ð½Ð½ÑƒÑŽ", value: skipReadHistory, sectionId: SosuzagramSettingsSection.ghost.rawValue, style: .blocks, updated: { value in
+            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "ÃÂÃÂµ ÃÂ¾Ã‘â€šÃÂ¼ÃÂµÃ‘â€¡ÃÂ°Ã‘â€šÃ‘Å’ ÃÂ¸Ã‘ÂÃ‘â€šÃÂ¾Ã‘â‚¬ÃÂ¸Ã‘Å½ ÃÂºÃÂ°ÃÂº ÃÂ¿Ã‘â‚¬ÃÂ¾Ã‘â€¡ÃÂ¸Ã‘â€šÃÂ°ÃÂ½ÃÂ½Ã‘Æ’Ã‘Å½", value: skipReadHistory, sectionId: SosuzagramSettingsSection.ghost.rawValue, style: .blocks, updated: { value in
                 arguments.toggleSkipReadHistory(value)
             })
         }
@@ -891,7 +891,7 @@ private func sosuzagramSettingsEntries(
         sortId: 2,
         signature: "storyviews:\(hideStoryViews)",
         buildItem: { presentationData, arguments in
-            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "Ð¡ÐºÑ€Ñ‹Ð²Ð°Ñ‚ÑŒ Ð¿Ñ€Ð¾ÑÐ¼Ð¾Ñ‚Ñ€Ñ‹ Ð¸ÑÑ‚Ð¾Ñ€Ð¸Ð¹", value: hideStoryViews, sectionId: SosuzagramSettingsSection.ghost.rawValue, style: .blocks, updated: { value in
+            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "ÃÂ¡ÃÂºÃ‘â‚¬Ã‘â€¹ÃÂ²ÃÂ°Ã‘â€šÃ‘Å’ ÃÂ¿Ã‘â‚¬ÃÂ¾Ã‘ÂÃÂ¼ÃÂ¾Ã‘â€šÃ‘â‚¬Ã‘â€¹ ÃÂ¸Ã‘ÂÃ‘â€šÃÂ¾Ã‘â‚¬ÃÂ¸ÃÂ¹", value: hideStoryViews, sectionId: SosuzagramSettingsSection.ghost.rawValue, style: .blocks, updated: { value in
                 arguments.toggleHideStoryViews(value)
             })
         }
@@ -902,7 +902,7 @@ private func sosuzagramSettingsEntries(
         sortId: 3,
         signature: "typing:\(hideTyping)",
         buildItem: { presentationData, arguments in
-            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "Ð¡ÐºÑ€Ñ‹Ð²Ð°Ñ‚ÑŒ ÑÑ‚Ð°Ñ‚ÑƒÑ Ð½Ð°Ð±Ð¾Ñ€Ð° Ñ‚ÐµÐºÑÑ‚Ð°", value: hideTyping, sectionId: SosuzagramSettingsSection.ghost.rawValue, style: .blocks, updated: { value in
+            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "ÃÂ¡ÃÂºÃ‘â‚¬Ã‘â€¹ÃÂ²ÃÂ°Ã‘â€šÃ‘Å’ Ã‘ÂÃ‘â€šÃÂ°Ã‘â€šÃ‘Æ’Ã‘Â ÃÂ½ÃÂ°ÃÂ±ÃÂ¾Ã‘â‚¬ÃÂ° Ã‘â€šÃÂµÃÂºÃ‘ÂÃ‘â€šÃÂ°", value: hideTyping, sectionId: SosuzagramSettingsSection.ghost.rawValue, style: .blocks, updated: { value in
                 arguments.toggleHideTyping(value)
             })
         }
@@ -913,7 +913,7 @@ private func sosuzagramSettingsEntries(
         sortId: 4,
         signature: "ghost-info",
         buildItem: { presentationData, _ in
-            ItemListTextItem(presentationData: presentationData, text: .plain("ÐŸÐ¾Ð·Ð²Ð¾Ð»ÑÐµÑ‚ Ñ‡Ð¸Ñ‚Ð°Ñ‚ÑŒ ÑÐ¾Ð¾Ð±Ñ‰ÐµÐ½Ð¸Ñ, ÑÐ¼Ð¾Ñ‚Ñ€ÐµÑ‚ÑŒ Ð¸ÑÑ‚Ð¾Ñ€Ð¸Ð¸ Ð¸ Ð¿Ð¸ÑÐ°Ñ‚ÑŒ Ð±ÐµÐ· Ð»Ð¸ÑˆÐ½Ð¸Ñ… ÑƒÐ²ÐµÐ´Ð¾Ð¼Ð»ÐµÐ½Ð¸Ð¹ Ð´Ð»Ñ ÑÐ¾Ð±ÐµÑÐµÐ´Ð½Ð¸ÐºÐ°."), sectionId: SosuzagramSettingsSection.ghost.rawValue)
+            ItemListTextItem(presentationData: presentationData, text: .plain("ÃÅ¸ÃÂ¾ÃÂ·ÃÂ²ÃÂ¾ÃÂ»Ã‘ÂÃÂµÃ‘â€š Ã‘â€¡ÃÂ¸Ã‘â€šÃÂ°Ã‘â€šÃ‘Å’ Ã‘ÂÃÂ¾ÃÂ¾ÃÂ±Ã‘â€°ÃÂµÃÂ½ÃÂ¸Ã‘Â, Ã‘ÂÃÂ¼ÃÂ¾Ã‘â€šÃ‘â‚¬ÃÂµÃ‘â€šÃ‘Å’ ÃÂ¸Ã‘ÂÃ‘â€šÃÂ¾Ã‘â‚¬ÃÂ¸ÃÂ¸ ÃÂ¸ ÃÂ¿ÃÂ¸Ã‘ÂÃÂ°Ã‘â€šÃ‘Å’ ÃÂ±ÃÂµÃÂ· ÃÂ»ÃÂ¸Ã‘Ë†ÃÂ½ÃÂ¸Ã‘â€¦ Ã‘Æ’ÃÂ²ÃÂµÃÂ´ÃÂ¾ÃÂ¼ÃÂ»ÃÂµÃÂ½ÃÂ¸ÃÂ¹ ÃÂ´ÃÂ»Ã‘Â Ã‘ÂÃÂ¾ÃÂ±ÃÂµÃ‘ÂÃÂµÃÂ´ÃÂ½ÃÂ¸ÃÂºÃÂ°."), sectionId: SosuzagramSettingsSection.ghost.rawValue)
         }
     ))
 
@@ -923,7 +923,7 @@ private func sosuzagramSettingsEntries(
         sortId: 5,
         signature: "anti-header",
         buildItem: { presentationData, _ in
-            ItemListSectionHeaderItem(presentationData: presentationData, text: "ÐÐ½Ñ‚Ð¸ÑƒÐ´Ð°Ð»ÐµÐ½Ð¸Ðµ", sectionId: SosuzagramSettingsSection.antiDelete.rawValue)
+            ItemListSectionHeaderItem(presentationData: presentationData, text: "ÃÂÃÂ½Ã‘â€šÃÂ¸Ã‘Æ’ÃÂ´ÃÂ°ÃÂ»ÃÂµÃÂ½ÃÂ¸ÃÂµ", sectionId: SosuzagramSettingsSection.antiDelete.rawValue)
         }
     ))
     entries.append(SosuzagramSettingsEntry(
@@ -932,7 +932,7 @@ private func sosuzagramSettingsEntries(
         sortId: 6,
         signature: "history:\(keepLocalHistory)",
         buildItem: { presentationData, arguments in
-            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "Ð¡Ð¾Ñ…Ñ€Ð°Ð½ÑÑ‚ÑŒ ÑƒÐ´Ð°Ð»Ñ‘Ð½Ð½Ñ‹Ðµ ÑÐ¾Ð¾Ð±Ñ‰ÐµÐ½Ð¸Ñ", value: keepLocalHistory, sectionId: SosuzagramSettingsSection.antiDelete.rawValue, style: .blocks, updated: { value in
+            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "ÃÂ¡ÃÂ¾Ã‘â€¦Ã‘â‚¬ÃÂ°ÃÂ½Ã‘ÂÃ‘â€šÃ‘Å’ Ã‘Æ’ÃÂ´ÃÂ°ÃÂ»Ã‘â€˜ÃÂ½ÃÂ½Ã‘â€¹ÃÂµ Ã‘ÂÃÂ¾ÃÂ¾ÃÂ±Ã‘â€°ÃÂµÃÂ½ÃÂ¸Ã‘Â", value: keepLocalHistory, sectionId: SosuzagramSettingsSection.antiDelete.rawValue, style: .blocks, updated: { value in
                 arguments.toggleKeepLocalHistory(value)
             })
         }
@@ -943,7 +943,7 @@ private func sosuzagramSettingsEntries(
         sortId: 7,
         signature: "marker:\(showMarker)",
         buildItem: { presentationData, arguments in
-            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "ÐŸÐ¾ÐºÐ°Ð·Ñ‹Ð²Ð°Ñ‚ÑŒ Ð¼ÐµÑ‚ÐºÑƒ ÑƒÐ´Ð°Ð»ÐµÐ½Ð¸Ñ", value: showMarker, sectionId: SosuzagramSettingsSection.antiDelete.rawValue, style: .blocks, updated: { value in
+            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "ÃÅ¸ÃÂ¾ÃÂºÃÂ°ÃÂ·Ã‘â€¹ÃÂ²ÃÂ°Ã‘â€šÃ‘Å’ ÃÂ¼ÃÂµÃ‘â€šÃÂºÃ‘Æ’ Ã‘Æ’ÃÂ´ÃÂ°ÃÂ»ÃÂµÃÂ½ÃÂ¸Ã‘Â", value: showMarker, sectionId: SosuzagramSettingsSection.antiDelete.rawValue, style: .blocks, updated: { value in
                 arguments.toggleShowMarker(value)
             })
         }
@@ -954,7 +954,7 @@ private func sosuzagramSettingsEntries(
         sortId: 8,
         signature: "anti-info",
         buildItem: { presentationData, _ in
-            ItemListTextItem(presentationData: presentationData, text: .plain("Ð›Ð¾ÐºÐ°Ð»ÑŒÐ½Ð¾ ÑÐ¾Ñ…Ñ€Ð°Ð½ÑÐµÑ‚ ÑƒÐ´Ð°Ð»Ñ‘Ð½Ð½Ñ‹Ðµ Ð¸ Ð¾Ñ‚Ñ€ÐµÐ´Ð°ÐºÑ‚Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð½Ñ‹Ðµ ÑÐ¾Ð¾Ð±Ñ‰ÐµÐ½Ð¸Ñ. Ð£Ð´Ð°Ð»Ñ‘Ð½Ð½Ñ‹Ðµ ÑÐ¾Ð¾Ð±Ñ‰ÐµÐ½Ð¸Ñ Ð¼Ð¾Ð¶Ð½Ð¾ Ð¿Ð¾Ð¼ÐµÑ‡Ð°Ñ‚ÑŒ Ð¾Ñ‚Ð´ÐµÐ»ÑŒÐ½Ð¾Ð¹ Ð¼ÐµÑ‚ÐºÐ¾Ð¹."), sectionId: SosuzagramSettingsSection.antiDelete.rawValue)
+            ItemListTextItem(presentationData: presentationData, text: .plain("Ãâ€ºÃÂ¾ÃÂºÃÂ°ÃÂ»Ã‘Å’ÃÂ½ÃÂ¾ Ã‘ÂÃÂ¾Ã‘â€¦Ã‘â‚¬ÃÂ°ÃÂ½Ã‘ÂÃÂµÃ‘â€š Ã‘Æ’ÃÂ´ÃÂ°ÃÂ»Ã‘â€˜ÃÂ½ÃÂ½Ã‘â€¹ÃÂµ ÃÂ¸ ÃÂ¾Ã‘â€šÃ‘â‚¬ÃÂµÃÂ´ÃÂ°ÃÂºÃ‘â€šÃÂ¸Ã‘â‚¬ÃÂ¾ÃÂ²ÃÂ°ÃÂ½ÃÂ½Ã‘â€¹ÃÂµ Ã‘ÂÃÂ¾ÃÂ¾ÃÂ±Ã‘â€°ÃÂµÃÂ½ÃÂ¸Ã‘Â. ÃÂ£ÃÂ´ÃÂ°ÃÂ»Ã‘â€˜ÃÂ½ÃÂ½Ã‘â€¹ÃÂµ Ã‘ÂÃÂ¾ÃÂ¾ÃÂ±Ã‘â€°ÃÂµÃÂ½ÃÂ¸Ã‘Â ÃÂ¼ÃÂ¾ÃÂ¶ÃÂ½ÃÂ¾ ÃÂ¿ÃÂ¾ÃÂ¼ÃÂµÃ‘â€¡ÃÂ°Ã‘â€šÃ‘Å’ ÃÂ¾Ã‘â€šÃÂ´ÃÂµÃÂ»Ã‘Å’ÃÂ½ÃÂ¾ÃÂ¹ ÃÂ¼ÃÂµÃ‘â€šÃÂºÃÂ¾ÃÂ¹."), sectionId: SosuzagramSettingsSection.antiDelete.rawValue)
         }
     ))
 
@@ -964,7 +964,7 @@ private func sosuzagramSettingsEntries(
         sortId: 15,
         signature: "translate-header",
         buildItem: { presentationData, _ in
-            ItemListSectionHeaderItem(presentationData: presentationData, text: "ÐŸÐµÑ€ÐµÐ²Ð¾Ð´", sectionId: SosuzagramSettingsSection.translation.rawValue)
+            ItemListSectionHeaderItem(presentationData: presentationData, text: "ÃÅ¸ÃÂµÃ‘â‚¬ÃÂµÃÂ²ÃÂ¾ÃÂ´", sectionId: SosuzagramSettingsSection.translation.rawValue)
         }
     ))
     entries.append(SosuzagramSettingsEntry(
@@ -973,7 +973,7 @@ private func sosuzagramSettingsEntries(
         sortId: 16,
         signature: "showtranslate:\(showTranslateMessages)",
         buildItem: { presentationData, arguments in
-            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "ÐŸÐ¾ÐºÐ°Ð·Ñ‹Ð²Ð°Ñ‚ÑŒ ÐºÐ½Ð¾Ð¿ÐºÑƒ Â«ÐŸÐµÑ€ÐµÐ²ÐµÑÑ‚Ð¸Â»", value: showTranslateMessages, sectionId: SosuzagramSettingsSection.translation.rawValue, style: .blocks, updated: { value in
+            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "ÃÅ¸ÃÂ¾ÃÂºÃÂ°ÃÂ·Ã‘â€¹ÃÂ²ÃÂ°Ã‘â€šÃ‘Å’ ÃÂºÃÂ½ÃÂ¾ÃÂ¿ÃÂºÃ‘Æ’ Ã‚Â«ÃÅ¸ÃÂµÃ‘â‚¬ÃÂµÃÂ²ÃÂµÃ‘ÂÃ‘â€šÃÂ¸Ã‚Â»", value: showTranslateMessages, sectionId: SosuzagramSettingsSection.translation.rawValue, style: .blocks, updated: { value in
                 arguments.toggleShowTranslateMessages(value)
             })
         }
@@ -984,7 +984,7 @@ private func sosuzagramSettingsEntries(
         sortId: 17,
         signature: "translatechats:\(translateEntireChats)",
         buildItem: { presentationData, arguments in
-            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "ÐŸÐµÑ€ÐµÐ²Ð¾Ð´Ð¸Ñ‚ÑŒ Ñ‡Ð°Ñ‚Ñ‹ Ñ†ÐµÐ»Ð¸ÐºÐ¾Ð¼", value: translateEntireChats, sectionId: SosuzagramSettingsSection.translation.rawValue, style: .blocks, updated: { value in
+            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "ÃÅ¸ÃÂµÃ‘â‚¬ÃÂµÃÂ²ÃÂ¾ÃÂ´ÃÂ¸Ã‘â€šÃ‘Å’ Ã‘â€¡ÃÂ°Ã‘â€šÃ‘â€¹ Ã‘â€ ÃÂµÃÂ»ÃÂ¸ÃÂºÃÂ¾ÃÂ¼", value: translateEntireChats, sectionId: SosuzagramSettingsSection.translation.rawValue, style: .blocks, updated: { value in
                 arguments.toggleTranslateEntireChats(value)
             })
         }
@@ -998,7 +998,7 @@ private func sosuzagramSettingsEntries(
             ItemListDisclosureItem(
                 presentationData: presentationData,
                 systemStyle: sosuzagramSettingsSystemStyle(),
-                title: "Провайдер перевода",
+                title: "ÐŸÑ€Ð¾Ð²Ð°Ð¹Ð´ÐµÑ€ Ð¿ÐµÑ€ÐµÐ²Ð¾Ð´Ð°",
                 label: sosuzagramTranslationProviderLabel(translationProvider),
                 sectionId: SosuzagramSettingsSection.translation.rawValue,
                 style: .blocks,
@@ -1018,9 +1018,9 @@ private func sosuzagramSettingsEntries(
             ItemListDisclosureItem(
                 presentationData: presentationData,
                 systemStyle: sosuzagramSettingsSystemStyle(),
-                title: "Целевой язык",
+                title: "Ð¦ÐµÐ»ÐµÐ²Ð¾Ð¹ ÑÐ·Ñ‹Ðº",
                 label: sosuzagramTranslationTargetLabel(translationTarget),
-                additionalDetailLabel: "Используется как язык по умолчанию для ручного перевода и экранов перевода Sosuzagram.",
+                additionalDetailLabel: "Ð˜ÑÐ¿Ð¾Ð»ÑŒÐ·ÑƒÐµÑ‚ÑÑ ÐºÐ°Ðº ÑÐ·Ñ‹Ðº Ð¿Ð¾ ÑƒÐ¼Ð¾Ð»Ñ‡Ð°Ð½Ð¸ÑŽ Ð´Ð»Ñ Ñ€ÑƒÑ‡Ð½Ð¾Ð³Ð¾ Ð¿ÐµÑ€ÐµÐ²Ð¾Ð´Ð° Ð¸ ÑÐºÑ€Ð°Ð½Ð¾Ð² Ð¿ÐµÑ€ÐµÐ²Ð¾Ð´Ð° Sosuzagram.",
                 sectionId: SosuzagramSettingsSection.translation.rawValue,
                 style: .blocks,
                 disclosureStyle: .arrow,
@@ -1039,9 +1039,9 @@ private func sosuzagramSettingsEntries(
             ItemListDisclosureItem(
                 presentationData: presentationData,
                 systemStyle: sosuzagramSettingsSystemStyle(),
-                title: "ÐÐµ Ð¿ÐµÑ€ÐµÐ²Ð¾Ð´Ð¸Ñ‚ÑŒ",
+                title: "ÃÂÃÂµ ÃÂ¿ÃÂµÃ‘â‚¬ÃÂµÃÂ²ÃÂ¾ÃÂ´ÃÂ¸Ã‘â€šÃ‘Å’",
                 label: doNotTranslateSummary,
-                additionalDetailLabel: "Ð’Ñ‹Ð±ÐµÑ€Ð¸ ÑÐ·Ñ‹ÐºÐ¸, ÐºÐ¾Ñ‚Ð¾Ñ€Ñ‹Ðµ Ð½Ðµ Ð½ÑƒÐ¶Ð½Ð¾ Ð¿ÐµÑ€ÐµÐ²Ð¾Ð´Ð¸Ñ‚ÑŒ Ð°Ð²Ñ‚Ð¾Ð¼Ð°Ñ‚Ð¸Ñ‡ÐµÑÐºÐ¸.",
+                additionalDetailLabel: "Ãâ€™Ã‘â€¹ÃÂ±ÃÂµÃ‘â‚¬ÃÂ¸ Ã‘ÂÃÂ·Ã‘â€¹ÃÂºÃÂ¸, ÃÂºÃÂ¾Ã‘â€šÃÂ¾Ã‘â‚¬Ã‘â€¹ÃÂµ ÃÂ½ÃÂµ ÃÂ½Ã‘Æ’ÃÂ¶ÃÂ½ÃÂ¾ ÃÂ¿ÃÂµÃ‘â‚¬ÃÂµÃÂ²ÃÂ¾ÃÂ´ÃÂ¸Ã‘â€šÃ‘Å’ ÃÂ°ÃÂ²Ã‘â€šÃÂ¾ÃÂ¼ÃÂ°Ã‘â€šÃÂ¸Ã‘â€¡ÃÂµÃ‘ÂÃÂºÃÂ¸.",
                 sectionId: SosuzagramSettingsSection.translation.rawValue,
                 style: .blocks,
                 disclosureStyle: .arrow,
@@ -1060,8 +1060,9 @@ private func sosuzagramSettingsEntries(
             ItemListDisclosureItem(
                 presentationData: presentationData,
                 systemStyle: sosuzagramSettingsSystemStyle(),
-                title: "Ð¯Ð·Ñ‹Ðº Ð¿Ñ€Ð¸Ð»Ð¾Ð¶ÐµÐ½Ð¸Ñ Ð¸ Ð¿ÐµÑ€ÐµÐ²Ð¾Ð´",
-                additionalDetailLabel: "ÐžÑ‚ÐºÑ€Ñ‹Ð²Ð°ÐµÑ‚ ÑÐ¸ÑÑ‚ÐµÐ¼Ð½Ñ‹Ð¹ ÑÐºÑ€Ð°Ð½ Telegram Ñ ÑÐ·Ñ‹ÐºÐ¾Ð¼ Ð¿Ñ€Ð¸Ð»Ð¾Ð¶ÐµÐ½Ð¸Ñ Ð¸ Ð´Ð¾Ð¿Ð¾Ð»Ð½Ð¸Ñ‚ÐµÐ»ÑŒÐ½Ñ‹Ð¼Ð¸ ÑÐ·Ñ‹ÐºÐ¾Ð²Ñ‹Ð¼Ð¸ Ð½Ð°ÑÑ‚Ñ€Ð¾Ð¹ÐºÐ°Ð¼Ð¸.",
+                title: "ÃÂ¯ÃÂ·Ã‘â€¹ÃÂº ÃÂ¿Ã‘â‚¬ÃÂ¸ÃÂ»ÃÂ¾ÃÂ¶ÃÂµÃÂ½ÃÂ¸Ã‘Â ÃÂ¸ ÃÂ¿ÃÂµÃ‘â‚¬ÃÂµÃÂ²ÃÂ¾ÃÂ´",
+                additionalDetailLabel: "ÃÅ¾Ã‘â€šÃÂºÃ‘â‚¬Ã‘â€¹ÃÂ²ÃÂ°ÃÂµÃ‘â€š Ã‘ÂÃÂ¸Ã‘ÂÃ‘â€šÃÂµÃÂ¼ÃÂ½Ã‘â€¹ÃÂ¹ Ã‘ÂÃÂºÃ‘â‚¬ÃÂ°ÃÂ½ Telegram Ã‘Â Ã‘ÂÃÂ·Ã‘â€¹ÃÂºÃÂ¾ÃÂ¼ ÃÂ¿Ã‘â‚¬ÃÂ¸ÃÂ»ÃÂ¾ÃÂ¶ÃÂµÃÂ½ÃÂ¸Ã‘Â ÃÂ¸ ÃÂ´ÃÂ¾ÃÂ¿ÃÂ¾ÃÂ»ÃÂ½ÃÂ¸Ã‘â€šÃÂµÃÂ»Ã‘Å’ÃÂ½Ã‘â€¹ÃÂ¼ÃÂ¸ Ã‘ÂÃÂ·Ã‘â€¹ÃÂºÃÂ¾ÃÂ²Ã‘â€¹ÃÂ¼ÃÂ¸ ÃÂ½ÃÂ°Ã‘ÂÃ‘â€šÃ‘â‚¬ÃÂ¾ÃÂ¹ÃÂºÃÂ°ÃÂ¼ÃÂ¸.",
+                label: "",
                 sectionId: SosuzagramSettingsSection.translation.rawValue,
                 style: .blocks,
                 disclosureStyle: .arrow,
@@ -1078,7 +1079,7 @@ private func sosuzagramSettingsEntries(
         sortId: 9,
         signature: "ui-header",
         buildItem: { presentationData, _ in
-            ItemListSectionHeaderItem(presentationData: presentationData, text: "Ð˜Ð½Ñ‚ÐµÑ€Ñ„ÐµÐ¹Ñ Ð¸ Ð¿Ð¾Ð´Ñ‚Ð²ÐµÑ€Ð¶Ð´ÐµÐ½Ð¸Ñ", sectionId: SosuzagramSettingsSection.ui.rawValue)
+            ItemListSectionHeaderItem(presentationData: presentationData, text: "ÃËœÃÂ½Ã‘â€šÃÂµÃ‘â‚¬Ã‘â€žÃÂµÃÂ¹Ã‘Â ÃÂ¸ ÃÂ¿ÃÂ¾ÃÂ´Ã‘â€šÃÂ²ÃÂµÃ‘â‚¬ÃÂ¶ÃÂ´ÃÂµÃÂ½ÃÂ¸Ã‘Â", sectionId: SosuzagramSettingsSection.ui.rawValue)
         }
     ))
     entries.append(SosuzagramSettingsEntry(
@@ -1087,7 +1088,7 @@ private func sosuzagramSettingsEntries(
         sortId: 10,
         signature: "stories:\(hideStories)",
         buildItem: { presentationData, arguments in
-            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "Ð¡ÐºÑ€Ñ‹Ð²Ð°Ñ‚ÑŒ Ð¸ÑÑ‚Ð¾Ñ€Ð¸Ð¸ Ð² ÑÐ¿Ð¸ÑÐºÐµ Ñ‡Ð°Ñ‚Ð¾Ð²", value: hideStories, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
+            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "ÃÂ¡ÃÂºÃ‘â‚¬Ã‘â€¹ÃÂ²ÃÂ°Ã‘â€šÃ‘Å’ ÃÂ¸Ã‘ÂÃ‘â€šÃÂ¾Ã‘â‚¬ÃÂ¸ÃÂ¸ ÃÂ² Ã‘ÂÃÂ¿ÃÂ¸Ã‘ÂÃÂºÃÂµ Ã‘â€¡ÃÂ°Ã‘â€šÃÂ¾ÃÂ²", value: hideStories, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
                 arguments.toggleHideStories(value)
             })
         }
@@ -1098,7 +1099,7 @@ private func sosuzagramSettingsEntries(
         sortId: 11,
         signature: "confirmcalls:\(confirmCalls)",
         buildItem: { presentationData, arguments in
-            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "ÐŸÐ¾Ð´Ñ‚Ð²ÐµÑ€Ð¶Ð´Ð°Ñ‚ÑŒ Ð³Ð¾Ð»Ð¾ÑÐ¾Ð²Ñ‹Ðµ Ð¸ Ð²Ð¸Ð´ÐµÐ¾Ð·Ð²Ð¾Ð½ÐºÐ¸", value: confirmCalls, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
+            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "ÃÅ¸ÃÂ¾ÃÂ´Ã‘â€šÃÂ²ÃÂµÃ‘â‚¬ÃÂ¶ÃÂ´ÃÂ°Ã‘â€šÃ‘Å’ ÃÂ³ÃÂ¾ÃÂ»ÃÂ¾Ã‘ÂÃÂ¾ÃÂ²Ã‘â€¹ÃÂµ ÃÂ¸ ÃÂ²ÃÂ¸ÃÂ´ÃÂµÃÂ¾ÃÂ·ÃÂ²ÃÂ¾ÃÂ½ÃÂºÃÂ¸", value: confirmCalls, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
                 arguments.toggleConfirmCalls(value)
             })
         }
@@ -1109,7 +1110,7 @@ private func sosuzagramSettingsEntries(
         sortId: 12,
         signature: "confirmvoice:\(confirmVoiceMessages)",
         buildItem: { presentationData, arguments in
-            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "ÐŸÐ¾Ð´Ñ‚Ð²ÐµÑ€Ð¶Ð´Ð°Ñ‚ÑŒ Ð¾Ñ‚Ð¿Ñ€Ð°Ð²ÐºÑƒ Ð³Ð¾Ð»Ð¾ÑÐ¾Ð²Ñ‹Ñ…", value: confirmVoiceMessages, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
+            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "ÃÅ¸ÃÂ¾ÃÂ´Ã‘â€šÃÂ²ÃÂµÃ‘â‚¬ÃÂ¶ÃÂ´ÃÂ°Ã‘â€šÃ‘Å’ ÃÂ¾Ã‘â€šÃÂ¿Ã‘â‚¬ÃÂ°ÃÂ²ÃÂºÃ‘Æ’ ÃÂ³ÃÂ¾ÃÂ»ÃÂ¾Ã‘ÂÃÂ¾ÃÂ²Ã‘â€¹Ã‘â€¦", value: confirmVoiceMessages, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
                 arguments.toggleConfirmVoiceMessages(value)
             })
         }
@@ -1120,7 +1121,7 @@ private func sosuzagramSettingsEntries(
         sortId: 13,
         signature: "hideshare:\(hideShareButton)",
         buildItem: { presentationData, arguments in
-            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "Ð¡ÐºÑ€Ñ‹Ð²Ð°Ñ‚ÑŒ Ð±Ð¾ÐºÐ¾Ð²ÑƒÑŽ ÐºÐ½Ð¾Ð¿ÐºÑƒ Â«ÐŸÐ¾Ð´ÐµÐ»Ð¸Ñ‚ÑŒÑÑÂ»", value: hideShareButton, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
+            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "ÃÂ¡ÃÂºÃ‘â‚¬Ã‘â€¹ÃÂ²ÃÂ°Ã‘â€šÃ‘Å’ ÃÂ±ÃÂ¾ÃÂºÃÂ¾ÃÂ²Ã‘Æ’Ã‘Å½ ÃÂºÃÂ½ÃÂ¾ÃÂ¿ÃÂºÃ‘Æ’ Ã‚Â«ÃÅ¸ÃÂ¾ÃÂ´ÃÂµÃÂ»ÃÂ¸Ã‘â€šÃ‘Å’Ã‘ÂÃ‘ÂÃ‚Â»", value: hideShareButton, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
                 arguments.toggleHideShareButton(value)
             })
         }
@@ -1131,7 +1132,7 @@ private func sosuzagramSettingsEntries(
         sortId: 14,
         signature: "pollpreview:\(pollResultsBeforeVoting)",
         buildItem: { presentationData, arguments in
-            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "ÐŸÐ¾ÐºÐ°Ð·Ñ‹Ð²Ð°Ñ‚ÑŒ Ð¸Ñ‚Ð¾Ð³Ð¸ Ð¾Ð¿Ñ€Ð¾ÑÐ¾Ð² Ð´Ð¾ Ð³Ð¾Ð»Ð¾ÑÐ¾Ð²Ð°Ð½Ð¸Ñ", value: pollResultsBeforeVoting, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
+            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "ÃÅ¸ÃÂ¾ÃÂºÃÂ°ÃÂ·Ã‘â€¹ÃÂ²ÃÂ°Ã‘â€šÃ‘Å’ ÃÂ¸Ã‘â€šÃÂ¾ÃÂ³ÃÂ¸ ÃÂ¾ÃÂ¿Ã‘â‚¬ÃÂ¾Ã‘ÂÃÂ¾ÃÂ² ÃÂ´ÃÂ¾ ÃÂ³ÃÂ¾ÃÂ»ÃÂ¾Ã‘ÂÃÂ¾ÃÂ²ÃÂ°ÃÂ½ÃÂ¸Ã‘Â", value: pollResultsBeforeVoting, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
                 arguments.togglePollResultsBeforeVoting(value)
             })
         }
@@ -1142,7 +1143,7 @@ private func sosuzagramSettingsEntries(
         sortId: 15,
         signature: "hidekeyboard:\(hideKeyboardOnScroll)",
         buildItem: { presentationData, arguments in
-            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "Ð¡ÐºÑ€Ñ‹Ð²Ð°Ñ‚ÑŒ ÐºÐ»Ð°Ð²Ð¸Ð°Ñ‚ÑƒÑ€Ñƒ Ð¿Ñ€Ð¸ Ð¿Ñ€Ð¾ÐºÑ€ÑƒÑ‚ÐºÐµ", value: hideKeyboardOnScroll, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
+            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "ÃÂ¡ÃÂºÃ‘â‚¬Ã‘â€¹ÃÂ²ÃÂ°Ã‘â€šÃ‘Å’ ÃÂºÃÂ»ÃÂ°ÃÂ²ÃÂ¸ÃÂ°Ã‘â€šÃ‘Æ’Ã‘â‚¬Ã‘Æ’ ÃÂ¿Ã‘â‚¬ÃÂ¸ ÃÂ¿Ã‘â‚¬ÃÂ¾ÃÂºÃ‘â‚¬Ã‘Æ’Ã‘â€šÃÂºÃÂµ", value: hideKeyboardOnScroll, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
                 arguments.toggleHideKeyboardOnScroll(value)
             })
         }
@@ -1153,7 +1154,7 @@ private func sosuzagramSettingsEntries(
         sortId: 16,
         signature: "hidesendas:\(hideSendAsButton)",
         buildItem: { presentationData, arguments in
-            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "Ð¡ÐºÑ€Ñ‹Ñ‚ÑŒ ÐºÐ½Ð¾Ð¿ÐºÑƒ Â«ÐžÑ‚Ð¿Ñ€Ð°Ð²Ð¸Ñ‚ÑŒ ÐºÐ°Ðº...Â»", value: hideSendAsButton, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
+            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "ÃÂ¡ÃÂºÃ‘â‚¬Ã‘â€¹Ã‘â€šÃ‘Å’ ÃÂºÃÂ½ÃÂ¾ÃÂ¿ÃÂºÃ‘Æ’ Ã‚Â«ÃÅ¾Ã‘â€šÃÂ¿Ã‘â‚¬ÃÂ°ÃÂ²ÃÂ¸Ã‘â€šÃ‘Å’ ÃÂºÃÂ°ÃÂº...Ã‚Â»", value: hideSendAsButton, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
                 arguments.toggleHideSendAsButton(value)
             })
         }
@@ -1164,7 +1165,7 @@ private func sosuzagramSettingsEntries(
         sortId: 17,
         signature: "editedicon:\(replaceEditedWithIcon)",
         buildItem: { presentationData, arguments in
-            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "Ð—Ð°Ð¼ÐµÐ½ÑÑ‚ÑŒ Â«Ð¸Ð·Ð¼ÐµÐ½ÐµÐ½Ð¾Â» Ð¸ÐºÐ¾Ð½ÐºÐ¾Ð¹", value: replaceEditedWithIcon, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
+            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "Ãâ€”ÃÂ°ÃÂ¼ÃÂµÃÂ½Ã‘ÂÃ‘â€šÃ‘Å’ Ã‚Â«ÃÂ¸ÃÂ·ÃÂ¼ÃÂµÃÂ½ÃÂµÃÂ½ÃÂ¾Ã‚Â» ÃÂ¸ÃÂºÃÂ¾ÃÂ½ÃÂºÃÂ¾ÃÂ¹", value: replaceEditedWithIcon, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
                 arguments.toggleReplaceEditedWithIcon(value)
             })
         }
@@ -1175,7 +1176,7 @@ private func sosuzagramSettingsEntries(
         sortId: 18,
         signature: "hidefloating:\(hideFloatingButton)",
         buildItem: { presentationData, arguments in
-            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "Ð¡ÐºÑ€Ñ‹Ñ‚ÑŒ Ð¿Ð»Ð°Ð²Ð°ÑŽÑ‰ÑƒÑŽ ÐºÐ½Ð¾Ð¿ÐºÑƒ", value: hideFloatingButton, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
+            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "ÃÂ¡ÃÂºÃ‘â‚¬Ã‘â€¹Ã‘â€šÃ‘Å’ ÃÂ¿ÃÂ»ÃÂ°ÃÂ²ÃÂ°Ã‘Å½Ã‘â€°Ã‘Æ’Ã‘Å½ ÃÂºÃÂ½ÃÂ¾ÃÂ¿ÃÂºÃ‘Æ’", value: hideFloatingButton, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
                 arguments.toggleHideFloatingButton(value)
             })
         }
@@ -1186,7 +1187,7 @@ private func sosuzagramSettingsEntries(
         sortId: 19,
         signature: "hideallchatstab:\(hideAllChatsTab)",
         buildItem: { presentationData, arguments in
-            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "Ð¡ÐºÑ€Ñ‹Ñ‚ÑŒ Ð²ÐºÐ»Ð°Ð´ÐºÑƒ Â«Ð’ÑÐµ Ñ‡Ð°Ñ‚Ñ‹Â»", value: hideAllChatsTab, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
+            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "ÃÂ¡ÃÂºÃ‘â‚¬Ã‘â€¹Ã‘â€šÃ‘Å’ ÃÂ²ÃÂºÃÂ»ÃÂ°ÃÂ´ÃÂºÃ‘Æ’ Ã‚Â«Ãâ€™Ã‘ÂÃÂµ Ã‘â€¡ÃÂ°Ã‘â€šÃ‘â€¹Ã‚Â»", value: hideAllChatsTab, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
                 arguments.toggleHideAllChatsTab(value)
             })
         }
@@ -1197,7 +1198,7 @@ private func sosuzagramSettingsEntries(
         sortId: 20,
         signature: "hidegreetingsticker:\(hideGreetingSticker)",
         buildItem: { presentationData, arguments in
-            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "Ð¡ÐºÑ€Ñ‹Ñ‚ÑŒ Ð¿Ñ€Ð¸Ð²ÐµÑ‚ÑÑ‚Ð²ÐµÐ½Ð½Ñ‹Ð¹ ÑÑ‚Ð¸ÐºÐµÑ€", value: hideGreetingSticker, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
+            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "ÃÂ¡ÃÂºÃ‘â‚¬Ã‘â€¹Ã‘â€šÃ‘Å’ ÃÂ¿Ã‘â‚¬ÃÂ¸ÃÂ²ÃÂµÃ‘â€šÃ‘ÂÃ‘â€šÃÂ²ÃÂµÃÂ½ÃÂ½Ã‘â€¹ÃÂ¹ Ã‘ÂÃ‘â€šÃÂ¸ÃÂºÃÂµÃ‘â‚¬", value: hideGreetingSticker, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
                 arguments.toggleHideGreetingSticker(value)
             })
         }
@@ -1208,7 +1209,7 @@ private func sosuzagramSettingsEntries(
         sortId: 21,
         signature: "hidestickertimestamp:\(hideStickerTimestamp)",
         buildItem: { presentationData, arguments in
-            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "Ð¡ÐºÑ€Ñ‹Ñ‚ÑŒ Ð²Ñ€ÐµÐ¼Ñ Ð½Ð° ÑÑ‚Ð¸ÐºÐµÑ€Ð°Ñ…", value: hideStickerTimestamp, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
+            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "ÃÂ¡ÃÂºÃ‘â‚¬Ã‘â€¹Ã‘â€šÃ‘Å’ ÃÂ²Ã‘â‚¬ÃÂµÃÂ¼Ã‘Â ÃÂ½ÃÂ° Ã‘ÂÃ‘â€šÃÂ¸ÃÂºÃÂµÃ‘â‚¬ÃÂ°Ã‘â€¦", value: hideStickerTimestamp, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
                 arguments.toggleHideStickerTimestamp(value)
             })
         }
@@ -1219,7 +1220,7 @@ private func sosuzagramSettingsEntries(
         sortId: 22,
         signature: "compactcounts:\(disableCompactNumericCounts)",
         buildItem: { presentationData, arguments in
-            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "ÐÐµ Ð¾ÐºÑ€ÑƒÐ³Ð»ÑÑ‚ÑŒ Ð±Ð¾Ð»ÑŒÑˆÐ¸Ðµ Ñ‡Ð¸ÑÐ»Ð°", value: disableCompactNumericCounts, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
+            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "ÃÂÃÂµ ÃÂ¾ÃÂºÃ‘â‚¬Ã‘Æ’ÃÂ³ÃÂ»Ã‘ÂÃ‘â€šÃ‘Å’ ÃÂ±ÃÂ¾ÃÂ»Ã‘Å’Ã‘Ë†ÃÂ¸ÃÂµ Ã‘â€¡ÃÂ¸Ã‘ÂÃÂ»ÃÂ°", value: disableCompactNumericCounts, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
                 arguments.toggleDisableCompactNumericCounts(value)
             })
         }
@@ -1230,7 +1231,7 @@ private func sosuzagramSettingsEntries(
         sortId: 23,
         signature: "seconds:\(formatTimeWithSeconds)",
         buildItem: { presentationData, arguments in
-            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "ÐŸÐ¾ÐºÐ°Ð·Ñ‹Ð²Ð°Ñ‚ÑŒ Ð²Ñ€ÐµÐ¼Ñ Ñ ÑÐµÐºÑƒÐ½Ð´Ð°Ð¼Ð¸", value: formatTimeWithSeconds, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
+            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "ÃÅ¸ÃÂ¾ÃÂºÃÂ°ÃÂ·Ã‘â€¹ÃÂ²ÃÂ°Ã‘â€šÃ‘Å’ ÃÂ²Ã‘â‚¬ÃÂµÃÂ¼Ã‘Â Ã‘Â Ã‘ÂÃÂµÃÂºÃ‘Æ’ÃÂ½ÃÂ´ÃÂ°ÃÂ¼ÃÂ¸", value: formatTimeWithSeconds, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
                 arguments.toggleFormatTimeWithSeconds(value)
             })
         }
@@ -1241,7 +1242,7 @@ private func sosuzagramSettingsEntries(
         sortId: 24,
         signature: "commaaftermention:\(commaAfterMention)",
         buildItem: { presentationData, arguments in
-            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "Ð—Ð°Ð¿ÑÑ‚Ð°Ñ Ð¿Ð¾ÑÐ»Ðµ ÑƒÐ¿Ð¾Ð¼Ð¸Ð½Ð°Ð½Ð¸Ñ", value: commaAfterMention, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
+            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "Ãâ€”ÃÂ°ÃÂ¿Ã‘ÂÃ‘â€šÃÂ°Ã‘Â ÃÂ¿ÃÂ¾Ã‘ÂÃÂ»ÃÂµ Ã‘Æ’ÃÂ¿ÃÂ¾ÃÂ¼ÃÂ¸ÃÂ½ÃÂ°ÃÂ½ÃÂ¸Ã‘Â", value: commaAfterMention, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
                 arguments.toggleCommaAfterMention(value)
             })
         }
@@ -1252,7 +1253,7 @@ private func sosuzagramSettingsEntries(
         sortId: 25,
         signature: "onlineindicator:\(showOnlineIndicator)",
         buildItem: { presentationData, arguments in
-            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "ÐŸÐ¾ÐºÐ°Ð·Ñ‹Ð²Ð°Ñ‚ÑŒ Ð¸Ð½Ð´Ð¸ÐºÐ°Ñ‚Ð¾Ñ€ Ð¾Ð½Ð»Ð°Ð¹Ð½Ð°", value: showOnlineIndicator, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
+            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "ÃÅ¸ÃÂ¾ÃÂºÃÂ°ÃÂ·Ã‘â€¹ÃÂ²ÃÂ°Ã‘â€šÃ‘Å’ ÃÂ¸ÃÂ½ÃÂ´ÃÂ¸ÃÂºÃÂ°Ã‘â€šÃÂ¾Ã‘â‚¬ ÃÂ¾ÃÂ½ÃÂ»ÃÂ°ÃÂ¹ÃÂ½ÃÂ°", value: showOnlineIndicator, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
                 arguments.toggleShowOnlineIndicator(value)
             })
         }
@@ -1263,7 +1264,7 @@ private func sosuzagramSettingsEntries(
         sortId: 26,
         signature: "hidetail:\(hideMessageTail)",
         buildItem: { presentationData, arguments in
-            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "Ð£Ð±Ñ€Ð°Ñ‚ÑŒ Ñ…Ð²Ð¾ÑÑ‚ Ñƒ ÑÐ¾Ð¾Ð±Ñ‰ÐµÐ½Ð¸Ð¹", value: hideMessageTail, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
+            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "ÃÂ£ÃÂ±Ã‘â‚¬ÃÂ°Ã‘â€šÃ‘Å’ Ã‘â€¦ÃÂ²ÃÂ¾Ã‘ÂÃ‘â€š Ã‘Æ’ Ã‘ÂÃÂ¾ÃÂ¾ÃÂ±Ã‘â€°ÃÂµÃÂ½ÃÂ¸ÃÂ¹", value: hideMessageTail, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
                 arguments.toggleHideMessageTail(value)
             })
         }
@@ -1274,7 +1275,7 @@ private func sosuzagramSettingsEntries(
         sortId: 27,
         signature: "centertitle:\(centerChatListTitle)",
         buildItem: { presentationData, arguments in
-            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "Ð—Ð°Ð³Ð¾Ð»Ð¾Ð²Ð¾Ðº Ð¿Ð¾ Ñ†ÐµÐ½Ñ‚Ñ€Ñƒ", value: centerChatListTitle, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
+            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "Ãâ€”ÃÂ°ÃÂ³ÃÂ¾ÃÂ»ÃÂ¾ÃÂ²ÃÂ¾ÃÂº ÃÂ¿ÃÂ¾ Ã‘â€ ÃÂµÃÂ½Ã‘â€šÃ‘â‚¬Ã‘Æ’", value: centerChatListTitle, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
                 arguments.toggleCenterChatListTitle(value)
             })
         }
@@ -1285,7 +1286,7 @@ private func sosuzagramSettingsEntries(
         sortId: 28,
         signature: "yandexmaps:\(useYandexMaps)",
         buildItem: { presentationData, arguments in
-            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "Ð˜ÑÐ¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÑŒ Ð¯Ð½Ð´ÐµÐºÑ ÐšÐ°Ñ€Ñ‚Ñ‹", value: useYandexMaps, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
+            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "ÃËœÃ‘ÂÃÂ¿ÃÂ¾ÃÂ»Ã‘Å’ÃÂ·ÃÂ¾ÃÂ²ÃÂ°Ã‘â€šÃ‘Å’ ÃÂ¯ÃÂ½ÃÂ´ÃÂµÃÂºÃ‘Â ÃÅ¡ÃÂ°Ã‘â‚¬Ã‘â€šÃ‘â€¹", value: useYandexMaps, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
                 arguments.toggleUseYandexMaps(value)
             })
         }
@@ -1296,7 +1297,7 @@ private func sosuzagramSettingsEntries(
         sortId: 29,
         signature: "hidechatliststatus:\(hideChatListStatus)",
         buildItem: { presentationData, arguments in
-            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "Ð¡ÐºÑ€Ñ‹Ð²Ð°Ñ‚ÑŒ ÑÑ‚Ð°Ñ‚ÑƒÑ Ð² ÑÐ¿Ð¸ÑÐºÐµ Ñ‡Ð°Ñ‚Ð¾Ð²", value: hideChatListStatus, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
+            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "ÃÂ¡ÃÂºÃ‘â‚¬Ã‘â€¹ÃÂ²ÃÂ°Ã‘â€šÃ‘Å’ Ã‘ÂÃ‘â€šÃÂ°Ã‘â€šÃ‘Æ’Ã‘Â ÃÂ² Ã‘ÂÃÂ¿ÃÂ¸Ã‘ÂÃÂºÃÂµ Ã‘â€¡ÃÂ°Ã‘â€šÃÂ¾ÃÂ²", value: hideChatListStatus, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
                 arguments.toggleHideChatListStatus(value)
             })
         }
@@ -1307,7 +1308,7 @@ private func sosuzagramSettingsEntries(
         sortId: 30,
         signature: "hidearchive:\(hideArchiveFromList)",
         buildItem: { presentationData, arguments in
-            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "Ð¡ÐºÑ€Ñ‹Ñ‚ÑŒ Ð°Ñ€Ñ…Ð¸Ð² Ð¸Ð· ÑÐ¿Ð¸ÑÐºÐ° Ñ‡Ð°Ñ‚Ð¾Ð²", value: hideArchiveFromList, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
+            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "ÃÂ¡ÃÂºÃ‘â‚¬Ã‘â€¹Ã‘â€šÃ‘Å’ ÃÂ°Ã‘â‚¬Ã‘â€¦ÃÂ¸ÃÂ² ÃÂ¸ÃÂ· Ã‘ÂÃÂ¿ÃÂ¸Ã‘ÂÃÂºÃÂ° Ã‘â€¡ÃÂ°Ã‘â€šÃÂ¾ÃÂ²", value: hideArchiveFromList, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
                 arguments.toggleHideArchiveFromList(value)
             })
         }
@@ -1318,7 +1319,7 @@ private func sosuzagramSettingsEntries(
         sortId: 31,
         signature: "openarchivepull:\(openArchiveOnPull)",
         buildItem: { presentationData, arguments in
-            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "ÐžÑ‚ÐºÑ€Ñ‹Ð²Ð°Ñ‚ÑŒ Ð°Ñ€Ñ…Ð¸Ð² ÑÐ²Ð°Ð¹Ð¿Ð¾Ð¼ Ð²Ð½Ð¸Ð·", value: openArchiveOnPull, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
+            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "ÃÅ¾Ã‘â€šÃÂºÃ‘â‚¬Ã‘â€¹ÃÂ²ÃÂ°Ã‘â€šÃ‘Å’ ÃÂ°Ã‘â‚¬Ã‘â€¦ÃÂ¸ÃÂ² Ã‘ÂÃÂ²ÃÂ°ÃÂ¹ÃÂ¿ÃÂ¾ÃÂ¼ ÃÂ²ÃÂ½ÃÂ¸ÃÂ·", value: openArchiveOnPull, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
                 arguments.toggleOpenArchiveOnPull(value)
             })
         }
@@ -1329,7 +1330,7 @@ private func sosuzagramSettingsEntries(
         sortId: 32,
         signature: "disablearchivereturn:\(disableArchiveReturnGesture)",
         buildItem: { presentationData, arguments in
-            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "ÐžÑ‚ÐºÐ»ÑŽÑ‡Ð¸Ñ‚ÑŒ Ð²Ð¾Ð·Ð²Ñ€Ð°Ñ‚ Ð¸Ð· Ð°Ñ€Ñ…Ð¸Ð²Ð° ÑÐ²Ð°Ð¹Ð¿Ð¾Ð¼", value: disableArchiveReturnGesture, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
+            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "ÃÅ¾Ã‘â€šÃÂºÃÂ»Ã‘Å½Ã‘â€¡ÃÂ¸Ã‘â€šÃ‘Å’ ÃÂ²ÃÂ¾ÃÂ·ÃÂ²Ã‘â‚¬ÃÂ°Ã‘â€š ÃÂ¸ÃÂ· ÃÂ°Ã‘â‚¬Ã‘â€¦ÃÂ¸ÃÂ²ÃÂ° Ã‘ÂÃÂ²ÃÂ°ÃÂ¹ÃÂ¿ÃÂ¾ÃÂ¼", value: disableArchiveReturnGesture, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
                 arguments.toggleDisableArchiveReturnGesture(value)
             })
         }
@@ -1340,7 +1341,7 @@ private func sosuzagramSettingsEntries(
         sortId: 33,
         signature: "relativeonline:\(relativeOnlineTime)",
         buildItem: { presentationData, arguments in
-            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "ÐžÑ‚Ð½Ð¾ÑÐ¸Ñ‚ÐµÐ»ÑŒÐ½Ð¾Ðµ Ð²Ñ€ÐµÐ¼Ñ Ð¾Ð½Ð»Ð°Ð¹Ð½Ð°", value: relativeOnlineTime, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
+            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "ÃÅ¾Ã‘â€šÃÂ½ÃÂ¾Ã‘ÂÃÂ¸Ã‘â€šÃÂµÃÂ»Ã‘Å’ÃÂ½ÃÂ¾ÃÂµ ÃÂ²Ã‘â‚¬ÃÂµÃÂ¼Ã‘Â ÃÂ¾ÃÂ½ÃÂ»ÃÂ°ÃÂ¹ÃÂ½ÃÂ°", value: relativeOnlineTime, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
                 arguments.toggleRelativeOnlineTime(value)
             })
         }
@@ -1351,7 +1352,7 @@ private func sosuzagramSettingsEntries(
         sortId: 34,
         signature: "hidephone:\(hidePhoneNumber)",
         buildItem: { presentationData, arguments in
-            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "Ð¡ÐºÑ€Ñ‹Ð²Ð°Ñ‚ÑŒ Ð½Ð¾Ð¼ÐµÑ€ Ñ‚ÐµÐ»ÐµÑ„Ð¾Ð½Ð°", value: hidePhoneNumber, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
+            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "ÃÂ¡ÃÂºÃ‘â‚¬Ã‘â€¹ÃÂ²ÃÂ°Ã‘â€šÃ‘Å’ ÃÂ½ÃÂ¾ÃÂ¼ÃÂµÃ‘â‚¬ Ã‘â€šÃÂµÃÂ»ÃÂµÃ‘â€žÃÂ¾ÃÂ½ÃÂ°", value: hidePhoneNumber, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
                 arguments.toggleHidePhoneNumber(value)
             })
         }
@@ -1362,7 +1363,7 @@ private func sosuzagramSettingsEntries(
         sortId: 35,
         signature: "showiddc:\(showIdDc)",
         buildItem: { presentationData, arguments in
-            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "ÐŸÐ¾ÐºÐ°Ð·Ñ‹Ð²Ð°Ñ‚ÑŒ ID / DC", value: showIdDc, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
+            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "ÃÅ¸ÃÂ¾ÃÂºÃÂ°ÃÂ·Ã‘â€¹ÃÂ²ÃÂ°Ã‘â€šÃ‘Å’ ID / DC", value: showIdDc, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
                 arguments.toggleShowIdDc(value)
             })
         }
@@ -1373,7 +1374,7 @@ private func sosuzagramSettingsEntries(
         sortId: 36,
         signature: "zalgo:\(filterZalgo)",
         buildItem: { presentationData, arguments in
-            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "Ð¤Ð¸Ð»ÑŒÑ‚Ñ€ Zalgo", value: filterZalgo, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
+            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "ÃÂ¤ÃÂ¸ÃÂ»Ã‘Å’Ã‘â€šÃ‘â‚¬ Zalgo", value: filterZalgo, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
                 arguments.toggleFilterZalgo(value)
             })
         }
@@ -1384,7 +1385,7 @@ private func sosuzagramSettingsEntries(
         sortId: 37,
         signature: "appvibration:\(appVibration)",
         buildItem: { presentationData, arguments in
-            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "Ð’Ð¸Ð±Ñ€Ð°Ñ†Ð¸Ñ Ð¿Ñ€Ð¸Ð»Ð¾Ð¶ÐµÐ½Ð¸Ñ", value: appVibration, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
+            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "Ãâ€™ÃÂ¸ÃÂ±Ã‘â‚¬ÃÂ°Ã‘â€ ÃÂ¸Ã‘Â ÃÂ¿Ã‘â‚¬ÃÂ¸ÃÂ»ÃÂ¾ÃÂ¶ÃÂµÃÂ½ÃÂ¸Ã‘Â", value: appVibration, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
                 arguments.toggleAppVibration(value)
             })
         }
@@ -1398,9 +1399,9 @@ private func sosuzagramSettingsEntries(
             ItemListDisclosureItem(
                 presentationData: presentationData,
                 systemStyle: sosuzagramSettingsSystemStyle(),
-                title: "Ускорение загрузки",
+                title: "Ð£ÑÐºÐ¾Ñ€ÐµÐ½Ð¸Ðµ Ð·Ð°Ð³Ñ€ÑƒÐ·ÐºÐ¸",
                 label: sosuzagramDownloadAccelerationLabel(downloadAcceleration),
-                additionalDetailLabel: "Увеличивает число параллельных частей при скачивании файлов и медиа.",
+                additionalDetailLabel: "Ð£Ð²ÐµÐ»Ð¸Ñ‡Ð¸Ð²Ð°ÐµÑ‚ Ñ‡Ð¸ÑÐ»Ð¾ Ð¿Ð°Ñ€Ð°Ð»Ð»ÐµÐ»ÑŒÐ½Ñ‹Ñ… Ñ‡Ð°ÑÑ‚ÐµÐ¹ Ð¿Ñ€Ð¸ ÑÐºÐ°Ñ‡Ð¸Ð²Ð°Ð½Ð¸Ð¸ Ñ„Ð°Ð¹Ð»Ð¾Ð² Ð¸ Ð¼ÐµÐ´Ð¸Ð°.",
                 sectionId: SosuzagramSettingsSection.ui.rawValue,
                 style: .blocks,
                 disclosureStyle: .arrow,
@@ -1416,7 +1417,7 @@ private func sosuzagramSettingsEntries(
         sortId: 238,
         signature: "uploadacceleration:\(uploadAcceleration)",
         buildItem: { presentationData, arguments in
-            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "Ускорение отправки", value: uploadAcceleration, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
+            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "Ð£ÑÐºÐ¾Ñ€ÐµÐ½Ð¸Ðµ Ð¾Ñ‚Ð¿Ñ€Ð°Ð²ÐºÐ¸", value: uploadAcceleration, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
                 arguments.toggleUploadAcceleration(value)
             })
         }
@@ -1430,9 +1431,9 @@ private func sosuzagramSettingsEntries(
             ItemListDisclosureItem(
                 presentationData: presentationData,
                 systemStyle: sosuzagramSettingsSystemStyle(),
-                title: "Язык распознавания",
+                title: "Ð¯Ð·Ñ‹Ðº Ñ€Ð°ÑÐ¿Ð¾Ð·Ð½Ð°Ð²Ð°Ð½Ð¸Ñ",
                 label: sosuzagramVoiceRecognitionLocaleLabel(voiceRecognitionLocale),
-                additionalDetailLabel: "Используется для локальной транскрибации голосовых и видеосообщений.",
+                additionalDetailLabel: "Ð˜ÑÐ¿Ð¾Ð»ÑŒÐ·ÑƒÐµÑ‚ÑÑ Ð´Ð»Ñ Ð»Ð¾ÐºÐ°Ð»ÑŒÐ½Ð¾Ð¹ Ñ‚Ñ€Ð°Ð½ÑÐºÑ€Ð¸Ð±Ð°Ñ†Ð¸Ð¸ Ð³Ð¾Ð»Ð¾ÑÐ¾Ð²Ñ‹Ñ… Ð¸ Ð²Ð¸Ð´ÐµÐ¾ÑÐ¾Ð¾Ð±Ñ‰ÐµÐ½Ð¸Ð¹.",
                 sectionId: SosuzagramSettingsSection.ui.rawValue,
                 style: .blocks,
                 disclosureStyle: .arrow,
@@ -1448,7 +1449,7 @@ private func sosuzagramSettingsEntries(
         sortId: 242,
         signature: "voiceondevice:\(voiceRecognitionOnDevice)",
         buildItem: { presentationData, arguments in
-            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "Использовать ИИ для постобработки", value: voiceRecognitionOnDevice, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
+            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "Ð˜ÑÐ¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÑŒ Ð˜Ð˜ Ð´Ð»Ñ Ð¿Ð¾ÑÑ‚Ð¾Ð±Ñ€Ð°Ð±Ð¾Ñ‚ÐºÐ¸", value: voiceRecognitionOnDevice, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
                 arguments.toggleVoiceRecognitionOnDevice(value)
             })
         }
@@ -1459,7 +1460,7 @@ private func sosuzagramSettingsEntries(
         sortId: 38,
         signature: "hidereactions:\(hideReactions)",
         buildItem: { presentationData, arguments in
-            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "Ð¡ÐºÑ€Ñ‹Ñ‚ÑŒ Ñ€ÐµÐ°ÐºÑ†Ð¸Ð¸", value: hideReactions, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
+            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "ÃÂ¡ÃÂºÃ‘â‚¬Ã‘â€¹Ã‘â€šÃ‘Å’ Ã‘â‚¬ÃÂµÃÂ°ÃÂºÃ‘â€ ÃÂ¸ÃÂ¸", value: hideReactions, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
                 arguments.toggleHideReactions(value)
             })
         }
@@ -1473,9 +1474,9 @@ private func sosuzagramSettingsEntries(
             ItemListDisclosureItem(
                 presentationData: presentationData,
                 systemStyle: sosuzagramSettingsSystemStyle(),
-                title: "Ð”Ð²Ð¾Ð¹Ð½Ð¾Ð¹ Ñ‚Ð°Ð¿ Ð¿Ð¾ Ð²Ñ…Ð¾Ð´ÑÑ‰Ð¸Ð¼",
+                title: "Ãâ€ÃÂ²ÃÂ¾ÃÂ¹ÃÂ½ÃÂ¾ÃÂ¹ Ã‘â€šÃÂ°ÃÂ¿ ÃÂ¿ÃÂ¾ ÃÂ²Ã‘â€¦ÃÂ¾ÃÂ´Ã‘ÂÃ‘â€°ÃÂ¸ÃÂ¼",
                 label: sosuzagramDoubleTapActionLabel(incomingDoubleTapAction),
-                additionalDetailLabel: "Ð’Ñ‹Ð±Ð¸Ñ€Ð°ÐµÑ‚ Ð´ÐµÐ¹ÑÑ‚Ð²Ð¸Ðµ Ð¿Ð¾ Ð´Ð²Ð¾Ð¹Ð½Ð¾Ð¼Ñƒ Ð½Ð°Ð¶Ð°Ñ‚Ð¸ÑŽ Ð½Ð° Ð²Ñ…Ð¾Ð´ÑÑ‰ÐµÐµ ÑÐ¾Ð¾Ð±Ñ‰ÐµÐ½Ð¸Ðµ.",
+                additionalDetailLabel: "Ãâ€™Ã‘â€¹ÃÂ±ÃÂ¸Ã‘â‚¬ÃÂ°ÃÂµÃ‘â€š ÃÂ´ÃÂµÃÂ¹Ã‘ÂÃ‘â€šÃÂ²ÃÂ¸ÃÂµ ÃÂ¿ÃÂ¾ ÃÂ´ÃÂ²ÃÂ¾ÃÂ¹ÃÂ½ÃÂ¾ÃÂ¼Ã‘Æ’ ÃÂ½ÃÂ°ÃÂ¶ÃÂ°Ã‘â€šÃÂ¸Ã‘Å½ ÃÂ½ÃÂ° ÃÂ²Ã‘â€¦ÃÂ¾ÃÂ´Ã‘ÂÃ‘â€°ÃÂµÃÂµ Ã‘ÂÃÂ¾ÃÂ¾ÃÂ±Ã‘â€°ÃÂµÃÂ½ÃÂ¸ÃÂµ.",
                 sectionId: SosuzagramSettingsSection.ui.rawValue,
                 style: .blocks,
                 disclosureStyle: .arrow,
@@ -1494,9 +1495,9 @@ private func sosuzagramSettingsEntries(
             ItemListDisclosureItem(
                 presentationData: presentationData,
                 systemStyle: sosuzagramSettingsSystemStyle(),
-                title: "Ð”Ð²Ð¾Ð¹Ð½Ð¾Ð¹ Ñ‚Ð°Ð¿ Ð¿Ð¾ Ð¸ÑÑ…Ð¾Ð´ÑÑ‰Ð¸Ð¼",
+                title: "Ãâ€ÃÂ²ÃÂ¾ÃÂ¹ÃÂ½ÃÂ¾ÃÂ¹ Ã‘â€šÃÂ°ÃÂ¿ ÃÂ¿ÃÂ¾ ÃÂ¸Ã‘ÂÃ‘â€¦ÃÂ¾ÃÂ´Ã‘ÂÃ‘â€°ÃÂ¸ÃÂ¼",
                 label: sosuzagramDoubleTapActionLabel(outgoingDoubleTapAction),
-                additionalDetailLabel: "Ð’Ñ‹Ð±Ð¸Ñ€Ð°ÐµÑ‚ Ð´ÐµÐ¹ÑÑ‚Ð²Ð¸Ðµ Ð¿Ð¾ Ð´Ð²Ð¾Ð¹Ð½Ð¾Ð¼Ñƒ Ð½Ð°Ð¶Ð°Ñ‚Ð¸ÑŽ Ð½Ð° Ð¸ÑÑ…Ð¾Ð´ÑÑ‰ÐµÐµ ÑÐ¾Ð¾Ð±Ñ‰ÐµÐ½Ð¸Ðµ.",
+                additionalDetailLabel: "Ãâ€™Ã‘â€¹ÃÂ±ÃÂ¸Ã‘â‚¬ÃÂ°ÃÂµÃ‘â€š ÃÂ´ÃÂµÃÂ¹Ã‘ÂÃ‘â€šÃÂ²ÃÂ¸ÃÂµ ÃÂ¿ÃÂ¾ ÃÂ´ÃÂ²ÃÂ¾ÃÂ¹ÃÂ½ÃÂ¾ÃÂ¼Ã‘Æ’ ÃÂ½ÃÂ°ÃÂ¶ÃÂ°Ã‘â€šÃÂ¸Ã‘Å½ ÃÂ½ÃÂ° ÃÂ¸Ã‘ÂÃ‘â€¦ÃÂ¾ÃÂ´Ã‘ÂÃ‘â€°ÃÂµÃÂµ Ã‘ÂÃÂ¾ÃÂ¾ÃÂ±Ã‘â€°ÃÂµÃÂ½ÃÂ¸ÃÂµ.",
                 sectionId: SosuzagramSettingsSection.ui.rawValue,
                 style: .blocks,
                 disclosureStyle: .arrow,
@@ -1515,9 +1516,9 @@ private func sosuzagramSettingsEntries(
             ItemListDisclosureItem(
                 presentationData: presentationData,
                 systemStyle: sosuzagramSettingsSystemStyle(),
-                title: "Ð Ð°Ð·Ð¼ÐµÑ€ ÑÑ‚Ð¸ÐºÐµÑ€Ð¾Ð²",
+                title: "ÃÂ ÃÂ°ÃÂ·ÃÂ¼ÃÂµÃ‘â‚¬ Ã‘ÂÃ‘â€šÃÂ¸ÃÂºÃÂµÃ‘â‚¬ÃÂ¾ÃÂ²",
                 label: sosuzagramStickerSizePresetLabel(stickerSizePreset),
-                additionalDetailLabel: "ÐœÐµÐ½ÑÐµÑ‚ Ð¼Ð°ÑÑˆÑ‚Ð°Ð± Ð¾Ð±Ñ‹Ñ‡Ð½Ñ‹Ñ… Ð¸ Ð°Ð½Ð¸Ð¼Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð½Ñ‹Ñ… ÑÑ‚Ð¸ÐºÐµÑ€Ð¾Ð² Ð² Ñ‡Ð°Ñ‚Ðµ.",
+                additionalDetailLabel: "ÃÅ“ÃÂµÃÂ½Ã‘ÂÃÂµÃ‘â€š ÃÂ¼ÃÂ°Ã‘ÂÃ‘Ë†Ã‘â€šÃÂ°ÃÂ± ÃÂ¾ÃÂ±Ã‘â€¹Ã‘â€¡ÃÂ½Ã‘â€¹Ã‘â€¦ ÃÂ¸ ÃÂ°ÃÂ½ÃÂ¸ÃÂ¼ÃÂ¸Ã‘â‚¬ÃÂ¾ÃÂ²ÃÂ°ÃÂ½ÃÂ½Ã‘â€¹Ã‘â€¦ Ã‘ÂÃ‘â€šÃÂ¸ÃÂºÃÂµÃ‘â‚¬ÃÂ¾ÃÂ² ÃÂ² Ã‘â€¡ÃÂ°Ã‘â€šÃÂµ.",
                 sectionId: SosuzagramSettingsSection.ui.rawValue,
                 style: .blocks,
                 disclosureStyle: .arrow,
@@ -1533,7 +1534,7 @@ private func sosuzagramSettingsEntries(
         sortId: 42,
         signature: "alwayssendhd:\(alwaysSendHd)",
         buildItem: { presentationData, arguments in
-            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "Ð’ÑÐµÐ³Ð´Ð° Ð¾Ñ‚Ð¿Ñ€Ð°Ð²Ð»ÑÑ‚ÑŒ Ñ„Ð¾Ñ‚Ð¾ Ð² HD", value: alwaysSendHd, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
+            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "Ãâ€™Ã‘ÂÃÂµÃÂ³ÃÂ´ÃÂ° ÃÂ¾Ã‘â€šÃÂ¿Ã‘â‚¬ÃÂ°ÃÂ²ÃÂ»Ã‘ÂÃ‘â€šÃ‘Å’ Ã‘â€žÃÂ¾Ã‘â€šÃÂ¾ ÃÂ² HD", value: alwaysSendHd, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
                 arguments.toggleAlwaysSendHd(value)
             })
         }
@@ -1544,7 +1545,7 @@ private func sosuzagramSettingsEntries(
         sortId: 43,
         signature: "preferoriginalquality:\(preferOriginalQuality)",
         buildItem: { presentationData, arguments in
-            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "ÐŸÑ€ÐµÐ´Ð¿Ð¾Ñ‡Ð¸Ñ‚Ð°Ñ‚ÑŒ original quality", value: preferOriginalQuality, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
+            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "ÃÅ¸Ã‘â‚¬ÃÂµÃÂ´ÃÂ¿ÃÂ¾Ã‘â€¡ÃÂ¸Ã‘â€šÃÂ°Ã‘â€šÃ‘Å’ original quality", value: preferOriginalQuality, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
                 arguments.togglePreferOriginalQuality(value)
             })
         }
@@ -1555,7 +1556,7 @@ private func sosuzagramSettingsEntries(
         sortId: 44,
         signature: "hidephotocounter:\(hidePhotoCounter)",
         buildItem: { presentationData, arguments in
-            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "Ð¡ÐºÑ€Ñ‹Ñ‚ÑŒ ÑÑ‡Ñ‘Ñ‚Ñ‡Ð¸Ðº Ñ„Ð¾Ñ‚Ð¾", value: hidePhotoCounter, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
+            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "ÃÂ¡ÃÂºÃ‘â‚¬Ã‘â€¹Ã‘â€šÃ‘Å’ Ã‘ÂÃ‘â€¡Ã‘â€˜Ã‘â€šÃ‘â€¡ÃÂ¸ÃÂº Ã‘â€žÃÂ¾Ã‘â€šÃÂ¾", value: hidePhotoCounter, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
                 arguments.toggleHidePhotoCounter(value)
             })
         }
@@ -1566,7 +1567,7 @@ private func sosuzagramSettingsEntries(
         sortId: 45,
         signature: "hidecameratile:\(hideCameraTile)",
         buildItem: { presentationData, arguments in
-            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "Ð¡ÐºÑ€Ñ‹Ñ‚ÑŒ camera tile", value: hideCameraTile, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
+            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "ÃÂ¡ÃÂºÃ‘â‚¬Ã‘â€¹Ã‘â€šÃ‘Å’ camera tile", value: hideCameraTile, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
                 arguments.toggleHideCameraTile(value)
             })
         }
@@ -1580,8 +1581,8 @@ private func sosuzagramSettingsEntries(
             ItemListSwitchItem(
                 presentationData: presentationData,
                 systemStyle: sosuzagramSettingsSystemStyle(),
-                title: "Расширенные настройки камеры",
-                text: "Включает расширенный выбор стартовой камеры, режима видеосообщений, статичного зума и запоминания последней камеры.",
+                title: "Ð Ð°ÑÑˆÐ¸Ñ€ÐµÐ½Ð½Ñ‹Ðµ Ð½Ð°ÑÑ‚Ñ€Ð¾Ð¹ÐºÐ¸ ÐºÐ°Ð¼ÐµÑ€Ñ‹",
+                text: "Ð’ÐºÐ»ÑŽÑ‡Ð°ÐµÑ‚ Ñ€Ð°ÑÑˆÐ¸Ñ€ÐµÐ½Ð½Ñ‹Ð¹ Ð²Ñ‹Ð±Ð¾Ñ€ ÑÑ‚Ð°Ñ€Ñ‚Ð¾Ð²Ð¾Ð¹ ÐºÐ°Ð¼ÐµÑ€Ñ‹, Ñ€ÐµÐ¶Ð¸Ð¼Ð° Ð²Ð¸Ð´ÐµÐ¾ÑÐ¾Ð¾Ð±Ñ‰ÐµÐ½Ð¸Ð¹, ÑÑ‚Ð°Ñ‚Ð¸Ñ‡Ð½Ð¾Ð³Ð¾ Ð·ÑƒÐ¼Ð° Ð¸ Ð·Ð°Ð¿Ð¾Ð¼Ð¸Ð½Ð°Ð½Ð¸Ñ Ð¿Ð¾ÑÐ»ÐµÐ´Ð½ÐµÐ¹ ÐºÐ°Ð¼ÐµÑ€Ñ‹.",
                 value: advancedCameraSettings,
                 sectionId: SosuzagramSettingsSection.ui.rawValue,
                 style: .blocks,
@@ -1597,7 +1598,7 @@ private func sosuzagramSettingsEntries(
         sortId: 47,
         signature: "soundwithvolumebuttons:\(enableSoundWithVolumeButtons)",
         buildItem: { presentationData, arguments in
-            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "Включение звука кнопками громкости", text: "Разрешает быстро включать звук голосовых и кружков аппаратными кнопками громкости.", value: enableSoundWithVolumeButtons, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
+            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "Ð’ÐºÐ»ÑŽÑ‡ÐµÐ½Ð¸Ðµ Ð·Ð²ÑƒÐºÐ° ÐºÐ½Ð¾Ð¿ÐºÐ°Ð¼Ð¸ Ð³Ñ€Ð¾Ð¼ÐºÐ¾ÑÑ‚Ð¸", text: "Ð Ð°Ð·Ñ€ÐµÑˆÐ°ÐµÑ‚ Ð±Ñ‹ÑÑ‚Ñ€Ð¾ Ð²ÐºÐ»ÑŽÑ‡Ð°Ñ‚ÑŒ Ð·Ð²ÑƒÐº Ð³Ð¾Ð»Ð¾ÑÐ¾Ð²Ñ‹Ñ… Ð¸ ÐºÑ€ÑƒÐ¶ÐºÐ¾Ð² Ð°Ð¿Ð¿Ð°Ñ€Ð°Ñ‚Ð½Ñ‹Ð¼Ð¸ ÐºÐ½Ð¾Ð¿ÐºÐ°Ð¼Ð¸ Ð³Ñ€Ð¾Ð¼ÐºÐ¾ÑÑ‚Ð¸.", value: enableSoundWithVolumeButtons, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
                 arguments.toggleEnableSoundWithVolumeButtons(value)
             })
         }
@@ -1611,9 +1612,9 @@ private func sosuzagramSettingsEntries(
             ItemListDisclosureItem(
                 presentationData: presentationData,
                 systemStyle: sosuzagramSettingsSystemStyle(),
-                title: "Тип камеры",
+                title: "Ð¢Ð¸Ð¿ ÐºÐ°Ð¼ÐµÑ€Ñ‹",
                 label: sosuzagramCameraTypeLabel(cameraType),
-                additionalDetailLabel: "Определяет стартовый режим камеры: обычная или dual-camera, если устройство её поддерживает.",
+                additionalDetailLabel: "ÐžÐ¿Ñ€ÐµÐ´ÐµÐ»ÑÐµÑ‚ ÑÑ‚Ð°Ñ€Ñ‚Ð¾Ð²Ñ‹Ð¹ Ñ€ÐµÐ¶Ð¸Ð¼ ÐºÐ°Ð¼ÐµÑ€Ñ‹: Ð¾Ð±Ñ‹Ñ‡Ð½Ð°Ñ Ð¸Ð»Ð¸ dual-camera, ÐµÑÐ»Ð¸ ÑƒÑÑ‚Ñ€Ð¾Ð¹ÑÑ‚Ð²Ð¾ ÐµÑ‘ Ð¿Ð¾Ð´Ð´ÐµÑ€Ð¶Ð¸Ð²Ð°ÐµÑ‚.",
                 sectionId: SosuzagramSettingsSection.ui.rawValue,
                 style: .blocks,
                 disclosureStyle: .arrow,
@@ -1629,7 +1630,7 @@ private func sosuzagramSettingsEntries(
         sortId: 49,
         signature: "pipswipe:\(pictureInPictureSwipe)",
         buildItem: { presentationData, arguments in
-            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "Картинка-картинке по свайпу", value: pictureInPictureSwipe, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
+            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "ÐšÐ°Ñ€Ñ‚Ð¸Ð½ÐºÐ°-ÐºÐ°Ñ€Ñ‚Ð¸Ð½ÐºÐµ Ð¿Ð¾ ÑÐ²Ð°Ð¹Ð¿Ñƒ", value: pictureInPictureSwipe, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
                 arguments.togglePictureInPictureSwipe(value)
             })
         }
@@ -1640,7 +1641,7 @@ private func sosuzagramSettingsEntries(
         sortId: 50,
         signature: "staticzoom:\(staticZoom)",
         buildItem: { presentationData, arguments in
-            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "Ð¡Ñ‚Ð°Ñ‚Ð¸Ñ‡ÐµÑÐºÐ¸Ð¹ zoom ÐºÐ°Ð¼ÐµÑ€Ñ‹", value: staticZoom, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
+            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "ÃÂ¡Ã‘â€šÃÂ°Ã‘â€šÃÂ¸Ã‘â€¡ÃÂµÃ‘ÂÃÂºÃÂ¸ÃÂ¹ zoom ÃÂºÃÂ°ÃÂ¼ÃÂµÃ‘â‚¬Ã‘â€¹", value: staticZoom, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
                 arguments.toggleStaticZoom(value)
             })
         }
@@ -1651,7 +1652,7 @@ private func sosuzagramSettingsEntries(
         sortId: 51,
         signature: "rememberlastcamera:\(rememberLastCamera)",
         buildItem: { presentationData, arguments in
-            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "Ð—Ð°Ð¿Ð¾Ð¼Ð¸Ð½Ð°Ñ‚ÑŒ Ð¿Ð¾ÑÐ»ÐµÐ´Ð½ÑŽÑŽ ÐºÐ°Ð¼ÐµÑ€Ñƒ", value: rememberLastCamera, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
+            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "Ãâ€”ÃÂ°ÃÂ¿ÃÂ¾ÃÂ¼ÃÂ¸ÃÂ½ÃÂ°Ã‘â€šÃ‘Å’ ÃÂ¿ÃÂ¾Ã‘ÂÃÂ»ÃÂµÃÂ´ÃÂ½Ã‘Å½Ã‘Å½ ÃÂºÃÂ°ÃÂ¼ÃÂµÃ‘â‚¬Ã‘Æ’", value: rememberLastCamera, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
                 arguments.toggleRememberLastCamera(value)
             })
         }
@@ -1665,9 +1666,9 @@ private func sosuzagramSettingsEntries(
             ItemListDisclosureItem(
                 presentationData: presentationData,
                 systemStyle: sosuzagramSettingsSystemStyle(),
-                title: "ÐšÐ°Ð¼ÐµÑ€Ð° Ð² Ð²Ð¸Ð´ÐµÐ¾ÑÐ¾Ð¾Ð±Ñ‰ÐµÐ½Ð¸ÑÑ…",
+                title: "ÃÅ¡ÃÂ°ÃÂ¼ÃÂµÃ‘â‚¬ÃÂ° ÃÂ² ÃÂ²ÃÂ¸ÃÂ´ÃÂµÃÂ¾Ã‘ÂÃÂ¾ÃÂ¾ÃÂ±Ã‘â€°ÃÂµÃÂ½ÃÂ¸Ã‘ÂÃ‘â€¦",
                 label: sosuzagramVideoMessageCameraLabel(videoMessageCamera),
-                additionalDetailLabel: "Ð’Ñ‹Ð±Ð¸Ñ€Ð°ÐµÑ‚ ÑÑ‚Ð°Ñ€Ñ‚Ð¾Ð²ÑƒÑŽ ÐºÐ°Ð¼ÐµÑ€Ñƒ Ð´Ð»Ñ ÐºÑ€ÑƒÐ¶ÐºÐ¾Ð² Ð¸ ÑÐºÑ€Ð°Ð½Ð° ÐºÐ°Ð¼ÐµÑ€Ñ‹.",
+                additionalDetailLabel: "Ãâ€™Ã‘â€¹ÃÂ±ÃÂ¸Ã‘â‚¬ÃÂ°ÃÂµÃ‘â€š Ã‘ÂÃ‘â€šÃÂ°Ã‘â‚¬Ã‘â€šÃÂ¾ÃÂ²Ã‘Æ’Ã‘Å½ ÃÂºÃÂ°ÃÂ¼ÃÂµÃ‘â‚¬Ã‘Æ’ ÃÂ´ÃÂ»Ã‘Â ÃÂºÃ‘â‚¬Ã‘Æ’ÃÂ¶ÃÂºÃÂ¾ÃÂ² ÃÂ¸ Ã‘ÂÃÂºÃ‘â‚¬ÃÂ°ÃÂ½ÃÂ° ÃÂºÃÂ°ÃÂ¼ÃÂµÃ‘â‚¬Ã‘â€¹.",
                 sectionId: SosuzagramSettingsSection.ui.rawValue,
                 style: .blocks,
                 disclosureStyle: .arrow,
@@ -1694,7 +1695,7 @@ private func sosuzagramSettingsEntries(
         sortId: 54,
         signature: "infiniterecentstickers:\(infiniteRecentStickers)",
         buildItem: { presentationData, arguments in
-            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "Ð‘ÐµÑÐºÐ¾Ð½ÐµÑ‡Ð½Ñ‹Ðµ recent stickers", value: infiniteRecentStickers, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
+            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "Ãâ€˜ÃÂµÃ‘ÂÃÂºÃÂ¾ÃÂ½ÃÂµÃ‘â€¡ÃÂ½Ã‘â€¹ÃÂµ recent stickers", value: infiniteRecentStickers, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
                 arguments.toggleInfiniteRecentStickers(value)
             })
         }
@@ -1705,7 +1706,7 @@ private func sosuzagramSettingsEntries(
         sortId: 55,
         signature: "lowerbutton:\(lowerNavigationButton)",
         buildItem: { presentationData, arguments in
-            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "Нижняя кнопка навигации", value: lowerNavigationButton, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
+            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "ÐÐ¸Ð¶Ð½ÑÑ ÐºÐ½Ð¾Ð¿ÐºÐ° Ð½Ð°Ð²Ð¸Ð³Ð°Ñ†Ð¸Ð¸", value: lowerNavigationButton, sectionId: SosuzagramSettingsSection.ui.rawValue, style: .blocks, updated: { value in
                 arguments.toggleLowerNavigationButton(value)
             })
         }
@@ -1719,9 +1720,9 @@ private func sosuzagramSettingsEntries(
             ItemListDisclosureItem(
                 presentationData: presentationData,
                 systemStyle: sosuzagramSettingsSystemStyle(),
-                title: "Ответы",
+                title: "ÐžÑ‚Ð²ÐµÑ‚Ñ‹",
                 label: sosuzagramReplyStyleLabel(replyStyle),
-                additionalDetailLabel: "Меняет форму и подачу reply-блоков в сообщениях и панели ответа.",
+                additionalDetailLabel: "ÐœÐµÐ½ÑÐµÑ‚ Ñ„Ð¾Ñ€Ð¼Ñƒ Ð¸ Ð¿Ð¾Ð´Ð°Ñ‡Ñƒ reply-Ð±Ð»Ð¾ÐºÐ¾Ð² Ð² ÑÐ¾Ð¾Ð±Ñ‰ÐµÐ½Ð¸ÑÑ… Ð¸ Ð¿Ð°Ð½ÐµÐ»Ð¸ Ð¾Ñ‚Ð²ÐµÑ‚Ð°.",
                 sectionId: SosuzagramSettingsSection.ui.rawValue,
                 style: .blocks,
                 disclosureStyle: .arrow,
@@ -1740,8 +1741,8 @@ private func sosuzagramSettingsEntries(
             ItemListSwitchItem(
                 presentationData: presentationData,
                 systemStyle: sosuzagramSettingsSystemStyle(),
-                title: "Быстрые админ-действия",
-                text: "Добавляет отдельный пункт админ-действий в меню сообщения там, где у аккаунта есть права модерации.",
+                title: "Ð‘Ñ‹ÑÑ‚Ñ€Ñ‹Ðµ Ð°Ð´Ð¼Ð¸Ð½-Ð´ÐµÐ¹ÑÑ‚Ð²Ð¸Ñ",
+                text: "Ð”Ð¾Ð±Ð°Ð²Ð»ÑÐµÑ‚ Ð¾Ñ‚Ð´ÐµÐ»ÑŒÐ½Ñ‹Ð¹ Ð¿ÑƒÐ½ÐºÑ‚ Ð°Ð´Ð¼Ð¸Ð½-Ð´ÐµÐ¹ÑÑ‚Ð²Ð¸Ð¹ Ð² Ð¼ÐµÐ½ÑŽ ÑÐ¾Ð¾Ð±Ñ‰ÐµÐ½Ð¸Ñ Ñ‚Ð°Ð¼, Ð³Ð´Ðµ Ñƒ Ð°ÐºÐºÐ°ÑƒÐ½Ñ‚Ð° ÐµÑÑ‚ÑŒ Ð¿Ñ€Ð°Ð²Ð° Ð¼Ð¾Ð´ÐµÑ€Ð°Ñ†Ð¸Ð¸.",
                 value: quickAdminActions,
                 sectionId: SosuzagramSettingsSection.ui.rawValue,
                 style: .blocks,
@@ -1760,9 +1761,9 @@ private func sosuzagramSettingsEntries(
             ItemListDisclosureItem(
                 presentationData: presentationData,
                 systemStyle: sosuzagramSettingsSystemStyle(),
-                title: "Форма стикеров",
+                title: "Ð¤Ð¾Ñ€Ð¼Ð° ÑÑ‚Ð¸ÐºÐµÑ€Ð¾Ð²",
                 label: sosuzagramStickerShapeLabel(stickerShape),
-                additionalDetailLabel: "Переключает фон и форму bubble у стикеров между системным видом, закруглённой карточкой и обычным сообщением.",
+                additionalDetailLabel: "ÐŸÐµÑ€ÐµÐºÐ»ÑŽÑ‡Ð°ÐµÑ‚ Ñ„Ð¾Ð½ Ð¸ Ñ„Ð¾Ñ€Ð¼Ñƒ bubble Ñƒ ÑÑ‚Ð¸ÐºÐµÑ€Ð¾Ð² Ð¼ÐµÐ¶Ð´Ñƒ ÑÐ¸ÑÑ‚ÐµÐ¼Ð½Ñ‹Ð¼ Ð²Ð¸Ð´Ð¾Ð¼, Ð·Ð°ÐºÑ€ÑƒÐ³Ð»Ñ‘Ð½Ð½Ð¾Ð¹ ÐºÐ°Ñ€Ñ‚Ð¾Ñ‡ÐºÐ¾Ð¹ Ð¸ Ð¾Ð±Ñ‹Ñ‡Ð½Ñ‹Ð¼ ÑÐ¾Ð¾Ð±Ñ‰ÐµÐ½Ð¸ÐµÐ¼.",
                 sectionId: SosuzagramSettingsSection.ui.rawValue,
                 style: .blocks,
                 disclosureStyle: .arrow,
@@ -1781,8 +1782,8 @@ private func sosuzagramSettingsEntries(
             ItemListSwitchItem(
                 presentationData: presentationData,
                 systemStyle: sosuzagramSettingsSystemStyle(),
-                title: "Меню сообщения",
-                text: "Включает кастомизацию основных действий в контекстном меню сообщения.",
+                title: "ÐœÐµÐ½ÑŽ ÑÐ¾Ð¾Ð±Ñ‰ÐµÐ½Ð¸Ñ",
+                text: "Ð’ÐºÐ»ÑŽÑ‡Ð°ÐµÑ‚ ÐºÐ°ÑÑ‚Ð¾Ð¼Ð¸Ð·Ð°Ñ†Ð¸ÑŽ Ð¾ÑÐ½Ð¾Ð²Ð½Ñ‹Ñ… Ð´ÐµÐ¹ÑÑ‚Ð²Ð¸Ð¹ Ð² ÐºÐ¾Ð½Ñ‚ÐµÐºÑÑ‚Ð½Ð¾Ð¼ Ð¼ÐµÐ½ÑŽ ÑÐ¾Ð¾Ð±Ñ‰ÐµÐ½Ð¸Ñ.",
                 value: messageMenuEnabled,
                 sectionId: SosuzagramSettingsSection.ui.rawValue,
                 style: .blocks,
@@ -1801,9 +1802,9 @@ private func sosuzagramSettingsEntries(
             ItemListDisclosureItem(
                 presentationData: presentationData,
                 systemStyle: sosuzagramSettingsSystemStyle(),
-                title: "Настроить меню сообщения",
+                title: "ÐÐ°ÑÑ‚Ñ€Ð¾Ð¸Ñ‚ÑŒ Ð¼ÐµÐ½ÑŽ ÑÐ¾Ð¾Ð±Ñ‰ÐµÐ½Ð¸Ñ",
                 label: "\(sosuzagramMessageMenuEnabledCount())/8",
-                additionalDetailLabel: "Управляет набором основных действий: ответ, копирование, перевод, озвучивание, сохранение, пересылка, выделение и удаление.",
+                additionalDetailLabel: "Ð£Ð¿Ñ€Ð°Ð²Ð»ÑÐµÑ‚ Ð½Ð°Ð±Ð¾Ñ€Ð¾Ð¼ Ð¾ÑÐ½Ð¾Ð²Ð½Ñ‹Ñ… Ð´ÐµÐ¹ÑÑ‚Ð²Ð¸Ð¹: Ð¾Ñ‚Ð²ÐµÑ‚, ÐºÐ¾Ð¿Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð¸Ðµ, Ð¿ÐµÑ€ÐµÐ²Ð¾Ð´, Ð¾Ð·Ð²ÑƒÑ‡Ð¸Ð²Ð°Ð½Ð¸Ðµ, ÑÐ¾Ñ…Ñ€Ð°Ð½ÐµÐ½Ð¸Ðµ, Ð¿ÐµÑ€ÐµÑÑ‹Ð»ÐºÐ°, Ð²Ñ‹Ð´ÐµÐ»ÐµÐ½Ð¸Ðµ Ð¸ ÑƒÐ´Ð°Ð»ÐµÐ½Ð¸Ðµ.",
                 sectionId: SosuzagramSettingsSection.ui.rawValue,
                 style: .blocks,
                 disclosureStyle: .arrow,
@@ -1822,8 +1823,8 @@ private func sosuzagramSettingsEntries(
             ItemListSwitchItem(
                 presentationData: presentationData,
                 systemStyle: sosuzagramSettingsSystemStyle(),
-                title: "Группировать меню сообщения",
-                text: "Перемещает основные действия в нижнюю часть меню сообщения отдельным блоком.",
+                title: "Ð“Ñ€ÑƒÐ¿Ð¿Ð¸Ñ€Ð¾Ð²Ð°Ñ‚ÑŒ Ð¼ÐµÐ½ÑŽ ÑÐ¾Ð¾Ð±Ñ‰ÐµÐ½Ð¸Ñ",
+                text: "ÐŸÐµÑ€ÐµÐ¼ÐµÑ‰Ð°ÐµÑ‚ Ð¾ÑÐ½Ð¾Ð²Ð½Ñ‹Ðµ Ð´ÐµÐ¹ÑÑ‚Ð²Ð¸Ñ Ð² Ð½Ð¸Ð¶Ð½ÑŽÑŽ Ñ‡Ð°ÑÑ‚ÑŒ Ð¼ÐµÐ½ÑŽ ÑÐ¾Ð¾Ð±Ñ‰ÐµÐ½Ð¸Ñ Ð¾Ñ‚Ð´ÐµÐ»ÑŒÐ½Ñ‹Ð¼ Ð±Ð»Ð¾ÐºÐ¾Ð¼.",
                 value: groupMessageMenu,
                 sectionId: SosuzagramSettingsSection.ui.rawValue,
                 style: .blocks,
@@ -1842,9 +1843,9 @@ private func sosuzagramSettingsEntries(
             ItemListDisclosureItem(
                 presentationData: presentationData,
                 systemStyle: sosuzagramSettingsSystemStyle(),
-                title: "Ð¤Ð¾Ñ€Ð¼Ð° Ð°Ð²Ð°Ñ‚Ð°Ñ€Ð¾Ð²",
+                title: "ÃÂ¤ÃÂ¾Ã‘â‚¬ÃÂ¼ÃÂ° ÃÂ°ÃÂ²ÃÂ°Ã‘â€šÃÂ°Ã‘â‚¬ÃÂ¾ÃÂ²",
                 label: sosuzagramAvatarShapeLabel(avatarShape),
-                additionalDetailLabel: "ÐœÐµÐ½ÑÐµÑ‚ Ñ„Ð¾Ñ€Ð¼Ñƒ Ð°Ð²Ð°Ñ‚Ð°Ñ€Ð¾Ð² Ð² ÑÐ¿Ð¸ÑÐºÐµ Ñ‡Ð°Ñ‚Ð¾Ð².",
+                additionalDetailLabel: "ÃÅ“ÃÂµÃÂ½Ã‘ÂÃÂµÃ‘â€š Ã‘â€žÃÂ¾Ã‘â‚¬ÃÂ¼Ã‘Æ’ ÃÂ°ÃÂ²ÃÂ°Ã‘â€šÃÂ°Ã‘â‚¬ÃÂ¾ÃÂ² ÃÂ² Ã‘ÂÃÂ¿ÃÂ¸Ã‘ÂÃÂºÃÂµ Ã‘â€¡ÃÂ°Ã‘â€šÃÂ¾ÃÂ².",
                 sectionId: SosuzagramSettingsSection.icons.rawValue,
                 style: .blocks,
                 disclosureStyle: .arrow,
@@ -1860,7 +1861,7 @@ private func sosuzagramSettingsEntries(
         sortId: 224,
         signature: "unifiedrounding:\(unifiedRounding)",
         buildItem: { presentationData, arguments in
-            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "Ð•Ð´Ð¸Ð½Ð¾Ðµ ÑÐºÑ€ÑƒÐ³Ð»ÐµÐ½Ð¸Ðµ Ð°Ð²Ð°Ñ‚Ð°Ñ€Ð¾Ð²", value: unifiedRounding, sectionId: SosuzagramSettingsSection.icons.rawValue, style: .blocks, updated: { value in
+            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "Ãâ€¢ÃÂ´ÃÂ¸ÃÂ½ÃÂ¾ÃÂµ Ã‘ÂÃÂºÃ‘â‚¬Ã‘Æ’ÃÂ³ÃÂ»ÃÂµÃÂ½ÃÂ¸ÃÂµ ÃÂ°ÃÂ²ÃÂ°Ã‘â€šÃÂ°Ã‘â‚¬ÃÂ¾ÃÂ²", value: unifiedRounding, sectionId: SosuzagramSettingsSection.icons.rawValue, style: .blocks, updated: { value in
                 arguments.toggleUnifiedRounding(value)
             })
         }
@@ -1871,7 +1872,7 @@ private func sosuzagramSettingsEntries(
         sortId: 225,
         signature: "miniavatars:\(miniAvatars)",
         buildItem: { presentationData, arguments in
-            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "ÐœÐ¸Ð½Ð¸-Ð°Ð²Ð°Ñ‚Ð°Ñ€Ñ‹", value: miniAvatars, sectionId: SosuzagramSettingsSection.icons.rawValue, style: .blocks, updated: { value in
+            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "ÃÅ“ÃÂ¸ÃÂ½ÃÂ¸-ÃÂ°ÃÂ²ÃÂ°Ã‘â€šÃÂ°Ã‘â‚¬Ã‘â€¹", value: miniAvatars, sectionId: SosuzagramSettingsSection.icons.rawValue, style: .blocks, updated: { value in
                 arguments.toggleMiniAvatars(value)
             })
         }
@@ -1882,7 +1883,7 @@ private func sosuzagramSettingsEntries(
         sortId: 226,
         signature: "disableseparators:\(disableSeparators)",
         buildItem: { presentationData, arguments in
-            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "ÐžÑ‚ÐºÐ»ÑŽÑ‡Ð¸Ñ‚ÑŒ Ñ€Ð°Ð·Ð´ÐµÐ»Ð¸Ñ‚ÐµÐ»Ð¸", value: disableSeparators, sectionId: SosuzagramSettingsSection.icons.rawValue, style: .blocks, updated: { value in
+            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "ÃÅ¾Ã‘â€šÃÂºÃÂ»Ã‘Å½Ã‘â€¡ÃÂ¸Ã‘â€šÃ‘Å’ Ã‘â‚¬ÃÂ°ÃÂ·ÃÂ´ÃÂµÃÂ»ÃÂ¸Ã‘â€šÃÂµÃÂ»ÃÂ¸", value: disableSeparators, sectionId: SosuzagramSettingsSection.icons.rawValue, style: .blocks, updated: { value in
                 arguments.toggleDisableSeparators(value)
             })
         }
@@ -1896,8 +1897,8 @@ private func sosuzagramSettingsEntries(
             ItemListSwitchItem(
                 presentationData: presentationData,
                 systemStyle: sosuzagramSettingsSystemStyle(),
-                title: "Отдельные заголовки",
-                text: "Визуально отделяет верхний заголовок списка чатов от панели вкладок и дополнительных блоков.",
+                title: "ÐžÑ‚Ð´ÐµÐ»ÑŒÐ½Ñ‹Ðµ Ð·Ð°Ð³Ð¾Ð»Ð¾Ð²ÐºÐ¸",
+                text: "Ð’Ð¸Ð·ÑƒÐ°Ð»ÑŒÐ½Ð¾ Ð¾Ñ‚Ð´ÐµÐ»ÑÐµÑ‚ Ð²ÐµÑ€Ñ…Ð½Ð¸Ð¹ Ð·Ð°Ð³Ð¾Ð»Ð¾Ð²Ð¾Ðº ÑÐ¿Ð¸ÑÐºÐ° Ñ‡Ð°Ñ‚Ð¾Ð² Ð¾Ñ‚ Ð¿Ð°Ð½ÐµÐ»Ð¸ Ð²ÐºÐ»Ð°Ð´Ð¾Ðº Ð¸ Ð´Ð¾Ð¿Ð¾Ð»Ð½Ð¸Ñ‚ÐµÐ»ÑŒÐ½Ñ‹Ñ… Ð±Ð»Ð¾ÐºÐ¾Ð².",
                 value: separateHeaders,
                 sectionId: SosuzagramSettingsSection.icons.rawValue,
                 style: .blocks,
@@ -1916,8 +1917,8 @@ private func sosuzagramSettingsEntries(
             ItemListSwitchItem(
                 presentationData: presentationData,
                 systemStyle: sosuzagramSettingsSystemStyle(),
-                title: "Различные темы в чатах",
-                text: "Позволяет каждому диалогу использовать собственную тему и обои вместо глобальной темы приложения.",
+                title: "Ð Ð°Ð·Ð»Ð¸Ñ‡Ð½Ñ‹Ðµ Ñ‚ÐµÐ¼Ñ‹ Ð² Ñ‡Ð°Ñ‚Ð°Ñ…",
+                text: "ÐŸÐ¾Ð·Ð²Ð¾Ð»ÑÐµÑ‚ ÐºÐ°Ð¶Ð´Ð¾Ð¼Ñƒ Ð´Ð¸Ð°Ð»Ð¾Ð³Ñƒ Ð¸ÑÐ¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÑŒ ÑÐ¾Ð±ÑÑ‚Ð²ÐµÐ½Ð½ÑƒÑŽ Ñ‚ÐµÐ¼Ñƒ Ð¸ Ð¾Ð±Ð¾Ð¸ Ð²Ð¼ÐµÑÑ‚Ð¾ Ð³Ð»Ð¾Ð±Ð°Ð»ÑŒÐ½Ð¾Ð¹ Ñ‚ÐµÐ¼Ñ‹ Ð¿Ñ€Ð¸Ð»Ð¾Ð¶ÐµÐ½Ð¸Ñ.",
                 value: chatThemes,
                 sectionId: SosuzagramSettingsSection.icons.rawValue,
                 style: .blocks,
@@ -1938,7 +1939,7 @@ private func sosuzagramSettingsEntries(
                 systemStyle: sosuzagramSettingsSystemStyle(),
                 title: "Material Design 3",
                 label: sosuzagramMaterialDesignLevelLabel(materialDesignLevel),
-                additionalDetailLabel: "Управляет силой Android-подобного оформления для списка чатов, вкладок и связанных элементов интерфейса.",
+                additionalDetailLabel: "Ð£Ð¿Ñ€Ð°Ð²Ð»ÑÐµÑ‚ ÑÐ¸Ð»Ð¾Ð¹ Android-Ð¿Ð¾Ð´Ð¾Ð±Ð½Ð¾Ð³Ð¾ Ð¾Ñ„Ð¾Ñ€Ð¼Ð»ÐµÐ½Ð¸Ñ Ð´Ð»Ñ ÑÐ¿Ð¸ÑÐºÐ° Ñ‡Ð°Ñ‚Ð¾Ð², Ð²ÐºÐ»Ð°Ð´Ð¾Ðº Ð¸ ÑÐ²ÑÐ·Ð°Ð½Ð½Ñ‹Ñ… ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ð¾Ð² Ð¸Ð½Ñ‚ÐµÑ€Ñ„ÐµÐ¹ÑÐ°.",
                 sectionId: SosuzagramSettingsSection.icons.rawValue,
                 style: .blocks,
                 disclosureStyle: .arrow,
@@ -1957,8 +1958,8 @@ private func sosuzagramSettingsEntries(
             ItemListSwitchItem(
                 presentationData: presentationData,
                 systemStyle: sosuzagramSettingsSystemStyle(),
-                title: "Системные эмодзи",
-                text: "Упрощает отображение эмодзи и кастомных значков в превью списка чатов, ближе к системному виду iOS.",
+                title: "Ð¡Ð¸ÑÑ‚ÐµÐ¼Ð½Ñ‹Ðµ ÑÐ¼Ð¾Ð´Ð·Ð¸",
+                text: "Ð£Ð¿Ñ€Ð¾Ñ‰Ð°ÐµÑ‚ Ð¾Ñ‚Ð¾Ð±Ñ€Ð°Ð¶ÐµÐ½Ð¸Ðµ ÑÐ¼Ð¾Ð´Ð·Ð¸ Ð¸ ÐºÐ°ÑÑ‚Ð¾Ð¼Ð½Ñ‹Ñ… Ð·Ð½Ð°Ñ‡ÐºÐ¾Ð² Ð² Ð¿Ñ€ÐµÐ²ÑŒÑŽ ÑÐ¿Ð¸ÑÐºÐ° Ñ‡Ð°Ñ‚Ð¾Ð², Ð±Ð»Ð¸Ð¶Ðµ Ðº ÑÐ¸ÑÑ‚ÐµÐ¼Ð½Ð¾Ð¼Ñƒ Ð²Ð¸Ð´Ñƒ iOS.",
                 value: systemEmoji,
                 sectionId: SosuzagramSettingsSection.icons.rawValue,
                 style: .blocks,
@@ -1977,8 +1978,8 @@ private func sosuzagramSettingsEntries(
             ItemListSwitchItem(
                 presentationData: presentationData,
                 systemStyle: sosuzagramSettingsSystemStyle(),
-                title: "\"Липкая\" анимация аватарок",
-                text: "Добавляет более вязкое и плавное движение аватарок при перестроении списка чатов и связанных переходах.",
+                title: "\"Ð›Ð¸Ð¿ÐºÐ°Ñ\" Ð°Ð½Ð¸Ð¼Ð°Ñ†Ð¸Ñ Ð°Ð²Ð°Ñ‚Ð°Ñ€Ð¾Ðº",
+                text: "Ð”Ð¾Ð±Ð°Ð²Ð»ÑÐµÑ‚ Ð±Ð¾Ð»ÐµÐµ Ð²ÑÐ·ÐºÐ¾Ðµ Ð¸ Ð¿Ð»Ð°Ð²Ð½Ð¾Ðµ Ð´Ð²Ð¸Ð¶ÐµÐ½Ð¸Ðµ Ð°Ð²Ð°Ñ‚Ð°Ñ€Ð¾Ðº Ð¿Ñ€Ð¸ Ð¿ÐµÑ€ÐµÑÑ‚Ñ€Ð¾ÐµÐ½Ð¸Ð¸ ÑÐ¿Ð¸ÑÐºÐ° Ñ‡Ð°Ñ‚Ð¾Ð² Ð¸ ÑÐ²ÑÐ·Ð°Ð½Ð½Ñ‹Ñ… Ð¿ÐµÑ€ÐµÑ…Ð¾Ð´Ð°Ñ….",
                 value: stickyAvatarAnimation,
                 sectionId: SosuzagramSettingsSection.icons.rawValue,
                 style: .blocks,
@@ -1994,7 +1995,7 @@ private func sosuzagramSettingsEntries(
         sortId: 242,
         signature: "androiddesign:\(androidDesign)",
         buildItem: { presentationData, arguments in
-            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "Android design (Exteragram)", text: "Включает пресет внешнего вида в стиле оригинального Exteragram и может потребовать перезапуск приложения.", value: androidDesign, sectionId: SosuzagramSettingsSection.icons.rawValue, style: .blocks, updated: { value in
+            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "Android design (Exteragram)", text: "Ð’ÐºÐ»ÑŽÑ‡Ð°ÐµÑ‚ Ð¿Ñ€ÐµÑÐµÑ‚ Ð²Ð½ÐµÑˆÐ½ÐµÐ³Ð¾ Ð²Ð¸Ð´Ð° Ð² ÑÑ‚Ð¸Ð»Ðµ Ð¾Ñ€Ð¸Ð³Ð¸Ð½Ð°Ð»ÑŒÐ½Ð¾Ð³Ð¾ Exteragram Ð¸ Ð¼Ð¾Ð¶ÐµÑ‚ Ð¿Ð¾Ñ‚Ñ€ÐµÐ±Ð¾Ð²Ð°Ñ‚ÑŒ Ð¿ÐµÑ€ÐµÐ·Ð°Ð¿ÑƒÑÐº Ð¿Ñ€Ð¸Ð»Ð¾Ð¶ÐµÐ½Ð¸Ñ.", value: androidDesign, sectionId: SosuzagramSettingsSection.icons.rawValue, style: .blocks, updated: { value in
                 arguments.toggleAndroidDesign(value)
             })
         }
@@ -2005,7 +2006,7 @@ private func sosuzagramSettingsEntries(
         sortId: 244,
         signature: "smoothanimations:\(smoothAnimations)",
         buildItem: { presentationData, arguments in
-            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "Плавные анимации", text: "Увеличивает длительность и сглаживает переходы в Sosuzagram и списке чатов.", value: smoothAnimations, sectionId: SosuzagramSettingsSection.icons.rawValue, style: .blocks, updated: { value in
+            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "ÐŸÐ»Ð°Ð²Ð½Ñ‹Ðµ Ð°Ð½Ð¸Ð¼Ð°Ñ†Ð¸Ð¸", text: "Ð£Ð²ÐµÐ»Ð¸Ñ‡Ð¸Ð²Ð°ÐµÑ‚ Ð´Ð»Ð¸Ñ‚ÐµÐ»ÑŒÐ½Ð¾ÑÑ‚ÑŒ Ð¸ ÑÐ³Ð»Ð°Ð¶Ð¸Ð²Ð°ÐµÑ‚ Ð¿ÐµÑ€ÐµÑ…Ð¾Ð´Ñ‹ Ð² Sosuzagram Ð¸ ÑÐ¿Ð¸ÑÐºÐµ Ñ‡Ð°Ñ‚Ð¾Ð².", value: smoothAnimations, sectionId: SosuzagramSettingsSection.icons.rawValue, style: .blocks, updated: { value in
                 arguments.toggleSmoothAnimations(value)
             })
         }
@@ -2016,7 +2017,7 @@ private func sosuzagramSettingsEntries(
         sortId: 243,
         signature: "systemfonts:\(systemFonts)",
         buildItem: { presentationData, arguments in
-            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "Системные шрифты", value: systemFonts, sectionId: SosuzagramSettingsSection.icons.rawValue, style: .blocks, updated: { value in
+            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "Ð¡Ð¸ÑÑ‚ÐµÐ¼Ð½Ñ‹Ðµ ÑˆÑ€Ð¸Ñ„Ñ‚Ñ‹", value: systemFonts, sectionId: SosuzagramSettingsSection.icons.rawValue, style: .blocks, updated: { value in
                 arguments.toggleSystemFonts(value)
             })
         }
@@ -2027,7 +2028,7 @@ private func sosuzagramSettingsEntries(
         sortId: 239,
         signature: "folderbadges:\(showFolderBadges)",
         buildItem: { presentationData, arguments in
-            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "Счётчик уведомлений папок", value: showFolderBadges, sectionId: SosuzagramSettingsSection.icons.rawValue, style: .blocks, updated: { value in
+            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "Ð¡Ñ‡Ñ‘Ñ‚Ñ‡Ð¸Ðº ÑƒÐ²ÐµÐ´Ð¾Ð¼Ð»ÐµÐ½Ð¸Ð¹ Ð¿Ð°Ð¿Ð¾Ðº", value: showFolderBadges, sectionId: SosuzagramSettingsSection.icons.rawValue, style: .blocks, updated: { value in
                 arguments.toggleShowFolderBadges(value)
             })
         }
@@ -2041,9 +2042,9 @@ private func sosuzagramSettingsEntries(
             ItemListDisclosureItem(
                 presentationData: presentationData,
                 systemStyle: sosuzagramSettingsSystemStyle(),
-                title: "Наборы иконок",
+                title: "ÐÐ°Ð±Ð¾Ñ€Ñ‹ Ð¸ÐºÐ¾Ð½Ð¾Ðº",
                 label: "Extera style",
-                additionalDetailLabel: "Быстрый выбор альтернативной иконки приложения.",
+                additionalDetailLabel: "Ð‘Ñ‹ÑÑ‚Ñ€Ñ‹Ð¹ Ð²Ñ‹Ð±Ð¾Ñ€ Ð°Ð»ÑŒÑ‚ÐµÑ€Ð½Ð°Ñ‚Ð¸Ð²Ð½Ð¾Ð¹ Ð¸ÐºÐ¾Ð½ÐºÐ¸ Ð¿Ñ€Ð¸Ð»Ð¾Ð¶ÐµÐ½Ð¸Ñ.",
                 sectionId: SosuzagramSettingsSection.icons.rawValue,
                 style: .blocks,
                 disclosureStyle: .arrow,
@@ -2064,7 +2065,7 @@ private func sosuzagramSettingsEntries(
                 systemStyle: sosuzagramSettingsSystemStyle(),
                 title: "Pill Stack",
                 label: sosuzagramPillStackModeLabel(pillStackMode),
-                additionalDetailLabel: "Настраивает плотность и форму вкладок-плашек в списке чатов.",
+                additionalDetailLabel: "ÐÐ°ÑÑ‚Ñ€Ð°Ð¸Ð²Ð°ÐµÑ‚ Ð¿Ð»Ð¾Ñ‚Ð½Ð¾ÑÑ‚ÑŒ Ð¸ Ñ„Ð¾Ñ€Ð¼Ñƒ Ð²ÐºÐ»Ð°Ð´Ð¾Ðº-Ð¿Ð»Ð°ÑˆÐµÐº Ð² ÑÐ¿Ð¸ÑÐºÐµ Ñ‡Ð°Ñ‚Ð¾Ð².",
                 sectionId: SosuzagramSettingsSection.icons.rawValue,
                 style: .blocks,
                 disclosureStyle: .arrow,
@@ -2083,9 +2084,9 @@ private func sosuzagramSettingsEntries(
             ItemListDisclosureItem(
                 presentationData: presentationData,
                 systemStyle: sosuzagramSettingsSystemStyle(),
-                title: "Навигация в приложении",
-                label: "Настроить",
-                additionalDetailLabel: "Быстрый доступ к настройкам вкладок, папок и заголовка списка чатов.",
+                title: "ÐÐ°Ð²Ð¸Ð³Ð°Ñ†Ð¸Ñ Ð² Ð¿Ñ€Ð¸Ð»Ð¾Ð¶ÐµÐ½Ð¸Ð¸",
+                label: "ÐÐ°ÑÑ‚Ñ€Ð¾Ð¸Ñ‚ÑŒ",
+                additionalDetailLabel: "Ð‘Ñ‹ÑÑ‚Ñ€Ñ‹Ð¹ Ð´Ð¾ÑÑ‚ÑƒÐ¿ Ðº Ð½Ð°ÑÑ‚Ñ€Ð¾Ð¹ÐºÐ°Ð¼ Ð²ÐºÐ»Ð°Ð´Ð¾Ðº, Ð¿Ð°Ð¿Ð¾Ðº Ð¸ Ð·Ð°Ð³Ð¾Ð»Ð¾Ð²ÐºÐ° ÑÐ¿Ð¸ÑÐºÐ° Ñ‡Ð°Ñ‚Ð¾Ð².",
                 sectionId: SosuzagramSettingsSection.icons.rawValue,
                 style: .blocks,
                 disclosureStyle: .arrow,
@@ -2104,9 +2105,9 @@ private func sosuzagramSettingsEntries(
             ItemListDisclosureItem(
                 presentationData: presentationData,
                 systemStyle: sosuzagramSettingsSystemStyle(),
-                title: "Ð¢ÐµÐºÑÑ‚ Ð² Ð·Ð°Ð³Ð¾Ð»Ð¾Ð²ÐºÐµ",
+                title: "ÃÂ¢ÃÂµÃÂºÃ‘ÂÃ‘â€š ÃÂ² ÃÂ·ÃÂ°ÃÂ³ÃÂ¾ÃÂ»ÃÂ¾ÃÂ²ÃÂºÃÂµ",
                 label: sosuzagramChatListTitleTextLabel(chatListTitleText),
-                additionalDetailLabel: "ÐœÐµÐ½ÑÐµÑ‚ Ñ‚ÐµÐºÑÑ‚ Ð²ÐµÑ€Ñ…Ð½ÐµÐ³Ð¾ Ð·Ð°Ð³Ð¾Ð»Ð¾Ð²ÐºÐ° ÑÐ¿Ð¸ÑÐºÐ° Ñ‡Ð°Ñ‚Ð¾Ð².",
+                additionalDetailLabel: "ÃÅ“ÃÂµÃÂ½Ã‘ÂÃÂµÃ‘â€š Ã‘â€šÃÂµÃÂºÃ‘ÂÃ‘â€š ÃÂ²ÃÂµÃ‘â‚¬Ã‘â€¦ÃÂ½ÃÂµÃÂ³ÃÂ¾ ÃÂ·ÃÂ°ÃÂ³ÃÂ¾ÃÂ»ÃÂ¾ÃÂ²ÃÂºÃÂ° Ã‘ÂÃÂ¿ÃÂ¸Ã‘ÂÃÂºÃÂ° Ã‘â€¡ÃÂ°Ã‘â€šÃÂ¾ÃÂ².",
                 sectionId: SosuzagramSettingsSection.icons.rawValue,
                 style: .blocks,
                 disclosureStyle: .arrow,
@@ -2125,9 +2126,9 @@ private func sosuzagramSettingsEntries(
             ItemListDisclosureItem(
                 presentationData: presentationData,
                 systemStyle: sosuzagramSettingsSystemStyle(),
-                title: "Ð—Ð°Ð³Ð¾Ð»Ð¾Ð²ÐºÐ¸ Ð¿Ð°Ð¿Ð¾Ðº",
+                title: "Ãâ€”ÃÂ°ÃÂ³ÃÂ¾ÃÂ»ÃÂ¾ÃÂ²ÃÂºÃÂ¸ ÃÂ¿ÃÂ°ÃÂ¿ÃÂ¾ÃÂº",
                 label: sosuzagramFolderTabTitlesLabel(folderTabTitles),
-                additionalDetailLabel: "ÐœÐµÐ½ÑÐµÑ‚, ÐºÐ°Ðº Ð¾Ñ‚Ð¾Ð±Ñ€Ð°Ð¶Ð°ÑŽÑ‚ÑÑ Ð½Ð°Ð·Ð²Ð°Ð½Ð¸Ñ Ð¸ Ð¸ÐºÐ¾Ð½ÐºÐ¸ Ð²ÐºÐ»Ð°Ð´Ð¾Ðº.",
+                additionalDetailLabel: "ÃÅ“ÃÂµÃÂ½Ã‘ÂÃÂµÃ‘â€š, ÃÂºÃÂ°ÃÂº ÃÂ¾Ã‘â€šÃÂ¾ÃÂ±Ã‘â‚¬ÃÂ°ÃÂ¶ÃÂ°Ã‘Å½Ã‘â€šÃ‘ÂÃ‘Â ÃÂ½ÃÂ°ÃÂ·ÃÂ²ÃÂ°ÃÂ½ÃÂ¸Ã‘Â ÃÂ¸ ÃÂ¸ÃÂºÃÂ¾ÃÂ½ÃÂºÃÂ¸ ÃÂ²ÃÂºÃÂ»ÃÂ°ÃÂ´ÃÂ¾ÃÂº.",
                 sectionId: SosuzagramSettingsSection.icons.rawValue,
                 style: .blocks,
                 disclosureStyle: .arrow,
@@ -2143,7 +2144,7 @@ private func sosuzagramSettingsEntries(
         sortId: 240,
         signature: "forcesnow:\(forceSnow)",
         buildItem: { presentationData, arguments in
-            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "Принудительный снег", value: forceSnow, sectionId: SosuzagramSettingsSection.icons.rawValue, style: .blocks, updated: { value in
+            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "ÐŸÑ€Ð¸Ð½ÑƒÐ´Ð¸Ñ‚ÐµÐ»ÑŒÐ½Ñ‹Ð¹ ÑÐ½ÐµÐ³", value: forceSnow, sectionId: SosuzagramSettingsSection.icons.rawValue, style: .blocks, updated: { value in
                 arguments.toggleForceSnow(value)
             })
         }
@@ -2157,8 +2158,8 @@ private func sosuzagramSettingsEntries(
             ItemListSwitchItem(
                 presentationData: presentationData,
                 systemStyle: sosuzagramSettingsSystemStyle(),
-                title: "Блики на элементах",
-                text: "Отключает стеклянные блики и яркую обводку на blur-элементах интерфейса.",
+                title: "Ð‘Ð»Ð¸ÐºÐ¸ Ð½Ð° ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ð°Ñ…",
+                text: "ÐžÑ‚ÐºÐ»ÑŽÑ‡Ð°ÐµÑ‚ ÑÑ‚ÐµÐºÐ»ÑÐ½Ð½Ñ‹Ðµ Ð±Ð»Ð¸ÐºÐ¸ Ð¸ ÑÑ€ÐºÑƒÑŽ Ð¾Ð±Ð²Ð¾Ð´ÐºÑƒ Ð½Ð° blur-ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ð°Ñ… Ð¸Ð½Ñ‚ÐµÑ€Ñ„ÐµÐ¹ÑÐ°.",
                 value: glassHighlights,
                 sectionId: SosuzagramSettingsSection.icons.rawValue,
                 style: .blocks,
@@ -2177,8 +2178,8 @@ private func sosuzagramSettingsEntries(
             ItemListSwitchItem(
                 presentationData: presentationData,
                 systemStyle: sosuzagramSettingsSystemStyle(),
-                title: "Принудительное размытие",
-                text: "Принудительно включает blur/glass-эффект там, где система может использовать упрощённый стиль. Для полного применения лучше перезапустить приложение.",
+                title: "ÐŸÑ€Ð¸Ð½ÑƒÐ´Ð¸Ñ‚ÐµÐ»ÑŒÐ½Ð¾Ðµ Ñ€Ð°Ð·Ð¼Ñ‹Ñ‚Ð¸Ðµ",
+                text: "ÐŸÑ€Ð¸Ð½ÑƒÐ´Ð¸Ñ‚ÐµÐ»ÑŒÐ½Ð¾ Ð²ÐºÐ»ÑŽÑ‡Ð°ÐµÑ‚ blur/glass-ÑÑ„Ñ„ÐµÐºÑ‚ Ñ‚Ð°Ð¼, Ð³Ð´Ðµ ÑÐ¸ÑÑ‚ÐµÐ¼Ð° Ð¼Ð¾Ð¶ÐµÑ‚ Ð¸ÑÐ¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÑŒ ÑƒÐ¿Ñ€Ð¾Ñ‰Ñ‘Ð½Ð½Ñ‹Ð¹ ÑÑ‚Ð¸Ð»ÑŒ. Ð”Ð»Ñ Ð¿Ð¾Ð»Ð½Ð¾Ð³Ð¾ Ð¿Ñ€Ð¸Ð¼ÐµÐ½ÐµÐ½Ð¸Ñ Ð»ÑƒÑ‡ÑˆÐµ Ð¿ÐµÑ€ÐµÐ·Ð°Ð¿ÑƒÑÑ‚Ð¸Ñ‚ÑŒ Ð¿Ñ€Ð¸Ð»Ð¾Ð¶ÐµÐ½Ð¸Ðµ.",
                 value: forceBlur,
                 sectionId: SosuzagramSettingsSection.icons.rawValue,
                 style: .blocks,
@@ -2190,11 +2191,11 @@ private func sosuzagramSettingsEntries(
     ))
 
     let icons = [
-        ("Ð¡Ñ‚Ð°Ð½Ð´Ð°Ñ€Ñ‚Ð½Ð°Ñ", "nil"),
-        ("ÐšÑ€Ð°ÑÐ½Ð°Ñ (Extera style)", "Red"),
-        ("Ð—ÐµÐ»Ñ‘Ð½Ð°Ñ (Extera style)", "Green"),
-        ("ÐžÑ€Ð°Ð½Ð¶ÐµÐ²Ð°Ñ (Extera style)", "Orange"),
-        ("Ð¤Ð¸Ð¾Ð»ÐµÑ‚Ð¾Ð²Ð°Ñ (Extera style)", "Purple")
+        ("ÃÂ¡Ã‘â€šÃÂ°ÃÂ½ÃÂ´ÃÂ°Ã‘â‚¬Ã‘â€šÃÂ½ÃÂ°Ã‘Â", "nil"),
+        ("ÃÅ¡Ã‘â‚¬ÃÂ°Ã‘ÂÃÂ½ÃÂ°Ã‘Â (Extera style)", "Red"),
+        ("Ãâ€”ÃÂµÃÂ»Ã‘â€˜ÃÂ½ÃÂ°Ã‘Â (Extera style)", "Green"),
+        ("ÃÅ¾Ã‘â‚¬ÃÂ°ÃÂ½ÃÂ¶ÃÂµÃÂ²ÃÂ°Ã‘Â (Extera style)", "Orange"),
+        ("ÃÂ¤ÃÂ¸ÃÂ¾ÃÂ»ÃÂµÃ‘â€šÃÂ¾ÃÂ²ÃÂ°Ã‘Â (Extera style)", "Purple")
     ]
     entries.append(SosuzagramSettingsEntry(
         section: SosuzagramSettingsSection.icons.rawValue,
@@ -2202,7 +2203,7 @@ private func sosuzagramSettingsEntries(
         sortId: 13,
         signature: "icons-header",
         buildItem: { presentationData, _ in
-            ItemListSectionHeaderItem(presentationData: presentationData, text: "Ð˜ÐºÐ¾Ð½ÐºÐ¸ Ð¿Ñ€Ð¸Ð»Ð¾Ð¶ÐµÐ½Ð¸Ñ", sectionId: SosuzagramSettingsSection.icons.rawValue)
+            ItemListSectionHeaderItem(presentationData: presentationData, text: "ÃËœÃÂºÃÂ¾ÃÂ½ÃÂºÃÂ¸ ÃÂ¿Ã‘â‚¬ÃÂ¸ÃÂ»ÃÂ¾ÃÂ¶ÃÂµÃÂ½ÃÂ¸Ã‘Â", sectionId: SosuzagramSettingsSection.icons.rawValue)
         }
     ))
     for (index, icon) in icons.enumerated() {
@@ -2217,7 +2218,7 @@ private func sosuzagramSettingsEntries(
                     presentationData: presentationData,
                     systemStyle: sosuzagramSettingsSystemStyle(),
                     title: icon.0,
-                    label: isSelected ? "Ð’Ñ‹Ð±Ñ€Ð°Ð½Ð¾" : "",
+                    label: isSelected ? "Ãâ€™Ã‘â€¹ÃÂ±Ã‘â‚¬ÃÂ°ÃÂ½ÃÂ¾" : "",
                     sectionId: SosuzagramSettingsSection.icons.rawValue,
                     style: .blocks,
                     disclosureStyle: .none,
@@ -2234,7 +2235,7 @@ private func sosuzagramSettingsEntries(
         sortId: 220,
         signature: "appearance-links-header",
         buildItem: { presentationData, _ in
-            ItemListSectionHeaderItem(presentationData: presentationData, text: "Ð’ÑÑ‚Ñ€Ð¾ÐµÐ½Ð½Ñ‹Ðµ Ñ€Ð°Ð·Ð´ÐµÐ»Ñ‹ Telegram", sectionId: SosuzagramSettingsSection.icons.rawValue)
+            ItemListSectionHeaderItem(presentationData: presentationData, text: "Ãâ€™Ã‘ÂÃ‘â€šÃ‘â‚¬ÃÂ¾ÃÂµÃÂ½ÃÂ½Ã‘â€¹ÃÂµ Ã‘â‚¬ÃÂ°ÃÂ·ÃÂ´ÃÂµÃÂ»Ã‘â€¹ Telegram", sectionId: SosuzagramSettingsSection.icons.rawValue)
         }
     ))
     entries.append(SosuzagramSettingsEntry(
@@ -2246,8 +2247,9 @@ private func sosuzagramSettingsEntries(
             ItemListDisclosureItem(
                 presentationData: presentationData,
                 systemStyle: sosuzagramSettingsSystemStyle(),
-                title: "Ð¢ÐµÐ¼Ñ‹ Telegram",
-                additionalDetailLabel: "ÐžÑ‚ÐºÑ€Ñ‹Ð²Ð°ÐµÑ‚ ÑÐ¸ÑÑ‚ÐµÐ¼Ð½Ñ‹Ð¹ ÑÐºÑ€Ð°Ð½ Ñ‚ÐµÐ¼ Ð¸ Ð¾Ñ„Ð¾Ñ€Ð¼Ð»ÐµÐ½Ð¸Ñ Telegram.",
+                title: "ÃÂ¢ÃÂµÃÂ¼Ã‘â€¹ Telegram",
+                additionalDetailLabel: "ÃÅ¾Ã‘â€šÃÂºÃ‘â‚¬Ã‘â€¹ÃÂ²ÃÂ°ÃÂµÃ‘â€š Ã‘ÂÃÂ¸Ã‘ÂÃ‘â€šÃÂµÃÂ¼ÃÂ½Ã‘â€¹ÃÂ¹ Ã‘ÂÃÂºÃ‘â‚¬ÃÂ°ÃÂ½ Ã‘â€šÃÂµÃÂ¼ ÃÂ¸ ÃÂ¾Ã‘â€žÃÂ¾Ã‘â‚¬ÃÂ¼ÃÂ»ÃÂµÃÂ½ÃÂ¸Ã‘Â Telegram.",
+                label: "",
                 sectionId: SosuzagramSettingsSection.icons.rawValue,
                 style: .blocks,
                 disclosureStyle: .arrow,
@@ -2266,8 +2268,9 @@ private func sosuzagramSettingsEntries(
             ItemListDisclosureItem(
                 presentationData: presentationData,
                 systemStyle: sosuzagramSettingsSystemStyle(),
-                title: "ÐŸÐ°Ð¿ÐºÐ¸ Ð¸ Ð²ÐºÐ»Ð°Ð´ÐºÐ¸",
-                additionalDetailLabel: "ÐžÑ‚ÐºÑ€Ñ‹Ð²Ð°ÐµÑ‚ ÑÐ¸ÑÑ‚ÐµÐ¼Ð½Ñ‹Ðµ Ð½Ð°ÑÑ‚Ñ€Ð¾Ð¹ÐºÐ¸ Ð¿Ð°Ð¿Ð¾Ðº, Ñ„Ð¸Ð»ÑŒÑ‚Ñ€Ð¾Ð² Ð¸ Ð²ÐºÐ»Ð°Ð´Ð¾Ðº Telegram.",
+                title: "ÃÅ¸ÃÂ°ÃÂ¿ÃÂºÃÂ¸ ÃÂ¸ ÃÂ²ÃÂºÃÂ»ÃÂ°ÃÂ´ÃÂºÃÂ¸",
+                additionalDetailLabel: "ÃÅ¾Ã‘â€šÃÂºÃ‘â‚¬Ã‘â€¹ÃÂ²ÃÂ°ÃÂµÃ‘â€š Ã‘ÂÃÂ¸Ã‘ÂÃ‘â€šÃÂµÃÂ¼ÃÂ½Ã‘â€¹ÃÂµ ÃÂ½ÃÂ°Ã‘ÂÃ‘â€šÃ‘â‚¬ÃÂ¾ÃÂ¹ÃÂºÃÂ¸ ÃÂ¿ÃÂ°ÃÂ¿ÃÂ¾ÃÂº, Ã‘â€žÃÂ¸ÃÂ»Ã‘Å’Ã‘â€šÃ‘â‚¬ÃÂ¾ÃÂ² ÃÂ¸ ÃÂ²ÃÂºÃÂ»ÃÂ°ÃÂ´ÃÂ¾ÃÂº Telegram.",
+                label: "",
                 sectionId: SosuzagramSettingsSection.icons.rawValue,
                 style: .blocks,
                 disclosureStyle: .arrow,
@@ -2284,7 +2287,7 @@ private func sosuzagramSettingsEntries(
         sortId: 200,
         signature: "plugins-header",
         buildItem: { presentationData, _ in
-            ItemListSectionHeaderItem(presentationData: presentationData, text: "ÐŸÐ»Ð°Ð³Ð¸Ð½Ñ‹ Extera (iOS)", sectionId: SosuzagramSettingsSection.plugins.rawValue)
+            ItemListSectionHeaderItem(presentationData: presentationData, text: "ÃÅ¸ÃÂ»ÃÂ°ÃÂ³ÃÂ¸ÃÂ½Ã‘â€¹ Extera (iOS)", sectionId: SosuzagramSettingsSection.plugins.rawValue)
         }
     ))
     entries.append(SosuzagramSettingsEntry(
@@ -2296,7 +2299,7 @@ private func sosuzagramSettingsEntries(
             ItemListActionItem(
                 presentationData: presentationData,
                 systemStyle: sosuzagramSettingsSystemStyle(),
-                title: "Ð—Ð°Ð³Ñ€ÑƒÐ·Ð¸Ñ‚ÑŒ .plugin",
+                title: "Ãâ€”ÃÂ°ÃÂ³Ã‘â‚¬Ã‘Æ’ÃÂ·ÃÂ¸Ã‘â€šÃ‘Å’ .plugin",
                 kind: .generic,
                 alignment: .natural,
                 sectionId: SosuzagramSettingsSection.plugins.rawValue,
@@ -2309,7 +2312,7 @@ private func sosuzagramSettingsEntries(
     ))
 
     for (index, plugin) in plugins.enumerated() {
-        let status = sosuzagramPluginEnabled(plugin.id) ? "Ð’ÐºÐ»" : "Ð’Ñ‹ÐºÐ»"
+        let status = sosuzagramPluginEnabled(plugin.id) ? "Ãâ€™ÃÂºÃÂ»" : "Ãâ€™Ã‘â€¹ÃÂºÃÂ»"
         entries.append(SosuzagramSettingsEntry(
             section: SosuzagramSettingsSection.plugins.rawValue,
             stableId: UInt64(1000 + index),
@@ -2339,7 +2342,7 @@ private func sosuzagramSettingsEntries(
         sortId: 2000,
         signature: "plugins-info",
         buildItem: { presentationData, _ in
-            ItemListTextItem(presentationData: presentationData, text: .plain("ÐÐ¾Ð²Ñ‹Ðµ .plugin-Ñ„Ð°Ð¹Ð»Ñ‹ Ð½Ðµ Ð¸Ð¼Ð¿Ð¾Ñ€Ñ‚Ð¸Ñ€ÑƒÑŽÑ‚ÑÑ Ð°Ð²Ñ‚Ð¾Ð¼Ð°Ñ‚Ð¸Ñ‡ÐµÑÐºÐ¸. Ð”Ð»Ñ ÐºÐ°Ð¶Ð´Ð¾Ð³Ð¾ Ð½Ð¾Ð²Ð¾Ð³Ð¾ Ð¿Ð»Ð°Ð³Ð¸Ð½Ð° Ð½ÑƒÐ¶ÐµÐ½ Ð¾Ñ‚Ð´ÐµÐ»ÑŒÐ½Ñ‹Ð¹ Ð½Ð°Ñ‚Ð¸Ð²Ð½Ñ‹Ð¹ Ð¿Ð¾Ñ€Ñ‚ Ð¿Ð¾Ð´ Sosuzagram."), sectionId: SosuzagramSettingsSection.plugins.rawValue)
+            ItemListTextItem(presentationData: presentationData, text: .plain("ÃÂÃÂ¾ÃÂ²Ã‘â€¹ÃÂµ .plugin-Ã‘â€žÃÂ°ÃÂ¹ÃÂ»Ã‘â€¹ ÃÂ½ÃÂµ ÃÂ¸ÃÂ¼ÃÂ¿ÃÂ¾Ã‘â‚¬Ã‘â€šÃÂ¸Ã‘â‚¬Ã‘Æ’Ã‘Å½Ã‘â€šÃ‘ÂÃ‘Â ÃÂ°ÃÂ²Ã‘â€šÃÂ¾ÃÂ¼ÃÂ°Ã‘â€šÃÂ¸Ã‘â€¡ÃÂµÃ‘ÂÃÂºÃÂ¸. Ãâ€ÃÂ»Ã‘Â ÃÂºÃÂ°ÃÂ¶ÃÂ´ÃÂ¾ÃÂ³ÃÂ¾ ÃÂ½ÃÂ¾ÃÂ²ÃÂ¾ÃÂ³ÃÂ¾ ÃÂ¿ÃÂ»ÃÂ°ÃÂ³ÃÂ¸ÃÂ½ÃÂ° ÃÂ½Ã‘Æ’ÃÂ¶ÃÂµÃÂ½ ÃÂ¾Ã‘â€šÃÂ´ÃÂµÃÂ»Ã‘Å’ÃÂ½Ã‘â€¹ÃÂ¹ ÃÂ½ÃÂ°Ã‘â€šÃÂ¸ÃÂ²ÃÂ½Ã‘â€¹ÃÂ¹ ÃÂ¿ÃÂ¾Ã‘â‚¬Ã‘â€š ÃÂ¿ÃÂ¾ÃÂ´ Sosuzagram."), sectionId: SosuzagramSettingsSection.plugins.rawValue)
         }
     ))
 
@@ -2987,13 +2990,13 @@ private func sosuzagramSettingsControllerImpl(context: AccountContext, category:
         }
         let text: String
         if value {
-            text = "Android design включён. Для полного применения пресета Exteragram лучше перезапустить приложение сейчас."
+            text = "Android design Ð²ÐºÐ»ÑŽÑ‡Ñ‘Ð½. Ð”Ð»Ñ Ð¿Ð¾Ð»Ð½Ð¾Ð³Ð¾ Ð¿Ñ€Ð¸Ð¼ÐµÐ½ÐµÐ½Ð¸Ñ Ð¿Ñ€ÐµÑÐµÑ‚Ð° Exteragram Ð»ÑƒÑ‡ÑˆÐµ Ð¿ÐµÑ€ÐµÐ·Ð°Ð¿ÑƒÑÑ‚Ð¸Ñ‚ÑŒ Ð¿Ñ€Ð¸Ð»Ð¾Ð¶ÐµÐ½Ð¸Ðµ ÑÐµÐ¹Ñ‡Ð°Ñ."
         } else {
-            text = "Android design выключен. Чтобы интерфейс полностью вернулся к обычному стилю, перезапусти приложение."
+            text = "Android design Ð²Ñ‹ÐºÐ»ÑŽÑ‡ÐµÐ½. Ð§Ñ‚Ð¾Ð±Ñ‹ Ð¸Ð½Ñ‚ÐµÑ€Ñ„ÐµÐ¹Ñ Ð¿Ð¾Ð»Ð½Ð¾ÑÑ‚ÑŒÑŽ Ð²ÐµÑ€Ð½ÑƒÐ»ÑÑ Ðº Ð¾Ð±Ñ‹Ñ‡Ð½Ð¾Ð¼Ñƒ ÑÑ‚Ð¸Ð»ÑŽ, Ð¿ÐµÑ€ÐµÐ·Ð°Ð¿ÑƒÑÑ‚Ð¸ Ð¿Ñ€Ð¸Ð»Ð¾Ð¶ÐµÐ½Ð¸Ðµ."
         }
         controller.present(textAlertController(context: context, title: "Android design", text: text, actions: [
-            TextAlertAction(type: .genericAction, title: "Позже", action: {}),
-            TextAlertAction(type: .defaultAction, title: "Перезапустить", action: {
+            TextAlertAction(type: .genericAction, title: "ÐŸÐ¾Ð·Ð¶Ðµ", action: {}),
+            TextAlertAction(type: .defaultAction, title: "ÐŸÐµÑ€ÐµÐ·Ð°Ð¿ÑƒÑÑ‚Ð¸Ñ‚ÑŒ", action: {
                 exit(0)
             })
         ]), in: .window(.root))
@@ -3004,13 +3007,13 @@ private func sosuzagramSettingsControllerImpl(context: AccountContext, category:
         }
         let text: String
         if value {
-            text = "Принудительное размытие включено. Чтобы blur/glass-элементы гарантированно пересоздались во всём приложении, лучше перезапустить его сейчас."
+            text = "ÐŸÑ€Ð¸Ð½ÑƒÐ´Ð¸Ñ‚ÐµÐ»ÑŒÐ½Ð¾Ðµ Ñ€Ð°Ð·Ð¼Ñ‹Ñ‚Ð¸Ðµ Ð²ÐºÐ»ÑŽÑ‡ÐµÐ½Ð¾. Ð§Ñ‚Ð¾Ð±Ñ‹ blur/glass-ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ñ‹ Ð³Ð°Ñ€Ð°Ð½Ñ‚Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð½Ð¾ Ð¿ÐµÑ€ÐµÑÐ¾Ð·Ð´Ð°Ð»Ð¸ÑÑŒ Ð²Ð¾ Ð²ÑÑ‘Ð¼ Ð¿Ñ€Ð¸Ð»Ð¾Ð¶ÐµÐ½Ð¸Ð¸, Ð»ÑƒÑ‡ÑˆÐµ Ð¿ÐµÑ€ÐµÐ·Ð°Ð¿ÑƒÑÑ‚Ð¸Ñ‚ÑŒ ÐµÐ³Ð¾ ÑÐµÐ¹Ñ‡Ð°Ñ."
         } else {
-            text = "Принудительное размытие выключено. Чтобы blur/glass-элементы вернулись к обычному режиму без смешанных состояний, лучше перезапустить приложение."
+            text = "ÐŸÑ€Ð¸Ð½ÑƒÐ´Ð¸Ñ‚ÐµÐ»ÑŒÐ½Ð¾Ðµ Ñ€Ð°Ð·Ð¼Ñ‹Ñ‚Ð¸Ðµ Ð²Ñ‹ÐºÐ»ÑŽÑ‡ÐµÐ½Ð¾. Ð§Ñ‚Ð¾Ð±Ñ‹ blur/glass-ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ñ‹ Ð²ÐµÑ€Ð½ÑƒÐ»Ð¸ÑÑŒ Ðº Ð¾Ð±Ñ‹Ñ‡Ð½Ð¾Ð¼Ñƒ Ñ€ÐµÐ¶Ð¸Ð¼Ñƒ Ð±ÐµÐ· ÑÐ¼ÐµÑˆÐ°Ð½Ð½Ñ‹Ñ… ÑÐ¾ÑÑ‚Ð¾ÑÐ½Ð¸Ð¹, Ð»ÑƒÑ‡ÑˆÐµ Ð¿ÐµÑ€ÐµÐ·Ð°Ð¿ÑƒÑÑ‚Ð¸Ñ‚ÑŒ Ð¿Ñ€Ð¸Ð»Ð¾Ð¶ÐµÐ½Ð¸Ðµ."
         }
-        controller.present(textAlertController(context: context, title: "Принудительное размытие", text: text, actions: [
-            TextAlertAction(type: .genericAction, title: "Позже", action: {}),
-            TextAlertAction(type: .defaultAction, title: "Перезапустить", action: {
+        controller.present(textAlertController(context: context, title: "ÐŸÑ€Ð¸Ð½ÑƒÐ´Ð¸Ñ‚ÐµÐ»ÑŒÐ½Ð¾Ðµ Ñ€Ð°Ð·Ð¼Ñ‹Ñ‚Ð¸Ðµ", text: text, actions: [
+            TextAlertAction(type: .genericAction, title: "ÐŸÐ¾Ð·Ð¶Ðµ", action: {}),
+            TextAlertAction(type: .defaultAction, title: "ÐŸÐµÑ€ÐµÐ·Ð°Ð¿ÑƒÑÑ‚Ð¸Ñ‚ÑŒ", action: {
                 exit(0)
             })
         ]), in: .window(.root))
@@ -3030,14 +3033,14 @@ private func sosuzagramSettingsControllerImpl(context: AccountContext, category:
         let presentationData = context.sharedContext.currentPresentationData.with { $0 }
         let currentValue = UserDefaults.standard.string(forKey: "sosuzagram_voice_recognition_locale") ?? "system"
         let options: [(String, String)] = [
-            ("system", "Системный"),
-            ("ru-RU", "Русский"),
+            ("system", "Ð¡Ð¸ÑÑ‚ÐµÐ¼Ð½Ñ‹Ð¹"),
+            ("ru-RU", "Ð ÑƒÑÑÐºÐ¸Ð¹"),
             ("en-US", "English"),
-            ("uk-UA", "Українська")
+            ("uk-UA", "Ð£ÐºÑ€Ð°Ñ—Ð½ÑÑŒÐºÐ°")
         ]
 
         let actionSheet = ActionSheetController(presentationData: presentationData)
-        var items: [ActionSheetItem] = [ActionSheetTextItem(title: "Язык распознавания")]
+        var items: [ActionSheetItem] = [ActionSheetTextItem(title: "Ð¯Ð·Ñ‹Ðº Ñ€Ð°ÑÐ¿Ð¾Ð·Ð½Ð°Ð²Ð°Ð½Ð¸Ñ")]
         for (value, title) in options {
             let itemTitle = value == currentValue ? "[selected] \(title)" : title
             items.append(ActionSheetButtonItem(title: itemTitle, color: .accent, action: { [weak actionSheet] in
@@ -3063,13 +3066,13 @@ private func sosuzagramSettingsControllerImpl(context: AccountContext, category:
         let presentationData = context.sharedContext.currentPresentationData.with { $0 }
         let currentValue = UserDefaults.standard.string(forKey: "sosuzagram_download_acceleration") ?? "default"
         let options: [(String, String)] = [
-            ("default", "Обычная"),
-            ("fast", "Быстро"),
-            ("faster", "Быстрее")
+            ("default", "ÐžÐ±Ñ‹Ñ‡Ð½Ð°Ñ"),
+            ("fast", "Ð‘Ñ‹ÑÑ‚Ñ€Ð¾"),
+            ("faster", "Ð‘Ñ‹ÑÑ‚Ñ€ÐµÐµ")
         ]
 
         let actionSheet = ActionSheetController(presentationData: presentationData)
-        var items: [ActionSheetItem] = [ActionSheetTextItem(title: "Ускорение загрузки")]
+        var items: [ActionSheetItem] = [ActionSheetTextItem(title: "Ð£ÑÐºÐ¾Ñ€ÐµÐ½Ð¸Ðµ Ð·Ð°Ð³Ñ€ÑƒÐ·ÐºÐ¸")]
         for (value, title) in options {
             let itemTitle = value == currentValue ? "[selected] \(title)" : title
             items.append(ActionSheetButtonItem(title: itemTitle, color: .accent, action: { [weak actionSheet] in
@@ -3095,13 +3098,13 @@ private func sosuzagramSettingsControllerImpl(context: AccountContext, category:
         let presentationData = context.sharedContext.currentPresentationData.with { $0 }
         let currentPreset = UserDefaults.standard.string(forKey: "sosuzagram_sticker_size_preset") ?? "medium"
         let presets: [(String, String)] = [
-            ("small", "ÐœÐ°Ð»ÐµÐ½ÑŒÐºÐ¸Ð¹"),
-            ("medium", "Ð¡Ñ€ÐµÐ´Ð½Ð¸Ð¹"),
-            ("large", "Ð‘Ð¾Ð»ÑŒÑˆÐ¾Ð¹")
+            ("small", "ÃÅ“ÃÂ°ÃÂ»ÃÂµÃÂ½Ã‘Å’ÃÂºÃÂ¸ÃÂ¹"),
+            ("medium", "ÃÂ¡Ã‘â‚¬ÃÂµÃÂ´ÃÂ½ÃÂ¸ÃÂ¹"),
+            ("large", "Ãâ€˜ÃÂ¾ÃÂ»Ã‘Å’Ã‘Ë†ÃÂ¾ÃÂ¹")
         ]
 
         let actionSheet = ActionSheetController(presentationData: presentationData)
-        var items: [ActionSheetItem] = [ActionSheetTextItem(title: "Ð Ð°Ð·Ð¼ÐµÑ€ ÑÑ‚Ð¸ÐºÐµÑ€Ð¾Ð²")]
+        var items: [ActionSheetItem] = [ActionSheetTextItem(title: "ÃÂ ÃÂ°ÃÂ·ÃÂ¼ÃÂµÃ‘â‚¬ Ã‘ÂÃ‘â€šÃÂ¸ÃÂºÃÂµÃ‘â‚¬ÃÂ¾ÃÂ²")]
         for (value, title) in presets {
             let itemTitle = value == currentPreset ? "[selected] \(title)" : title
             items.append(ActionSheetButtonItem(title: itemTitle, color: .accent, action: { [weak actionSheet] in
@@ -3127,13 +3130,13 @@ private func sosuzagramSettingsControllerImpl(context: AccountContext, category:
         let presentationData = context.sharedContext.currentPresentationData.with { $0 }
         let currentValue = UserDefaults.standard.string(forKey: "sosuzagram_sticker_shape") ?? "default"
         let options: [(String, String)] = [
-            ("default", "По умолчанию"),
-            ("rounded", "Закруглённая"),
-            ("message", "Сообщение")
+            ("default", "ÐŸÐ¾ ÑƒÐ¼Ð¾Ð»Ñ‡Ð°Ð½Ð¸ÑŽ"),
+            ("rounded", "Ð—Ð°ÐºÑ€ÑƒÐ³Ð»Ñ‘Ð½Ð½Ð°Ñ"),
+            ("message", "Ð¡Ð¾Ð¾Ð±Ñ‰ÐµÐ½Ð¸Ðµ")
         ]
 
         let actionSheet = ActionSheetController(presentationData: presentationData)
-        var items: [ActionSheetItem] = [ActionSheetTextItem(title: "Форма стикеров")]
+        var items: [ActionSheetItem] = [ActionSheetTextItem(title: "Ð¤Ð¾Ñ€Ð¼Ð° ÑÑ‚Ð¸ÐºÐµÑ€Ð¾Ð²")]
         for (value, title) in options {
             let itemTitle = value == currentValue ? "[selected] \(title)" : title
             items.append(ActionSheetButtonItem(title: itemTitle, color: .accent, action: { [weak actionSheet] in
@@ -3159,13 +3162,13 @@ private func sosuzagramSettingsControllerImpl(context: AccountContext, category:
         let presentationData = context.sharedContext.currentPresentationData.with { $0 }
         let currentValue = UserDefaults.standard.string(forKey: "sosuzagram_camera_type") ?? "system"
         let options: [(String, String)] = [
-            ("system", "Системно"),
+            ("system", "Ð¡Ð¸ÑÑ‚ÐµÐ¼Ð½Ð¾"),
             ("camera1", "Camera 1"),
             ("camera2", "Camera 2")
         ]
 
         let actionSheet = ActionSheetController(presentationData: presentationData)
-        var items: [ActionSheetItem] = [ActionSheetTextItem(title: "Тип камеры")]
+        var items: [ActionSheetItem] = [ActionSheetTextItem(title: "Ð¢Ð¸Ð¿ ÐºÐ°Ð¼ÐµÑ€Ñ‹")]
         for (value, title) in options {
             let itemTitle = value == currentValue ? "[selected] \(title)" : title
             items.append(ActionSheetButtonItem(title: itemTitle, color: .accent, action: { [weak actionSheet] in
@@ -3191,14 +3194,14 @@ private func sosuzagramSettingsControllerImpl(context: AccountContext, category:
         let presentationData = context.sharedContext.currentPresentationData.with { $0 }
         let currentValue = UserDefaults.standard.string(forKey: "sosuzagram_video_message_camera") ?? "system"
         let options: [(String, String)] = [
-            ("system", "Ð¡Ð¸ÑÑ‚ÐµÐ¼Ð½Ð¾"),
-            ("front", "Ð¤Ñ€Ð¾Ð½Ñ‚Ð°Ð»ÑŒÐ½Ð°Ñ"),
-            ("back", "ÐžÑÐ½Ð¾Ð²Ð½Ð°Ñ"),
-            ("last", "ÐŸÐ¾ÑÐ»ÐµÐ´Ð½ÑÑ")
+            ("system", "ÃÂ¡ÃÂ¸Ã‘ÂÃ‘â€šÃÂµÃÂ¼ÃÂ½ÃÂ¾"),
+            ("front", "ÃÂ¤Ã‘â‚¬ÃÂ¾ÃÂ½Ã‘â€šÃÂ°ÃÂ»Ã‘Å’ÃÂ½ÃÂ°Ã‘Â"),
+            ("back", "ÃÅ¾Ã‘ÂÃÂ½ÃÂ¾ÃÂ²ÃÂ½ÃÂ°Ã‘Â"),
+            ("last", "ÃÅ¸ÃÂ¾Ã‘ÂÃÂ»ÃÂµÃÂ´ÃÂ½Ã‘ÂÃ‘Â")
         ]
 
         let actionSheet = ActionSheetController(presentationData: presentationData)
-        var items: [ActionSheetItem] = [ActionSheetTextItem(title: "ÐšÐ°Ð¼ÐµÑ€Ð° Ð² Ð²Ð¸Ð´ÐµÐ¾ÑÐ¾Ð¾Ð±Ñ‰ÐµÐ½Ð¸ÑÑ…")]
+        var items: [ActionSheetItem] = [ActionSheetTextItem(title: "ÃÅ¡ÃÂ°ÃÂ¼ÃÂµÃ‘â‚¬ÃÂ° ÃÂ² ÃÂ²ÃÂ¸ÃÂ´ÃÂµÃÂ¾Ã‘ÂÃÂ¾ÃÂ¾ÃÂ±Ã‘â€°ÃÂµÃÂ½ÃÂ¸Ã‘ÂÃ‘â€¦")]
         for (value, title) in options {
             let itemTitle = value == currentValue ? "[selected] \(title)" : title
             items.append(ActionSheetButtonItem(title: itemTitle, color: .accent, action: { [weak actionSheet] in
@@ -3224,14 +3227,14 @@ private func sosuzagramSettingsControllerImpl(context: AccountContext, category:
         let presentationData = context.sharedContext.currentPresentationData.with { $0 }
         let currentValue = UserDefaults.standard.string(forKey: "sosuzagram_avatar_shape") ?? "system"
         let options: [(String, String)] = [
-            ("system", "Ð¡Ð¸ÑÑ‚ÐµÐ¼Ð½Ð¾"),
-            ("circle", "ÐšÑ€ÑƒÐ³"),
-            ("rounded", "Ð¡ÐºÑ€ÑƒÐ³Ð»Ñ‘Ð½Ð½Ð°Ñ"),
-            ("square", "ÐšÐ²Ð°Ð´Ñ€Ð°Ñ‚")
+            ("system", "ÃÂ¡ÃÂ¸Ã‘ÂÃ‘â€šÃÂµÃÂ¼ÃÂ½ÃÂ¾"),
+            ("circle", "ÃÅ¡Ã‘â‚¬Ã‘Æ’ÃÂ³"),
+            ("rounded", "ÃÂ¡ÃÂºÃ‘â‚¬Ã‘Æ’ÃÂ³ÃÂ»Ã‘â€˜ÃÂ½ÃÂ½ÃÂ°Ã‘Â"),
+            ("square", "ÃÅ¡ÃÂ²ÃÂ°ÃÂ´Ã‘â‚¬ÃÂ°Ã‘â€š")
         ]
 
         let actionSheet = ActionSheetController(presentationData: presentationData)
-        var items: [ActionSheetItem] = [ActionSheetTextItem(title: "Ð¤Ð¾Ñ€Ð¼Ð° Ð°Ð²Ð°Ñ‚Ð°Ñ€Ð¾Ð²")]
+        var items: [ActionSheetItem] = [ActionSheetTextItem(title: "ÃÂ¤ÃÂ¾Ã‘â‚¬ÃÂ¼ÃÂ° ÃÂ°ÃÂ²ÃÂ°Ã‘â€šÃÂ°Ã‘â‚¬ÃÂ¾ÃÂ²")]
         for (value, title) in options {
             let itemTitle = value == currentValue ? "[selected] \(title)" : title
             items.append(ActionSheetButtonItem(title: itemTitle, color: .accent, action: { [weak actionSheet] in
@@ -3257,7 +3260,7 @@ private func sosuzagramSettingsControllerImpl(context: AccountContext, category:
         let presentationData = context.sharedContext.currentPresentationData.with { $0 }
         let currentValue = max(0, min(3, UserDefaults.standard.integer(forKey: "sosuzagram_material_design_level")))
         let options: [(Int, String)] = [
-            (0, "Отключено"),
+            (0, "ÐžÑ‚ÐºÐ»ÑŽÑ‡ÐµÐ½Ð¾"),
             (1, "1/3"),
             (2, "2/3"),
             (3, "3/3")
@@ -3290,13 +3293,13 @@ private func sosuzagramSettingsControllerImpl(context: AccountContext, category:
         let presentationData = context.sharedContext.currentPresentationData.with { $0 }
         let currentValue = UserDefaults.standard.string(forKey: "sosuzagram_reply_style") ?? "default"
         let options: [(String, String)] = [
-            ("default", "По умолчанию"),
-            ("rounded", "Закруглённые"),
-            ("message", "Сообщения")
+            ("default", "ÐŸÐ¾ ÑƒÐ¼Ð¾Ð»Ñ‡Ð°Ð½Ð¸ÑŽ"),
+            ("rounded", "Ð—Ð°ÐºÑ€ÑƒÐ³Ð»Ñ‘Ð½Ð½Ñ‹Ðµ"),
+            ("message", "Ð¡Ð¾Ð¾Ð±Ñ‰ÐµÐ½Ð¸Ñ")
         ]
 
         let actionSheet = ActionSheetController(presentationData: presentationData)
-        var items: [ActionSheetItem] = [ActionSheetTextItem(title: "Ответы")]
+        var items: [ActionSheetItem] = [ActionSheetTextItem(title: "ÐžÑ‚Ð²ÐµÑ‚Ñ‹")]
         for (value, title) in options {
             let itemTitle = value == currentValue ? "[selected] \(title)" : title
             items.append(ActionSheetButtonItem(title: itemTitle, color: .accent, action: { [weak actionSheet] in
@@ -3322,9 +3325,9 @@ private func sosuzagramSettingsControllerImpl(context: AccountContext, category:
         let presentationData = context.sharedContext.currentPresentationData.with { $0 }
         let currentValue = UserDefaults.standard.string(forKey: "sosuzagram_pill_stack_mode") ?? "off"
         let options: [(String, String)] = [
-            ("off", "Отключено"),
-            ("compact", "Компактный"),
-            ("stacked", "Стек")
+            ("off", "ÐžÑ‚ÐºÐ»ÑŽÑ‡ÐµÐ½Ð¾"),
+            ("compact", "ÐšÐ¾Ð¼Ð¿Ð°ÐºÑ‚Ð½Ñ‹Ð¹"),
+            ("stacked", "Ð¡Ñ‚ÐµÐº")
         ]
 
         let actionSheet = ActionSheetController(presentationData: presentationData)
@@ -3355,10 +3358,10 @@ private func sosuzagramSettingsControllerImpl(context: AccountContext, category:
         let currentAction = sosuzagramDoubleTapAction(incoming: true)
         let actionSheet = ActionSheetController(presentationData: presentationData)
         let options: [(SosuzagramDoubleTapAction, String)] = [
-            (.reactions, "Ð ÐµÐ°ÐºÑ†Ð¸Ð¸"),
-            (.none, "ÐÐµÑ‚")
+            (.reactions, "ÃÂ ÃÂµÃÂ°ÃÂºÃ‘â€ ÃÂ¸ÃÂ¸"),
+            (.none, "ÃÂÃÂµÃ‘â€š")
         ]
-        var items: [ActionSheetItem] = [ActionSheetTextItem(title: "Ð”Ð²Ð¾Ð¹Ð½Ð¾Ð¹ Ñ‚Ð°Ð¿ Ð¿Ð¾ Ð²Ñ…Ð¾Ð´ÑÑ‰Ð¸Ð¼ ÑÐ¾Ð¾Ð±Ñ‰ÐµÐ½Ð¸ÑÐ¼")]
+        var items: [ActionSheetItem] = [ActionSheetTextItem(title: "Ãâ€ÃÂ²ÃÂ¾ÃÂ¹ÃÂ½ÃÂ¾ÃÂ¹ Ã‘â€šÃÂ°ÃÂ¿ ÃÂ¿ÃÂ¾ ÃÂ²Ã‘â€¦ÃÂ¾ÃÂ´Ã‘ÂÃ‘â€°ÃÂ¸ÃÂ¼ Ã‘ÂÃÂ¾ÃÂ¾ÃÂ±Ã‘â€°ÃÂµÃÂ½ÃÂ¸Ã‘ÂÃÂ¼")]
         for (action, title) in options {
             let itemTitle = action == currentAction ? "[selected] \(title)" : title
             items.append(ActionSheetButtonItem(title: itemTitle, color: .accent, action: { [weak actionSheet] in
@@ -3385,10 +3388,10 @@ private func sosuzagramSettingsControllerImpl(context: AccountContext, category:
         let currentAction = sosuzagramDoubleTapAction(incoming: false)
         let actionSheet = ActionSheetController(presentationData: presentationData)
         let options: [(SosuzagramDoubleTapAction, String)] = [
-            (.reactions, "Ð ÐµÐ°ÐºÑ†Ð¸Ð¸"),
-            (.none, "ÐÐµÑ‚")
+            (.reactions, "ÃÂ ÃÂµÃÂ°ÃÂºÃ‘â€ ÃÂ¸ÃÂ¸"),
+            (.none, "ÃÂÃÂµÃ‘â€š")
         ]
-        var items: [ActionSheetItem] = [ActionSheetTextItem(title: "Ð”Ð²Ð¾Ð¹Ð½Ð¾Ð¹ Ñ‚Ð°Ð¿ Ð¿Ð¾ Ð¸ÑÑ…Ð¾Ð´ÑÑ‰Ð¸Ð¼ ÑÐ¾Ð¾Ð±Ñ‰ÐµÐ½Ð¸ÑÐ¼")]
+        var items: [ActionSheetItem] = [ActionSheetTextItem(title: "Ãâ€ÃÂ²ÃÂ¾ÃÂ¹ÃÂ½ÃÂ¾ÃÂ¹ Ã‘â€šÃÂ°ÃÂ¿ ÃÂ¿ÃÂ¾ ÃÂ¸Ã‘ÂÃ‘â€¦ÃÂ¾ÃÂ´Ã‘ÂÃ‘â€°ÃÂ¸ÃÂ¼ Ã‘ÂÃÂ¾ÃÂ¾ÃÂ±Ã‘â€°ÃÂµÃÂ½ÃÂ¸Ã‘ÂÃÂ¼")]
         for (action, title) in options {
             let itemTitle = action == currentAction ? "[selected] \(title)" : title
             items.append(ActionSheetButtonItem(title: itemTitle, color: .accent, action: { [weak actionSheet] in
@@ -3414,13 +3417,13 @@ private func sosuzagramSettingsControllerImpl(context: AccountContext, category:
         let presentationData = context.sharedContext.currentPresentationData.with { $0 }
         let currentValue = UserDefaults.standard.string(forKey: "sosuzagram_chat_list_title_text") ?? "name"
         let options: [(String, String)] = [
-            ("name", "Ð˜Ð¼Ñ"),
+            ("name", "ÃËœÃÂ¼Ã‘Â"),
             ("username", "Username"),
-            ("name_and_username", "Ð˜Ð¼Ñ Ð¸ username")
+            ("name_and_username", "ÃËœÃÂ¼Ã‘Â ÃÂ¸ username")
         ]
 
         let actionSheet = ActionSheetController(presentationData: presentationData)
-        var items: [ActionSheetItem] = [ActionSheetTextItem(title: "Ð¢ÐµÐºÑÑ‚ Ð² Ð·Ð°Ð³Ð¾Ð»Ð¾Ð²ÐºÐµ")]
+        var items: [ActionSheetItem] = [ActionSheetTextItem(title: "ÃÂ¢ÃÂµÃÂºÃ‘ÂÃ‘â€š ÃÂ² ÃÂ·ÃÂ°ÃÂ³ÃÂ¾ÃÂ»ÃÂ¾ÃÂ²ÃÂºÃÂµ")]
         for (value, title) in options {
             let itemTitle = value == currentValue ? "[selected] \(title)" : title
             items.append(ActionSheetButtonItem(title: itemTitle, color: .accent, action: { [weak actionSheet] in
@@ -3446,13 +3449,13 @@ private func sosuzagramSettingsControllerImpl(context: AccountContext, category:
         let presentationData = context.sharedContext.currentPresentationData.with { $0 }
         let currentValue = UserDefaults.standard.string(forKey: "sosuzagram_folder_tab_titles") ?? "title_and_icon"
         let options: [(String, String)] = [
-            ("title_and_icon", "ÐÐ°Ð·Ð²Ð°Ð½Ð¸Ðµ Ð¸ Ð¸ÐºÐ¾Ð½ÐºÐ°"),
-            ("title", "ÐÐ°Ð·Ð²Ð°Ð½Ð¸Ðµ"),
-            ("icon", "Ð¢Ð¾Ð»ÑŒÐºÐ¾ Ð¸ÐºÐ¾Ð½ÐºÐ°")
+            ("title_and_icon", "ÃÂÃÂ°ÃÂ·ÃÂ²ÃÂ°ÃÂ½ÃÂ¸ÃÂµ ÃÂ¸ ÃÂ¸ÃÂºÃÂ¾ÃÂ½ÃÂºÃÂ°"),
+            ("title", "ÃÂÃÂ°ÃÂ·ÃÂ²ÃÂ°ÃÂ½ÃÂ¸ÃÂµ"),
+            ("icon", "ÃÂ¢ÃÂ¾ÃÂ»Ã‘Å’ÃÂºÃÂ¾ ÃÂ¸ÃÂºÃÂ¾ÃÂ½ÃÂºÃÂ°")
         ]
 
         let actionSheet = ActionSheetController(presentationData: presentationData)
-        var items: [ActionSheetItem] = [ActionSheetTextItem(title: "Ð—Ð°Ð³Ð¾Ð»Ð¾Ð²ÐºÐ¸ Ð¿Ð°Ð¿Ð¾Ðº")]
+        var items: [ActionSheetItem] = [ActionSheetTextItem(title: "Ãâ€”ÃÂ°ÃÂ³ÃÂ¾ÃÂ»ÃÂ¾ÃÂ²ÃÂºÃÂ¸ ÃÂ¿ÃÂ°ÃÂ¿ÃÂ¾ÃÂº")]
         for (value, title) in options {
             let itemTitle = value == currentValue ? "[selected] \(title)" : title
             items.append(ActionSheetButtonItem(title: itemTitle, color: .accent, action: { [weak actionSheet] in
@@ -3483,11 +3486,11 @@ private func sosuzagramSettingsControllerImpl(context: AccountContext, category:
         let options: [(String, String)] = [
             ("telegram", "Telegram"),
             ("google", "Google"),
-            ("system", "Системный")
+            ("system", "Ð¡Ð¸ÑÑ‚ÐµÐ¼Ð½Ñ‹Ð¹")
         ]
 
         let actionSheet = ActionSheetController(presentationData: presentationData)
-        var items: [ActionSheetItem] = [ActionSheetTextItem(title: "Провайдер перевода")]
+        var items: [ActionSheetItem] = [ActionSheetTextItem(title: "ÐŸÑ€Ð¾Ð²Ð°Ð¹Ð´ÐµÑ€ Ð¿ÐµÑ€ÐµÐ²Ð¾Ð´Ð°")]
         for (value, title) in options {
             let itemTitle = value == currentValue ? "[selected] \(title)" : title
             items.append(ActionSheetButtonItem(title: itemTitle, color: .accent, action: { [weak actionSheet] in
@@ -3496,7 +3499,7 @@ private func sosuzagramSettingsControllerImpl(context: AccountContext, category:
                 updateSettingsImpl?()
             }))
         }
-        items.append(ActionSheetTextItem(title: "Telegram использует встроенный перевод Telegram, Google включает альтернативный перевод, а системный режим использует iOS Translate, если он доступен."))
+        items.append(ActionSheetTextItem(title: "Telegram Ð¸ÑÐ¿Ð¾Ð»ÑŒÐ·ÑƒÐµÑ‚ Ð²ÑÑ‚Ñ€Ð¾ÐµÐ½Ð½Ñ‹Ð¹ Ð¿ÐµÑ€ÐµÐ²Ð¾Ð´ Telegram, Google Ð²ÐºÐ»ÑŽÑ‡Ð°ÐµÑ‚ Ð°Ð»ÑŒÑ‚ÐµÑ€Ð½Ð°Ñ‚Ð¸Ð²Ð½Ñ‹Ð¹ Ð¿ÐµÑ€ÐµÐ²Ð¾Ð´, Ð° ÑÐ¸ÑÑ‚ÐµÐ¼Ð½Ñ‹Ð¹ Ñ€ÐµÐ¶Ð¸Ð¼ Ð¸ÑÐ¿Ð¾Ð»ÑŒÐ·ÑƒÐµÑ‚ iOS Translate, ÐµÑÐ»Ð¸ Ð¾Ð½ Ð´Ð¾ÑÑ‚ÑƒÐ¿ÐµÐ½."))
         actionSheet.setItemGroups([
             ActionSheetItemGroup(items: items),
             ActionSheetItemGroup(items: [
@@ -3514,15 +3517,15 @@ private func sosuzagramSettingsControllerImpl(context: AccountContext, category:
         let presentationData = context.sharedContext.currentPresentationData.with { $0 }
         let currentValue = UserDefaults.standard.string(forKey: "sosuzagram_translation_target") ?? "app"
         let options: [(String, String)] = [
-            ("app", "Язык приложения"),
-            ("system", "Язык системы"),
-            ("ru", "Русский"),
+            ("app", "Ð¯Ð·Ñ‹Ðº Ð¿Ñ€Ð¸Ð»Ð¾Ð¶ÐµÐ½Ð¸Ñ"),
+            ("system", "Ð¯Ð·Ñ‹Ðº ÑÐ¸ÑÑ‚ÐµÐ¼Ñ‹"),
+            ("ru", "Ð ÑƒÑÑÐºÐ¸Ð¹"),
             ("en", "English"),
-            ("uk", "Українська")
+            ("uk", "Ð£ÐºÑ€Ð°Ñ—Ð½ÑÑŒÐºÐ°")
         ]
 
         let actionSheet = ActionSheetController(presentationData: presentationData)
-        var items: [ActionSheetItem] = [ActionSheetTextItem(title: "Целевой язык")]
+        var items: [ActionSheetItem] = [ActionSheetTextItem(title: "Ð¦ÐµÐ»ÐµÐ²Ð¾Ð¹ ÑÐ·Ñ‹Ðº")]
         for (value, title) in options {
             let itemTitle = value == currentValue ? "[selected] \(title)" : title
             items.append(ActionSheetButtonItem(title: itemTitle, color: .accent, action: { [weak actionSheet] in
@@ -3531,7 +3534,7 @@ private func sosuzagramSettingsControllerImpl(context: AccountContext, category:
                 updateSettingsImpl?()
             }))
         }
-        items.append(ActionSheetTextItem(title: "Язык приложения повторяет текущую локализацию Telegram, а язык системы берётся из основных языковых настроек iOS."))
+        items.append(ActionSheetTextItem(title: "Ð¯Ð·Ñ‹Ðº Ð¿Ñ€Ð¸Ð»Ð¾Ð¶ÐµÐ½Ð¸Ñ Ð¿Ð¾Ð²Ñ‚Ð¾Ñ€ÑÐµÑ‚ Ñ‚ÐµÐºÑƒÑ‰ÑƒÑŽ Ð»Ð¾ÐºÐ°Ð»Ð¸Ð·Ð°Ñ†Ð¸ÑŽ Telegram, Ð° ÑÐ·Ñ‹Ðº ÑÐ¸ÑÑ‚ÐµÐ¼Ñ‹ Ð±ÐµÑ€Ñ‘Ñ‚ÑÑ Ð¸Ð· Ð¾ÑÐ½Ð¾Ð²Ð½Ñ‹Ñ… ÑÐ·Ñ‹ÐºÐ¾Ð²Ñ‹Ñ… Ð½Ð°ÑÑ‚Ñ€Ð¾ÐµÐº iOS."))
         actionSheet.setItemGroups([
             ActionSheetItemGroup(items: items),
             ActionSheetItemGroup(items: [
@@ -3560,16 +3563,16 @@ private func sosuzagramSettingsControllerImpl(context: AccountContext, category:
         let actionSheet = ActionSheetController(presentationData: presentationData)
         actionSheet.setItemGroups([
             ActionSheetItemGroup(items: [
-                ActionSheetTextItem(title: "Навигация в приложении"),
-                ActionSheetButtonItem(title: "Папки и вкладки", color: .accent, action: { [weak actionSheet] in
+                ActionSheetTextItem(title: "ÐÐ°Ð²Ð¸Ð³Ð°Ñ†Ð¸Ñ Ð² Ð¿Ñ€Ð¸Ð»Ð¾Ð¶ÐµÐ½Ð¸Ð¸"),
+                ActionSheetButtonItem(title: "ÐŸÐ°Ð¿ÐºÐ¸ Ð¸ Ð²ÐºÐ»Ð°Ð´ÐºÐ¸", color: .accent, action: { [weak actionSheet] in
                     actionSheet?.dismissAnimated()
                     openChatFoldersSettingsImpl?()
                 }),
-                ActionSheetButtonItem(title: "Текст в заголовке", color: .accent, action: { [weak actionSheet] in
+                ActionSheetButtonItem(title: "Ð¢ÐµÐºÑÑ‚ Ð² Ð·Ð°Ð³Ð¾Ð»Ð¾Ð²ÐºÐµ", color: .accent, action: { [weak actionSheet] in
                     actionSheet?.dismissAnimated()
                     openChatListTitleTextImpl?()
                 }),
-                ActionSheetButtonItem(title: "Заголовки папок", color: .accent, action: { [weak actionSheet] in
+                ActionSheetButtonItem(title: "Ð—Ð°Ð³Ð¾Ð»Ð¾Ð²ÐºÐ¸ Ð¿Ð°Ð¿Ð¾Ðº", color: .accent, action: { [weak actionSheet] in
                     actionSheet?.dismissAnimated()
                     openFolderTabTitlesImpl?()
                 })
@@ -3589,15 +3592,15 @@ private func sosuzagramSettingsControllerImpl(context: AccountContext, category:
         let presentationData = context.sharedContext.currentPresentationData.with { $0 }
         let currentIcon = UserDefaults.standard.string(forKey: "sosuzagram_current_icon") ?? "nil"
         let icons = [
-            ("Стандартная", "nil"),
-            ("Красная (Extera style)", "Red"),
-            ("Зелёная (Extera style)", "Green"),
-            ("Оранжевая (Extera style)", "Orange"),
-            ("Фиолетовая (Extera style)", "Purple")
+            ("Ð¡Ñ‚Ð°Ð½Ð´Ð°Ñ€Ñ‚Ð½Ð°Ñ", "nil"),
+            ("ÐšÑ€Ð°ÑÐ½Ð°Ñ (Extera style)", "Red"),
+            ("Ð—ÐµÐ»Ñ‘Ð½Ð°Ñ (Extera style)", "Green"),
+            ("ÐžÑ€Ð°Ð½Ð¶ÐµÐ²Ð°Ñ (Extera style)", "Orange"),
+            ("Ð¤Ð¸Ð¾Ð»ÐµÑ‚Ð¾Ð²Ð°Ñ (Extera style)", "Purple")
         ]
 
         let actionSheet = ActionSheetController(presentationData: presentationData)
-        var items: [ActionSheetItem] = [ActionSheetTextItem(title: "Наборы иконок")]
+        var items: [ActionSheetItem] = [ActionSheetTextItem(title: "ÐÐ°Ð±Ð¾Ñ€Ñ‹ Ð¸ÐºÐ¾Ð½Ð¾Ðº")]
         for (title, value) in icons {
             let itemTitle = value == currentIcon ? "[selected] \(title)" : title
             items.append(ActionSheetButtonItem(title: itemTitle, color: .accent, action: { [weak actionSheet] in
@@ -3654,7 +3657,7 @@ private func sosuzagramSettingsControllerImpl(context: AccountContext, category:
 
             let allowedExtensions: Set<String> = ["plugin", "sosuzagramplugin"]
             guard allowedExtensions.contains(url.pathExtension.lowercased()) else {
-                controller.present(textAlertController(context: context, title: "Ð˜Ð¼Ð¿Ð¾Ñ€Ñ‚ Ð¿Ð»Ð°Ð³Ð¸Ð½Ð°", text: "Ð’Ñ‹Ð±ÐµÑ€Ð¸ Ñ„Ð°Ð¹Ð» Ñ Ñ€Ð°ÑÑˆÐ¸Ñ€ÐµÐ½Ð¸ÐµÐ¼ .plugin Ð¸Ð»Ð¸ .sosuzagramplugin.", actions: [
+                controller.present(textAlertController(context: context, title: "ÃËœÃÂ¼ÃÂ¿ÃÂ¾Ã‘â‚¬Ã‘â€š ÃÂ¿ÃÂ»ÃÂ°ÃÂ³ÃÂ¸ÃÂ½ÃÂ°", text: "Ãâ€™Ã‘â€¹ÃÂ±ÃÂµÃ‘â‚¬ÃÂ¸ Ã‘â€žÃÂ°ÃÂ¹ÃÂ» Ã‘Â Ã‘â‚¬ÃÂ°Ã‘ÂÃ‘Ë†ÃÂ¸Ã‘â‚¬ÃÂµÃÂ½ÃÂ¸ÃÂµÃÂ¼ .plugin ÃÂ¸ÃÂ»ÃÂ¸ .sosuzagramplugin.", actions: [
                     TextAlertAction(type: .defaultAction, title: presentationData.strings.Common_OK, action: {})
                 ]), in: .window(.root))
                 return
@@ -3670,7 +3673,7 @@ private func sosuzagramSettingsControllerImpl(context: AccountContext, category:
 
                 var actions: [TextAlertAction] = []
                 if supportedPlugin != nil {
-                    actions.append(TextAlertAction(type: .genericAction, title: "ÐžÑ‚ÐºÑ€Ñ‹Ñ‚ÑŒ", action: {
+                    actions.append(TextAlertAction(type: .genericAction, title: "ÃÅ¾Ã‘â€šÃÂºÃ‘â‚¬Ã‘â€¹Ã‘â€šÃ‘Å’", action: {
                         controller.push(sosuzagramPluginSettingsController(context: context, pluginId: importedPlugin.id))
                     }))
                 }
@@ -3678,14 +3681,14 @@ private func sosuzagramSettingsControllerImpl(context: AccountContext, category:
 
                 let message: String
                 if supportedPlugin != nil {
-                    message = "ÐŸÐ»Ð°Ð³Ð¸Ð½ \(importedPlugin.name) Ð¸Ð¼Ð¿Ð¾Ñ€Ñ‚Ð¸Ñ€Ð¾Ð²Ð°Ð½ Ð¸ Ð²ÐºÐ»ÑŽÑ‡Ñ‘Ð½. Ð•Ð³Ð¾ Ð½Ð°ÑÑ‚Ñ€Ð¾Ð¹ÐºÐ¸ ÑƒÐ¶Ðµ Ð´Ð¾ÑÑ‚ÑƒÐ¿Ð½Ñ‹ Ð² Sosuzagram."
+                    message = "ÃÅ¸ÃÂ»ÃÂ°ÃÂ³ÃÂ¸ÃÂ½ \(importedPlugin.name) ÃÂ¸ÃÂ¼ÃÂ¿ÃÂ¾Ã‘â‚¬Ã‘â€šÃÂ¸Ã‘â‚¬ÃÂ¾ÃÂ²ÃÂ°ÃÂ½ ÃÂ¸ ÃÂ²ÃÂºÃÂ»Ã‘Å½Ã‘â€¡Ã‘â€˜ÃÂ½. Ãâ€¢ÃÂ³ÃÂ¾ ÃÂ½ÃÂ°Ã‘ÂÃ‘â€šÃ‘â‚¬ÃÂ¾ÃÂ¹ÃÂºÃÂ¸ Ã‘Æ’ÃÂ¶ÃÂµ ÃÂ´ÃÂ¾Ã‘ÂÃ‘â€šÃ‘Æ’ÃÂ¿ÃÂ½Ã‘â€¹ ÃÂ² Sosuzagram."
                 } else {
-                    message = "Ð¤Ð°Ð¹Ð» \(importedPlugin.name) Ð¸Ð¼Ð¿Ð¾Ñ€Ñ‚Ð¸Ñ€Ð¾Ð²Ð°Ð½ Ð² SosuzagramPlugins, Ð½Ð¾ Ð´Ð»Ñ Ñ€Ð°Ð±Ð¾Ñ‚Ñ‹ Ð½ÑƒÐ¶ÐµÐ½ Ð¾Ñ‚Ð´ÐµÐ»ÑŒÐ½Ñ‹Ð¹ Ð½Ð°Ñ‚Ð¸Ð²Ð½Ñ‹Ð¹ Ð¿Ð¾Ñ€Ñ‚ Ð¿Ð¾Ð´ iOS."
+                    message = "ÃÂ¤ÃÂ°ÃÂ¹ÃÂ» \(importedPlugin.name) ÃÂ¸ÃÂ¼ÃÂ¿ÃÂ¾Ã‘â‚¬Ã‘â€šÃÂ¸Ã‘â‚¬ÃÂ¾ÃÂ²ÃÂ°ÃÂ½ ÃÂ² SosuzagramPlugins, ÃÂ½ÃÂ¾ ÃÂ´ÃÂ»Ã‘Â Ã‘â‚¬ÃÂ°ÃÂ±ÃÂ¾Ã‘â€šÃ‘â€¹ ÃÂ½Ã‘Æ’ÃÂ¶ÃÂµÃÂ½ ÃÂ¾Ã‘â€šÃÂ´ÃÂµÃÂ»Ã‘Å’ÃÂ½Ã‘â€¹ÃÂ¹ ÃÂ½ÃÂ°Ã‘â€šÃÂ¸ÃÂ²ÃÂ½Ã‘â€¹ÃÂ¹ ÃÂ¿ÃÂ¾Ã‘â‚¬Ã‘â€š ÃÂ¿ÃÂ¾ÃÂ´ iOS."
                 }
 
-                controller.present(textAlertController(context: context, title: "Ð˜Ð¼Ð¿Ð¾Ñ€Ñ‚ Ð¿Ð»Ð°Ð³Ð¸Ð½Ð°", text: message, actions: actions), in: .window(.root))
+                controller.present(textAlertController(context: context, title: "ÃËœÃÂ¼ÃÂ¿ÃÂ¾Ã‘â‚¬Ã‘â€š ÃÂ¿ÃÂ»ÃÂ°ÃÂ³ÃÂ¸ÃÂ½ÃÂ°", text: message, actions: actions), in: .window(.root))
             } catch {
-                controller.present(textAlertController(context: context, title: "Ð˜Ð¼Ð¿Ð¾Ñ€Ñ‚ Ð¿Ð»Ð°Ð³Ð¸Ð½Ð°", text: "ÐÐµ ÑƒÐ´Ð°Ð»Ð¾ÑÑŒ Ð¸Ð¼Ð¿Ð¾Ñ€Ñ‚Ð¸Ñ€Ð¾Ð²Ð°Ñ‚ÑŒ Ñ„Ð°Ð¹Ð»: \(error.localizedDescription)", actions: [
+                controller.present(textAlertController(context: context, title: "ÃËœÃÂ¼ÃÂ¿ÃÂ¾Ã‘â‚¬Ã‘â€š ÃÂ¿ÃÂ»ÃÂ°ÃÂ³ÃÂ¸ÃÂ½ÃÂ°", text: "ÃÂÃÂµ Ã‘Æ’ÃÂ´ÃÂ°ÃÂ»ÃÂ¾Ã‘ÂÃ‘Å’ ÃÂ¸ÃÂ¼ÃÂ¿ÃÂ¾Ã‘â‚¬Ã‘â€šÃÂ¸Ã‘â‚¬ÃÂ¾ÃÂ²ÃÂ°Ã‘â€šÃ‘Å’ Ã‘â€žÃÂ°ÃÂ¹ÃÂ»: \(error.localizedDescription)", actions: [
                     TextAlertAction(type: .defaultAction, title: presentationData.strings.Common_OK, action: {})
                 ]), in: .window(.root))
             }
@@ -3745,7 +3748,7 @@ private func sosuzagramMessageMenuSettingsController(context: AccountContext, on
             buildItem: { presentationData, _ in
                 ItemListTextItem(
                     presentationData: presentationData,
-                    text: .plain("Выбирает, какие основные действия остаются в меню сообщения, когда включена кастомизация меню."),
+                    text: .plain("Ð’Ñ‹Ð±Ð¸Ñ€Ð°ÐµÑ‚, ÐºÐ°ÐºÐ¸Ðµ Ð¾ÑÐ½Ð¾Ð²Ð½Ñ‹Ðµ Ð´ÐµÐ¹ÑÑ‚Ð²Ð¸Ñ Ð¾ÑÑ‚Ð°ÑŽÑ‚ÑÑ Ð² Ð¼ÐµÐ½ÑŽ ÑÐ¾Ð¾Ð±Ñ‰ÐµÐ½Ð¸Ñ, ÐºÐ¾Ð³Ð´Ð° Ð²ÐºÐ»ÑŽÑ‡ÐµÐ½Ð° ÐºÐ°ÑÑ‚Ð¾Ð¼Ð¸Ð·Ð°Ñ†Ð¸Ñ Ð¼ÐµÐ½ÑŽ."),
                     sectionId: 0
                 )
             }
@@ -3786,7 +3789,7 @@ private func sosuzagramMessageMenuSettingsController(context: AccountContext, on
             buildItem: { presentationData, _ in
                 ItemListTextItem(
                     presentationData: presentationData,
-                    text: .plain("Сейчас активно \(sosuzagramMessageMenuEnabledCount()) из \(SosuzagramMessageMenuOption.allCases.count) основных действий."),
+                    text: .plain("Ð¡ÐµÐ¹Ñ‡Ð°Ñ Ð°ÐºÑ‚Ð¸Ð²Ð½Ð¾ \(sosuzagramMessageMenuEnabledCount()) Ð¸Ð· \(SosuzagramMessageMenuOption.allCases.count) Ð¾ÑÐ½Ð¾Ð²Ð½Ñ‹Ñ… Ð´ÐµÐ¹ÑÑ‚Ð²Ð¸Ð¹."),
                     sectionId: 2
                 )
             }
@@ -3795,7 +3798,7 @@ private func sosuzagramMessageMenuSettingsController(context: AccountContext, on
         return (
             ItemListControllerState(
                 presentationData: ItemListPresentationData(presentationData),
-                title: .text("Меню сообщения"),
+                title: .text("ÐœÐµÐ½ÑŽ ÑÐ¾Ð¾Ð±Ñ‰ÐµÐ½Ð¸Ñ"),
                 leftNavigationButton: nil,
                 rightNavigationButton: nil,
                 backNavigationButton: ItemListBackButton(title: presentationData.strings.Common_Back)
