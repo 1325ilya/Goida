@@ -192,6 +192,19 @@ index d97e8c71..53be3524 100644
      <key>Black</key>
      <dict>
          <key>CFBundleIconFiles</key>
+diff --git a/submodules/AccountContext/Sources/AccountContext.swift b/submodules/AccountContext/Sources/AccountContext.swift
+index 2245bafe..a182e9b5 100644
+--- a/submodules/AccountContext/Sources/AccountContext.swift
++++ b/submodules/AccountContext/Sources/AccountContext.swift
+@@ -1397,6 +1397,8 @@ public protocol SharedAccountContext: AnyObject {
+     func makePeerSelectionController(_ params: PeerSelectionControllerParams) -> PeerSelectionController
+     func makeProxySettingsController(context: AccountContext) -> ViewController
+     func makeLocalizationListController(context: AccountContext) -> ViewController
++    func makeThemeSettingsController(context: AccountContext) -> ViewController
++    func makeTranslationSettingsController(context: AccountContext) -> ViewController
+     func makeCreateGroupController(context: AccountContext, peerIds: [PeerId], initialTitle: String?, mode: CreateGroupMode, completion: ((PeerId, @escaping () -> Void) -> Void)?) -> ViewController
+     func makeChatRecentActionsController(context: AccountContext, peer: EnginePeer, adminPeerId: PeerId?, starsState: StarsRevenueStats?) -> ViewController
+     func makePrivacyAndSecurityController(context: AccountContext) -> ViewController
 diff --git a/submodules/ChatListUI/Sources/ChatListController.swift b/submodules/ChatListUI/Sources/ChatListController.swift
 index c9c94d32..ac4ebf5a 100644
 --- a/submodules/ChatListUI/Sources/ChatListController.swift
@@ -5782,7 +5795,7 @@ index 363c12ec..5be2705f 100644
          }
      }
 diff --git a/submodules/TelegramUI/Sources/SharedAccountContext.swift b/submodules/TelegramUI/Sources/SharedAccountContext.swift
-index b9608661..0c41450b 100644
+index b9608661..ced86a14 100644
 --- a/submodules/TelegramUI/Sources/SharedAccountContext.swift
 +++ b/submodules/TelegramUI/Sources/SharedAccountContext.swift
 @@ -106,6 +106,10 @@ import CreateBotScreen
@@ -5814,6 +5827,21 @@ index b9608661..0c41450b 100644
              }
          })
          
+@@ -2326,6 +2330,14 @@ public final class SharedAccountContextImpl: SharedAccountContext {
+         return LocalizationListController(context: context)
+     }
+     
++    public func makeThemeSettingsController(context: AccountContext) -> ViewController {
++        return themeSettingsController(context: context)
++    }
++    
++    public func makeTranslationSettingsController(context: AccountContext) -> ViewController {
++        return translationSettingsController(context: context)
++    }
++    
+     public func openAddContact(context: AccountContext, peer: EnginePeer?, firstName: String, lastName: String, phoneNumber: String, label: String, present: @escaping (ViewController, Any?) -> Void, pushController: @escaping (ViewController) -> Void, completed: @escaping () -> Void) {
+         openAddContactImpl(context: context, peer: peer, firstName: firstName, lastName: lastName, phoneNumber: phoneNumber, label: label, present: present, pushController: pushController, completed: completed)
+     }
 diff --git a/submodules/TextFormat/Sources/DateFormat.swift b/submodules/TextFormat/Sources/DateFormat.swift
 index e967c93f..35d8c24c 100644
 --- a/submodules/TextFormat/Sources/DateFormat.swift

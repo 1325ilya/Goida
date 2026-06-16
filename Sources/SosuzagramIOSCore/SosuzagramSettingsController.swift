@@ -12,7 +12,6 @@ import PresentationDataUtils
 import TelegramUIPreferences
 import LegacyMediaPickerUI
 import AlertUI
-import SettingsUI
 
 private struct SosuzagramSettingsControllerArguments {
     let context: AccountContext
@@ -3473,7 +3472,7 @@ private func sosuzagramSettingsControllerImpl(context: AccountContext, category:
         controller.present(actionSheet, in: .window(.root))
     }
     openDoNotTranslateLanguagesImpl = { [weak controller] in
-        controller?.push(translationSettingsController(context: context))
+        controller?.push(context.sharedContext.makeTranslationSettingsController(context: context))
     }
     openTranslationProviderImpl = { [weak controller] in
         guard let controller else {
@@ -3544,10 +3543,10 @@ private func sosuzagramSettingsControllerImpl(context: AccountContext, category:
         controller.present(actionSheet, in: .window(.root))
     }
     openLocalizationSettingsImpl = { [weak controller] in
-        controller?.push(LocalizationListController(context: context))
+        controller?.push(context.sharedContext.makeLocalizationListController(context: context))
     }
     openThemeSettingsImpl = { [weak controller] in
-        controller?.push(themeSettingsController(context: context))
+        controller?.push(context.sharedContext.makeThemeSettingsController(context: context))
     }
     openChatFoldersSettingsImpl = { [weak controller] in
         let filterController = context.sharedContext.makeFilterSettingsController(context: context, modal: false, scrollToTags: false, dismissed: nil)

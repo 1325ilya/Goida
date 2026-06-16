@@ -54,7 +54,6 @@ swift_library(
         "//submodules/TelegramUIPreferences:TelegramUIPreferences",
         "//submodules/LegacyMediaPickerUI:LegacyMediaPickerUI",
         "//submodules/AlertUI:AlertUI",
-        "//submodules/SettingsUI:SettingsUI",
     ],
     visibility = ["//visibility:public"],
 )
