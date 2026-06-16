@@ -4325,17 +4325,19 @@ index e4441abf..2553b176 100644
      visibility = [
          "//visibility:public",
 diff --git a/submodules/TelegramUI/Components/ChatListTitleView/Sources/ChatListTitleView.swift b/submodules/TelegramUI/Components/ChatListTitleView/Sources/ChatListTitleView.swift
-index 36bd2872..af568f82 100644
+index 36bd2872..a8e7f36f 100644
 --- a/submodules/TelegramUI/Components/ChatListTitleView/Sources/ChatListTitleView.swift
 +++ b/submodules/TelegramUI/Components/ChatListTitleView/Sources/ChatListTitleView.swift
-@@ -11,9 +11,26 @@ import MultiAnimationRenderer
+@@ -11,8 +11,27 @@ import MultiAnimationRenderer
  import TelegramCore
  import ComponentDisplayAdapters
  import AccountContext
 +import SosuzagramIOSCore
  
  private let titleFont = Font.with(size: 17.0, design: .regular, weight: .semibold, traits: [.monospacedNumbers])
- 
++private let serverStatusFont = Font.with(size: 10.0, design: .regular, weight: .semibold, traits: [.monospacedNumbers])
++private let serverStatusSpacing: CGFloat = 3.0
++
 +private func sosuzagramShouldCenterChatListTitle() -> Bool {
 +    return UserDefaults.standard.bool(forKey: "sosuzagram_center_chat_list_title")
 +}
@@ -4351,41 +4353,65 @@ index 36bd2872..af568f82 100644
 +private func sosuzagramTitleStatusDuration(default value: Double) -> Double {
 +    return sosuzagramSmoothAnimationsEnabled() ? max(value, 0.34) : value
 +}
-+
+ 
  public struct NetworkStatusTitle: Equatable {
      public enum Status: Equatable {
-         case premium
-@@ -77,12 +94,28 @@ public final class ChatListTitleView: UIView, NavigationBarTitleView, Navigation
+@@ -53,6 +72,8 @@ public final class ChatListTitleView: UIView, NavigationBarTitleView, Navigation
+     private let lockView: ChatListTitleLockView
+     private weak var lockSnapshotView: UIView?
+     private let activityIndicator: ActivityIndicator
++    private let serverStatusBackgroundNode: ASDisplayNode
++    private let serverStatusNode: ImmediateTextNode
+     private let buttonView: HighlightTrackingButton
+     private let proxyNode: ChatTitleProxyNode
+     private let proxyButton: HighlightTrackingButton
+@@ -77,12 +98,44 @@ public final class ChatListTitleView: UIView, NavigationBarTitleView, Navigation
          }
      }
      
-+    private func decoratedTitleText(for title: NetworkStatusTitle) -> String {
-+        var titleText = title.text
-+        if sosuzagramPluginEnabled("server_status") {
-+            let dcId = Int32(self.context.account.network.datacenterId)
-+            SosuzagramServerStatus.shared.startPinging(datacenterId: dcId)
-+            if let ping = SosuzagramServerStatus.shared.currentPing {
-+                titleText += " (DC\(dcId) - \(ping)ms)"
-+            } else {
-+                titleText += " (DC\(dcId) - ...)"
-+            }
++    private func serverStatusBadgeText() -> String? {
++        guard sosuzagramPluginEnabled("server_status") else {
++            return nil
 +        }
-+        return titleText
++        let dcId = Int32(self.context.account.network.datacenterId)
++        SosuzagramServerStatus.shared.startPinging(datacenterId: dcId)
++        if let ping = SosuzagramServerStatus.shared.currentPing {
++            return "DC\(dcId) · \(ping) мс"
++        } else {
++            return "DC\(dcId) · …"
++        }
++    }
++    
++    private func updateServerStatusBadge() {
++        guard let badgeText = self.serverStatusBadgeText() else {
++            self.serverStatusNode.attributedText = nil
++            self.serverStatusNode.isHidden = true
++            self.serverStatusBackgroundNode.isHidden = true
++            return
++        }
++        
++        let accentColor = self.theme.list.itemAccentColor
++        self.serverStatusNode.attributedText = NSAttributedString(string: badgeText, font: serverStatusFont, textColor: accentColor)
++        self.serverStatusNode.isHidden = false
++        self.serverStatusBackgroundNode.isHidden = false
++        self.serverStatusBackgroundNode.backgroundColor = accentColor.withAlphaComponent(self.theme.overallDarkAppearance ? 0.24 : 0.14)
++        self.serverStatusBackgroundNode.borderColor = accentColor.withAlphaComponent(self.theme.overallDarkAppearance ? 0.42 : 0.24).cgColor
++        self.serverStatusBackgroundNode.borderWidth = UIScreenPixel
 +    }
 +    
      public func setTitle(_ title: NetworkStatusTitle, animated: Bool) {
          let oldValue = self._title
          self._title = title
          
-+        let titleText = self.decoratedTitleText(for: title)
-+        self.titleNode.attributedText = NSAttributedString(string: titleText, font: titleFont, textColor: self.theme.rootController.navigationBar.primaryTextColor)
++        self.titleNode.attributedText = NSAttributedString(string: title.text, font: titleFont, textColor: self.theme.rootController.navigationBar.primaryTextColor)
++        self.updateServerStatusBadge()
 +        
          if self._title != oldValue {
 -            self.titleNode.attributedText = NSAttributedString(string: self.title.text, font: titleFont, textColor: self.theme.rootController.navigationBar.primaryTextColor)
              self.buttonView.accessibilityLabel = self.title.text
              self.activityIndicator.isHidden = !self.title.activity
             
-@@ -100,12 +133,12 @@ public final class ChatListTitleView: UIView, NavigationBarTitleView, Navigation
+@@ -100,12 +153,12 @@ public final class ChatListTitleView: UIView, NavigationBarTitleView, Navigation
                      if let snapshotView = self.proxyNode.view.snapshotContentTree() {
                          snapshotView.frame = self.proxyNode.frame
                          self.proxyNode.view.superview?.insertSubview(snapshotView, aboveSubview: self.proxyNode.view)
@@ -4400,7 +4426,7 @@ index 36bd2872..af568f82 100644
                  }
              }
              self.proxyNode.isHidden = !self.title.hasProxy
-@@ -113,7 +146,7 @@ public final class ChatListTitleView: UIView, NavigationBarTitleView, Navigation
+@@ -113,7 +166,7 @@ public final class ChatListTitleView: UIView, NavigationBarTitleView, Navigation
              self.buttonView.isHidden = !self.title.isPasscodeSet
              if self.title.isPasscodeSet && !self.title.activity {
                  if self.lockView.isHidden && animated {
@@ -4409,7 +4435,7 @@ index 36bd2872..af568f82 100644
                  }
                  self.lockView.isHidden = false
              } else {
-@@ -122,7 +155,7 @@ public final class ChatListTitleView: UIView, NavigationBarTitleView, Navigation
+@@ -122,7 +175,7 @@ public final class ChatListTitleView: UIView, NavigationBarTitleView, Navigation
                          self.lockSnapshotView = snapshotView
                          snapshotView.frame = self.lockView.frame
                          self.lockView.superview?.insertSubview(snapshotView, aboveSubview: self.lockView)
@@ -4418,7 +4444,7 @@ index 36bd2872..af568f82 100644
                              snapshotView?.removeFromSuperview()
                          })
                      }
-@@ -148,7 +181,7 @@ public final class ChatListTitleView: UIView, NavigationBarTitleView, Navigation
+@@ -148,7 +201,7 @@ public final class ChatListTitleView: UIView, NavigationBarTitleView, Navigation
                  
                  var titleCredibilityIconTransition: ComponentTransition
                  if animateStatusTransition {
@@ -4427,7 +4453,7 @@ index 36bd2872..af568f82 100644
                  } else {
                      titleCredibilityIconTransition = .immediate
                  }
-@@ -186,10 +219,10 @@ public final class ChatListTitleView: UIView, NavigationBarTitleView, Navigation
+@@ -186,10 +239,10 @@ public final class ChatListTitleView: UIView, NavigationBarTitleView, Navigation
                      self.titleCredibilityIconView = nil
                      
                      if animateStatusTransition {
@@ -4440,16 +4466,44 @@ index 36bd2872..af568f82 100644
                      } else {
                          titleCredibilityIconView.removeFromSuperview()
                      }
-@@ -211,7 +244,7 @@ public final class ChatListTitleView: UIView, NavigationBarTitleView, Navigation
-     public var theme: PresentationTheme {
+@@ -212,6 +265,7 @@ public final class ChatListTitleView: UIView, NavigationBarTitleView, Navigation
          didSet {
              if self.theme !== oldValue {
--                self.titleNode.attributedText = NSAttributedString(string: self.title.text, font: titleFont, textColor: self.theme.rootController.navigationBar.primaryTextColor)
-+                self.titleNode.attributedText = NSAttributedString(string: self.decoratedTitleText(for: self.title), font: titleFont, textColor: self.theme.rootController.navigationBar.primaryTextColor)
+                 self.titleNode.attributedText = NSAttributedString(string: self.title.text, font: titleFont, textColor: self.theme.rootController.navigationBar.primaryTextColor)
++                self.updateServerStatusBadge()
                  
                  self.lockView.updateTheme(self.theme)
                  
-@@ -286,11 +319,11 @@ public final class ChatListTitleView: UIView, NavigationBarTitleView, Navigation
+@@ -248,6 +302,19 @@ public final class ChatListTitleView: UIView, NavigationBarTitleView, Navigation
+         let activityIndicatorSize = self.activityIndicator.measure(CGSize(width: 100.0, height: 100.0))
+         self.activityIndicator.frame = CGRect(origin: CGPoint(), size: activityIndicatorSize)
+         
++        self.serverStatusBackgroundNode = ASDisplayNode()
++        self.serverStatusBackgroundNode.isLayerBacked = true
++        self.serverStatusBackgroundNode.cornerRadius = 8.0
++        self.serverStatusBackgroundNode.clipsToBounds = true
++        self.serverStatusBackgroundNode.isHidden = true
++        
++        self.serverStatusNode = ImmediateTextNode()
++        self.serverStatusNode.displaysAsynchronously = false
++        self.serverStatusNode.maximumNumberOfLines = 1
++        self.serverStatusNode.isOpaque = false
++        self.serverStatusNode.isUserInteractionEnabled = false
++        self.serverStatusNode.isHidden = true
++        
+         self.lockView = ChatListTitleLockView(frame: CGRect(origin: CGPoint(), size: CGSize(width: 2.0, height: 2.0)))
+         self.lockView.isHidden = true
+         self.lockView.isUserInteractionEnabled = false
+@@ -270,6 +337,8 @@ public final class ChatListTitleView: UIView, NavigationBarTitleView, Navigation
+         self.isAccessibilityElement = false
+         
+         self.addSubnode(self.activityIndicator)
++        self.addSubnode(self.serverStatusBackgroundNode)
++        self.addSubnode(self.serverStatusNode)
+         self.addSubnode(self.titleNode)
+         self.addSubnode(self.proxyNode)
+         self.addSubview(self.lockView)
+@@ -286,11 +355,11 @@ public final class ChatListTitleView: UIView, NavigationBarTitleView, Navigation
                  } else {
                      if !strongSelf.titleNode.alpha.isEqual(to: 1.0) {
                          strongSelf.titleNode.alpha = 1.0
@@ -4463,7 +4517,7 @@ index 36bd2872..af568f82 100644
                      }
                  }
              }
-@@ -306,19 +339,28 @@ public final class ChatListTitleView: UIView, NavigationBarTitleView, Navigation
+@@ -306,19 +375,26 @@ public final class ChatListTitleView: UIView, NavigationBarTitleView, Navigation
                  } else {
                      if !strongSelf.proxyNode.alpha.isEqual(to: 1.0) {
                          strongSelf.proxyNode.alpha = 1.0
@@ -4477,9 +4531,7 @@ index 36bd2872..af568f82 100644
          self.proxyButton.addTarget(self, action: #selector(self.proxyButtonPressed), for: .touchUpInside)
 +        
 +        NotificationCenter.default.addObserver(self, selector: #selector(self.pingUpdated), name: sosuzagramPingUpdatedNotification, object: nil)
-+        if sosuzagramPluginEnabled("server_status") {
-+            SosuzagramServerStatus.shared.startPinging(datacenterId: Int32(self.context.account.network.datacenterId))
-+        }
++        self.updateServerStatusBadge()
      }
      
      required public init?(coder aDecoder: NSCoder) {
@@ -4493,22 +4545,73 @@ index 36bd2872..af568f82 100644
      override public func layoutSubviews() {
          super.layoutSubviews()
          
-@@ -364,9 +406,13 @@ public final class ChatListTitleView: UIView, NavigationBarTitleView, Navigation
+@@ -359,14 +435,32 @@ public final class ChatListTitleView: UIView, NavigationBarTitleView, Navigation
+         }
          
-         let combinedWidth = titleSize.width
+         let titleSize = self.titleNode.updateLayout(CGSize(width: max(1.0, maxTitleWidth), height: size.height))
++        var serverStatusTextSize = CGSize()
++        var serverStatusBadgeSize = CGSize()
++        let hasServerStatusBadge = !self.serverStatusNode.isHidden
++        if hasServerStatusBadge {
++            serverStatusTextSize = self.serverStatusNode.updateLayout(CGSize(width: max(1.0, maxTitleWidth), height: size.height))
++            serverStatusBadgeSize = CGSize(width: serverStatusTextSize.width + 16.0, height: serverStatusTextSize.height + 4.0)
++        }
+         
+-        let combinedHeight = titleSize.height
++        let combinedHeight = titleSize.height + (hasServerStatusBadge ? serverStatusBadgeSize.height + serverStatusSpacing : 0.0)
+         
+-        let combinedWidth = titleSize.width
++        let combinedWidth = max(titleSize.width, serverStatusBadgeSize.width)
          
 -        var titleContentRect = CGRect(origin: CGPoint(x: indicatorPadding + floor((size.width - combinedWidth - indicatorPadding) / 2.0), y: floor((size.height - combinedHeight) / 2.0)), size: titleSize)
 +        let defaultTitleOriginX = indicatorPadding + floor((size.width - combinedWidth - indicatorPadding) / 2.0)
 +        let centeredTitleOriginX = floor((size.width - combinedWidth) / 2.0)
 +        let titleOriginX = sosuzagramShouldCenterChatListTitle() ? centeredTitleOriginX : defaultTitleOriginX
-+        var titleContentRect = CGRect(origin: CGPoint(x: titleOriginX, y: floor((size.height - combinedHeight) / 2.0)), size: titleSize)
++        let stackOriginY = floor((size.height - combinedHeight) / 2.0)
++        var titleContentRect = CGRect(
++            origin: CGPoint(
++                x: titleOriginX + floor((combinedWidth - titleSize.width) / 2.0),
++                y: stackOriginY + (hasServerStatusBadge ? serverStatusBadgeSize.height + serverStatusSpacing : 0.0)
++            ),
++            size: titleSize
++        )
          
          titleContentRect.origin.x = min(titleContentRect.origin.x, size.width - proxyPadding - titleContentRect.width)
 +        titleContentRect.origin.x = max(titleContentRect.origin.x, indicatorPadding)
          
          let titleFrame = titleContentRect
          var titleTransition = transition
-@@ -437,10 +483,10 @@ public final class ChatListTitleView: UIView, NavigationBarTitleView, Navigation
+@@ -375,6 +469,29 @@ public final class ChatListTitleView: UIView, NavigationBarTitleView, Navigation
+         }
+         titleTransition.updateFrame(node: self.titleNode, frame: titleFrame)
+         
++        if hasServerStatusBadge {
++            let statusBadgeFrame = CGRect(
++                origin: CGPoint(
++                    x: titleOriginX + floor((combinedWidth - serverStatusBadgeSize.width) / 2.0),
++                    y: stackOriginY
++                ),
++                size: serverStatusBadgeSize
++            )
++            transition.updateFrame(node: self.serverStatusBackgroundNode, frame: statusBadgeFrame)
++            transition.updateFrame(
++                node: self.serverStatusNode,
++                frame: CGRect(
++                    x: statusBadgeFrame.minX + floor((statusBadgeFrame.width - serverStatusTextSize.width) / 2.0),
++                    y: statusBadgeFrame.minY + floor((statusBadgeFrame.height - serverStatusTextSize.height) / 2.0),
++                    width: serverStatusTextSize.width,
++                    height: serverStatusTextSize.height
++                )
++            )
++        } else {
++            transition.updateFrame(node: self.serverStatusBackgroundNode, frame: CGRect(origin: CGPoint(), size: .zero))
++            transition.updateFrame(node: self.serverStatusNode, frame: CGRect(origin: CGPoint(), size: .zero))
++        }
++        
+         let proxyFrame = CGRect(origin: CGPoint(x: size.width - 9.0 - self.proxyNode.bounds.width, y: floor((size.height - self.proxyNode.bounds.height) / 2.0)), size: self.proxyNode.bounds.size)
+         self.proxyNode.frame = proxyFrame
+         
+@@ -437,10 +554,10 @@ public final class ChatListTitleView: UIView, NavigationBarTitleView, Navigation
                  self.titleCredibilityIconView = nil
                  
                  if transition.isAnimated {
@@ -4521,7 +4624,17 @@ index 36bd2872..af568f82 100644
                  } else {
                      titleCredibilityIconView.removeFromSuperview()
                  }
-@@ -508,4 +554,7 @@ public final class ChatListTitleView: UIView, NavigationBarTitleView, Navigation
+@@ -451,6 +568,9 @@ public final class ChatListTitleView: UIView, NavigationBarTitleView, Navigation
+         if !self.lockView.isHidden {
+             resultFrame = resultFrame.union(lockFrame)
+         }
++        if hasServerStatusBadge {
++            resultFrame = resultFrame.union(self.serverStatusBackgroundNode.frame)
++        }
+         if let titleCredibilityIconView = self.titleCredibilityIconView {
+             resultFrame = resultFrame.union(titleCredibilityIconView.frame)
+         }
+@@ -508,4 +628,7 @@ public final class ChatListTitleView: UIView, NavigationBarTitleView, Navigation
          }
          return super.hitTest(point, with: event)
      }
