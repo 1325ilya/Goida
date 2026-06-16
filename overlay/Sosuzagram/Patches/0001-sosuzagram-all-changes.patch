@@ -533,20 +533,9 @@ index c9c94d32..96c07a9b 100644
                  networkState: nil,
                  tapped: { [weak self] in
 diff --git a/submodules/ChatListUI/Sources/ChatListControllerNode.swift b/submodules/ChatListUI/Sources/ChatListControllerNode.swift
-index 826aa80f..a84b0a81 100644
+index 826aa80f..74661f9d 100644
 --- a/submodules/ChatListUI/Sources/ChatListControllerNode.swift
 +++ b/submodules/ChatListUI/Sources/ChatListControllerNode.swift
-@@ -1526,8 +1526,8 @@ final class ChatListControllerNode: ASDisplayNode, ASGestureRecognizerDelegate {
-                 switch self.effectiveContainerNode.currentItemFilter {
-                 case .all:
-                     selectedTab = AnyHashable(Int32.min)
--                case let .filter(id):
--                    selectedTab = AnyHashable(id)
-+                case let .filter(filter):
-+                    selectedTab = AnyHashable(filter.id)
-                 }
-                 
-                 let isEditing = self.isReorderingFilters || (self.mainContainerNode.currentItemNode.currentState.editing && !self.didBeginSelectingChatsWhileEditing)
 @@ -1545,7 +1545,7 @@ final class ChatListControllerNode: ASDisplayNode, ASGestureRecognizerDelegate {
                              id = Int32.min
                              title = HorizontalTabsComponent.Tab.Title(text: self.presentationData.strings.ChatList_Tabs_All, entities: [], enableAnimations: false)
@@ -565,21 +554,15 @@ index 826aa80f..a84b0a81 100644
                                      mappedId = idValue
                                  }
                                  
-@@ -1970,10 +1970,10 @@ final class ChatListControllerNode: ASDisplayNode, ASGestureRecognizerDelegate {
-             switch self.effectiveContainerNode.currentItemFilter {
-             case .all:
+@@ -1972,7 +1972,7 @@ final class ChatListControllerNode: ASDisplayNode, ASGestureRecognizerDelegate {
                  break
--            case let .filter(id):
--                if let value = folders.first(where: { $0.id == .filter(id) }) {
+             case let .filter(id):
+                 if let value = folders.first(where: { $0.id == .filter(id) }) {
 -                    if case let .filter(_, text, _) = value {
--                        folder = (id, text.text)
-+            case let .filter(filter):
-+                if let value = folders.first(where: { $0.id == .filter(filter.id) }) {
 +                    if case let .filter(_, text, _, _) = value {
-+                        folder = (filter.id, text.text)
+                         folder = (id, text.text)
                      }
                  }
-             }
 @@ -2398,6 +2398,9 @@ final class ChatListControllerNode: ASDisplayNode, ASGestureRecognizerDelegate {
  }
  
