@@ -62,49 +62,20 @@ jobs:
           echo "Selecting $LATEST_XCODE"
           sudo xcode-select -s "$LATEST_XCODE/Contents/Developer"
 
-      - name: Build IPA (Unsigned/Resignable)
+      - name: Build IPA (GBOX-Resignable)
         run: |
-          cd upstream/Telegram-iOS
-          python3 build-system/Make/ImportCertificates.py --path build-system/fake-codesigning/certs
-          python3 build-system/Make/Make.py \
-              --cacheDir="$HOME/telegram-bazel-cache" \
-              --overrideXcodeVersion \
-              --overrideBazelVersion \
-              build \
-              --configurationPath=build-system/template_minimal_development_configuration.json \
-              --configuration=release_arm64 \
-              --buildNumber=$GITHUB_RUN_NUMBER \
-              --codesigningInformationPath=build-system/fake-codesigning
-              
-          OUTPUT_PATH="build/artifacts"
-          rm -rf "$OUTPUT_PATH"
-          mkdir -p "$OUTPUT_PATH"
-          
-          # Search for the IPA: bazel-bin first (standard output), then bazel-out, then anywhere
-          IPA_PATH=""
-          
-          if [ -f "bazel-bin/Telegram/Telegram.ipa" ]; then
-            IPA_PATH="bazel-bin/Telegram/Telegram.ipa"
-          else
-            IPA_PATH=$(find bazel-bin bazel-out -name "Telegram.ipa" 2>/dev/null | head -n 1)
-          fi
-          
-          if [ -z "$IPA_PATH" ]; then
-            echo "Error: Telegram.ipa not found in bazel-bin or bazel-out!"
-            echo "--- Listing all .ipa files ---"
-            find . -name "*.ipa" 2>/dev/null
-            exit 1
-          fi
-          
-          echo "Found IPA at: $IPA_PATH"
-          cp "$IPA_PATH" $OUTPUT_PATH/Sosuzagram-Telegram-iOS-unsigned.ipa
-          cp "$OUTPUT_PATH/Sosuzagram-Telegram-iOS-unsigned.ipa" ./Sosuzagram-Telegram-iOS-unsigned.ipa
+          BUILD_NUMBER=$GITHUB_RUN_NUMBER \
+          BUILD_CONFIGURATION="${{ inputs.build_configuration }}" \
+          TELEGRAM_BAZEL_CACHE_DIR="$HOME/telegram-bazel-cache" \
+            bash ./scripts/build_gbox_resignable_telegram_ipa.sh
+          cp build/artifacts/gbox/Sosuzagram-Telegram-iOS-gbox-resignable.ipa \
+            upstream/Telegram-iOS/Sosuzagram-Telegram-iOS-gbox-resignable.ipa
 
-      - name: Upload Unsigned IPA
+      - name: Upload GBOX-Resignable IPA
         uses: actions/upload-artifact@v4
         with:
-          name: Sosuzagram-Telegram-iOS-unsigned-ipa
-          path: upstream/Telegram-iOS/Sosuzagram-Telegram-iOS-unsigned.ipa
+          name: Sosuzagram-Telegram-iOS-gbox-resignable-ipa
+          path: upstream/Telegram-iOS/Sosuzagram-Telegram-iOS-gbox-resignable.ipa
 
       - name: Create GitHub Release
         env:
@@ -112,10 +83,10 @@ jobs:
           TAG_NAME: sosuzagram-ios-full-${{ github.run_number }}
         run: |
           gh release create "$TAG_NAME" \
-            upstream/Telegram-iOS/Sosuzagram-Telegram-iOS-unsigned.ipa \
+            upstream/Telegram-iOS/Sosuzagram-Telegram-iOS-gbox-resignable.ipa \
             --target "$GITHUB_SHA" \
             --title "Sosuzagram iOS (Full Telegram Fork) #${{ github.run_number }}" \
-            --notes "Unsigned/resignable full Telegram-iOS client with Local Message History. Sign it with your own certificate before installing."
+            --notes "GBOX-friendly resignable Telegram-iOS build. Built without app extensions and without embedded provisioning profiles to improve compatibility with personal certificate resigning."
 
       - name: Save Bazel cache
         uses: actions/cache/save@v4

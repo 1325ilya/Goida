@@ -155,6 +155,166 @@ else
     echo "Warning: ImportCertificates.py not found at $IMPORT_CERTS_PY"
 fi
 
+echo "Patching Make.py for GBOX-friendly build flags..."
+MAKE_PY="$UPSTREAM_DIR/build-system/Make/Make.py"
+if [ -f "$MAKE_PY" ]; then
+    MAKE_PY_COMPAT="$(python_compatible_path "$MAKE_PY")"
+    python3 - "$MAKE_PY_COMPAT" <<'PY'
+import sys
+path = sys.argv[1]
+with open(path, "r", encoding="utf-8") as f:
+    content = f.read()
+
+if "self.disable_extensions = False" not in content:
+    content = content.replace(
+        "        self.disable_provisioning_profiles = False\n        self.profile_swift = False\n",
+        "        self.disable_provisioning_profiles = False\n        self.disable_extensions = False\n        self.profile_swift = False\n"
+    )
+
+if "def set_disable_extensions(self):" not in content:
+    content = content.replace(
+        "    def set_disable_provisioning_profiles(self):\n        self.disable_provisioning_profiles = True\n\n    def set_profile_swift(self, value):\n",
+        "    def set_disable_provisioning_profiles(self):\n        self.disable_provisioning_profiles = True\n\n    def set_disable_extensions(self):\n        self.disable_extensions = True\n\n    def set_profile_swift(self, value):\n"
+    )
+
+if "combined_arguments += ['--//Telegram:disableExtensions']" not in content:
+    content = content.replace(
+        "        if self.disable_provisioning_profiles:\n            combined_arguments += ['--//Telegram:disableProvisioningProfiles']\n\n        combined_arguments += self.common_args\n",
+        "        if self.disable_provisioning_profiles:\n            combined_arguments += ['--//Telegram:disableProvisioningProfiles']\n        if self.disable_extensions:\n            combined_arguments += ['--//Telegram:disableExtensions']\n\n        combined_arguments += self.common_args\n",
+        1
+    )
+    content = content.replace(
+        "        if self.disable_provisioning_profiles:\n            combined_arguments += ['--//Telegram:disableProvisioningProfiles']\n\n        combined_arguments += self.common_args\n",
+        "        if self.disable_provisioning_profiles:\n            combined_arguments += ['--//Telegram:disableProvisioningProfiles']\n        if self.disable_extensions:\n            combined_arguments += ['--//Telegram:disableExtensions']\n\n        combined_arguments += self.common_args\n",
+        1
+    )
+
+if "if disable_extensions:\n        bazel_command_line.set_disable_extensions()" not in content:
+    content = content.replace(
+        "    if arguments.target is not None:\n        target_name = arguments.target\n    \n    call_executable(['killall', 'Xcode'], check_result=False)\n",
+        "    if arguments.target is not None:\n        target_name = arguments.target\n    if disable_extensions:\n        bazel_command_line.set_disable_extensions()\n    if disable_provisioning_profiles:\n        bazel_command_line.set_disable_provisioning_profiles()\n    \n    call_executable(['killall', 'Xcode'], check_result=False)\n"
+    )
+
+if "if getattr(arguments, 'disableExtensions', False):\n        bazel_command_line.set_disable_extensions()" not in content:
+    content = content.replace(
+        "    bazel_command_line.set_profile_swift(arguments.profileSwift)\n\n    bazel_command_line.set_split_swiftmodules(arguments.enableParallelSwiftmoduleGeneration)\n\n    bazel_command_line.invoke_build()\n",
+        "    bazel_command_line.set_profile_swift(arguments.profileSwift)\n\n    bazel_command_line.set_split_swiftmodules(arguments.enableParallelSwiftmoduleGeneration)\n    if getattr(arguments, 'disableExtensions', False):\n        bazel_command_line.set_disable_extensions()\n    if getattr(arguments, 'disableProvisioningProfiles', False):\n        bazel_command_line.set_disable_provisioning_profiles()\n\n    bazel_command_line.invoke_build()\n"
+    )
+    content = content.replace(
+        "    bazel_command_line.set_enable_sandbox(False)\n    bazel_command_line.set_split_swiftmodules(False)\n\n    bazel_command_line.invoke_spm_build()\n",
+        "    bazel_command_line.set_enable_sandbox(False)\n    bazel_command_line.set_split_swiftmodules(False)\n    if getattr(arguments, 'disableExtensions', False):\n        bazel_command_line.set_disable_extensions()\n    if getattr(arguments, 'disableProvisioningProfiles', False):\n        bazel_command_line.set_disable_provisioning_profiles()\n\n    bazel_command_line.invoke_spm_build()\n"
+    )
+
+if "--disableExtensions" not in content:
+    content = content.replace(
+        "    buildParser.add_argument(\n        '--lock',\n        action='store_true',\n        default=False,\n        help='Respect MODULE.bazel.lock.'\n    )\n",
+        "    buildParser.add_argument(\n        '--disableExtensions',\n        action='store_true',\n        default=False,\n        help='''\n            Build the main app without app extensions.\n            Useful for sideload signing with a single provisioning profile.\n            '''\n    )\n    buildParser.add_argument(\n        '--disableProvisioningProfiles',\n        action='store_true',\n        default=False,\n        help='''\n            Build without embedding provisioning profiles in Bazel targets.\n            Useful when preparing an IPA for external resigning.\n            '''\n    )\n    buildParser.add_argument(\n        '--lock',\n        action='store_true',\n        default=False,\n        help='Respect MODULE.bazel.lock.'\n    )\n"
+    )
+
+with open(path, "w", encoding="utf-8") as f:
+    f.write(content)
+PY
+else
+    echo "Warning: Make.py not found at $MAKE_PY"
+fi
+
+echo "Patching provisioning profile copy script for no-extension builds..."
+COPY_PROFILES_SH="$UPSTREAM_DIR/build-system/copy-provisioning-profiles-Telegram.sh"
+if [ -f "$COPY_PROFILES_SH" ]; then
+    COPY_PROFILES_SH_COMPAT="$(python_compatible_path "$COPY_PROFILES_SH")"
+    python3 - "$COPY_PROFILES_SH_COMPAT" <<'PY'
+import sys
+path = sys.argv[1]
+with open(path, "r", encoding="utf-8") as f:
+    content = f.read()
+
+old_block = """\tPROFILES_TYPE=\"$1\"\n\tcase \"$PROFILES_TYPE\" in\n\t\tdevelopment)\n\t\t\tEXPECTED_VARIABLES=(\\\n\t\t\t\tDEVELOPMENT_PROVISIONING_PROFILE_APP \\\n\t\t\t\tDEVELOPMENT_PROVISIONING_PROFILE_EXTENSION_SHARE \\\n\t\t\t\tDEVELOPMENT_PROVISIONING_PROFILE_EXTENSION_WIDGET \\\n\t\t\t\tDEVELOPMENT_PROVISIONING_PROFILE_EXTENSION_NOTIFICATIONSERVICE \\\n\t\t\t\tDEVELOPMENT_PROVISIONING_PROFILE_EXTENSION_NOTIFICATIONCONTENT \\\n\t\t\t\tDEVELOPMENT_PROVISIONING_PROFILE_EXTENSION_INTENTS \\\n\t\t\t\tDEVELOPMENT_PROVISIONING_PROFILE_WATCH_APP \\\n\t\t\t\tDEVELOPMENT_PROVISIONING_PROFILE_WATCH_EXTENSION \\\n\t\t\t)\n\t\t\t;;\n\t\tdistribution)\n\t\t\tEXPECTED_VARIABLES=(\\\n\t\t\t\tDISTRIBUTION_PROVISIONING_PROFILE_APP \\\n\t\t\t\tDISTRIBUTION_PROVISIONING_PROFILE_EXTENSION_SHARE \\\n\t\t\t\tDISTRIBUTION_PROVISIONING_PROFILE_EXTENSION_WIDGET \\\n\t\t\t\tDISTRIBUTION_PROVISIONING_PROFILE_EXTENSION_NOTIFICATIONSERVICE \\\n\t\t\t\tDISTRIBUTION_PROVISIONING_PROFILE_EXTENSION_NOTIFICATIONCONTENT \\\n\t\t\t\tDISTRIBUTION_PROVISIONING_PROFILE_EXTENSION_INTENTS \\\n\t\t\t\tDISTRIBUTION_PROVISIONING_PROFILE_WATCH_APP \\\n\t\t\t\tDISTRIBUTION_PROVISIONING_PROFILE_WATCH_EXTENSION \\\n\t\t\t)\n\t\t    ;;\n\t\t*)\n\t\t    echo \"Unknown build provisioning type: $PROFILES_TYPE\"\n\t\t    exit 1\n\t\t    ;;\n\tesac\n\n\tEXPECTED_VARIABLE_NAMES=(\\\n\t\tTelegram \\\n\t\tShare \\\n\t\tWidget \\\n\t\tNotificationService \\\n\t\tNotificationContent \\\n\t\tIntents \\\n\t\tWatchApp \\\n\t\tWatchExtension \\\n\t)\n"""
+
+new_block = """\tPROFILES_TYPE=\"$1\"\n\tcase \"$PROFILES_TYPE\" in\n\t\tdevelopment)\n\t\t\t;;\n\t\tdistribution)\n\t\t    ;;\n\t\t*)\n\t\t    echo \"Unknown build provisioning type: $PROFILES_TYPE\"\n\t\t    exit 1\n\t\t    ;;\n\tesac\n\n\tif [ \"$TELEGRAM_DISABLE_EXTENSIONS\" = \"1\" ]; then\n\t\tcase \"$PROFILES_TYPE\" in\n\t\t\tdevelopment)\n\t\t\t\tEXPECTED_VARIABLES=(DEVELOPMENT_PROVISIONING_PROFILE_APP)\n\t\t\t\t;;\n\t\t\tdistribution)\n\t\t\t\tEXPECTED_VARIABLES=(DISTRIBUTION_PROVISIONING_PROFILE_APP)\n\t\t\t\t;;\n\t\tesac\n\n\t\tEXPECTED_VARIABLE_NAMES=(Telegram)\n\telse\n\t\tcase \"$PROFILES_TYPE\" in\n\t\t\tdevelopment)\n\t\t\t\tEXPECTED_VARIABLES=(\\\n\t\t\t\t\tDEVELOPMENT_PROVISIONING_PROFILE_APP \\\n\t\t\t\t\tDEVELOPMENT_PROVISIONING_PROFILE_EXTENSION_SHARE \\\n\t\t\t\t\tDEVELOPMENT_PROVISIONING_PROFILE_EXTENSION_WIDGET \\\n\t\t\t\t\tDEVELOPMENT_PROVISIONING_PROFILE_EXTENSION_NOTIFICATIONSERVICE \\\n\t\t\t\t\tDEVELOPMENT_PROVISIONING_PROFILE_EXTENSION_NOTIFICATIONCONTENT \\\n\t\t\t\t\tDEVELOPMENT_PROVISIONING_PROFILE_EXTENSION_INTENTS \\\n\t\t\t\t\tDEVELOPMENT_PROVISIONING_PROFILE_WATCH_APP \\\n\t\t\t\t\tDEVELOPMENT_PROVISIONING_PROFILE_WATCH_EXTENSION \\\n\t\t\t\t)\n\t\t\t\t;;\n\t\t\tdistribution)\n\t\t\t\tEXPECTED_VARIABLES=(\\\n\t\t\t\t\tDISTRIBUTION_PROVISIONING_PROFILE_APP \\\n\t\t\t\t\tDISTRIBUTION_PROVISIONING_PROFILE_EXTENSION_SHARE \\\n\t\t\t\t\tDISTRIBUTION_PROVISIONING_PROFILE_EXTENSION_WIDGET \\\n\t\t\t\t\tDISTRIBUTION_PROVISIONING_PROFILE_EXTENSION_NOTIFICATIONSERVICE \\\n\t\t\t\t\tDISTRIBUTION_PROVISIONING_PROFILE_EXTENSION_NOTIFICATIONCONTENT \\\n\t\t\t\t\tDISTRIBUTION_PROVISIONING_PROFILE_EXTENSION_INTENTS \\\n\t\t\t\t\tDISTRIBUTION_PROVISIONING_PROFILE_WATCH_APP \\\n\t\t\t\t\tDISTRIBUTION_PROVISIONING_PROFILE_WATCH_EXTENSION \\\n\t\t\t\t)\n\t\t\t\t;;\n\t\tesac\n\n\t\tEXPECTED_VARIABLE_NAMES=(\\\n\t\t\tTelegram \\\n\t\t\tShare \\\n\t\t\tWidget \\\n\t\t\tNotificationService \\\n\t\t\tNotificationContent \\\n\t\t\tIntents \\\n\t\t\tWatchApp \\\n\t\t\tWatchExtension \\\n\t\t)\n\tfi\n"""
+
+if "TELEGRAM_DISABLE_EXTENSIONS" not in content and old_block in content:
+    content = content.replace(old_block, new_block)
+
+with open(path, "w", encoding="utf-8") as f:
+    f.write(content)
+PY
+else
+    echo "Warning: copy-provisioning-profiles-Telegram.sh not found at $COPY_PROFILES_SH"
+fi
+
+echo "Patching Telegram BUILD entitlements for no-app-group mode..."
+TELEGRAM_BUILD="$UPSTREAM_DIR/Telegram/BUILD"
+if [ -f "$TELEGRAM_BUILD" ]; then
+    TELEGRAM_BUILD_COMPAT="$(python_compatible_path "$TELEGRAM_BUILD")"
+    python3 - "$TELEGRAM_BUILD_COMPAT" <<'PY'
+import sys
+path = sys.argv[1]
+with open(path, "r", encoding="utf-8") as f:
+    content = f.read()
+
+old_fragment = """plist_fragment(\n    name = \"TelegramEntitlements\",\n    extension = \"entitlements\",\n    template = \"\".join([\n        aps_fragment,\n        app_groups_fragment,\n        siri_fragment,\n        associated_domains_fragment,\n        icloud_fragment,\n        apple_pay_merchants_fragment,\n        unrestricted_voip_fragment,\n        carplay_fragment,\n        communication_notifications_fragment,\n        notification_filtering_fragment,\n        signin_fragment,\n        background_gpu_fragment,\n    ])\n)\n"""
+
+new_fragment = old_fragment + """\nplist_fragment(\n    name = \"TelegramEntitlementsNoAppGroups\",\n    extension = \"entitlements\",\n    template = \"\".join([\n        aps_fragment,\n        siri_fragment,\n        associated_domains_fragment,\n        icloud_fragment,\n        apple_pay_merchants_fragment,\n        unrestricted_voip_fragment,\n        carplay_fragment,\n        communication_notifications_fragment,\n        notification_filtering_fragment,\n        signin_fragment,\n        background_gpu_fragment,\n    ])\n)\n"""
+
+if "TelegramEntitlementsNoAppGroups" not in content and old_fragment in content:
+    content = content.replace(old_fragment, new_fragment)
+
+content = content.replace(
+    '    entitlements = ":TelegramEntitlements.entitlements",\n',
+    '    entitlements = select({\n        ":disableExtensionsSetting": ":TelegramEntitlementsNoAppGroups.entitlements",\n        "//conditions:default": ":TelegramEntitlements.entitlements",\n    }),\n',
+    4
+)
+
+with open(path, "w", encoding="utf-8") as f:
+    f.write(content)
+PY
+else
+    echo "Warning: Telegram BUILD not found at $TELEGRAM_BUILD"
+fi
+
+echo "Patching AppDelegate for missing app-group fallback..."
+APP_DELEGATE_SWIFT="$UPSTREAM_DIR/submodules/TelegramUI/Sources/AppDelegate.swift"
+if [ -f "$APP_DELEGATE_SWIFT" ]; then
+    APP_DELEGATE_SWIFT_COMPAT="$(python_compatible_path "$APP_DELEGATE_SWIFT")"
+    python3 - "$APP_DELEGATE_SWIFT_COMPAT" <<'PY'
+import sys
+path = sys.argv[1]
+with open(path, "r", encoding="utf-8") as f:
+    content = f.read()
+
+if "import SosuzagramIOSCore" not in content:
+    content = content.replace(
+        "import ContextControllerImpl\n",
+        "import ContextControllerImpl\nimport SosuzagramIOSCore\n"
+    )
+
+if "private func sosuzagramResolveContainerUrl(for bundleId: String)" not in content:
+    content = content.replace(
+        "private func isKeyboardViewContainer(view: NSObject) -> Bool {\n    let typeName = NSStringFromClass(type(of: view))\n    if typeName.hasPrefix(\"UI\") && typeName.hasSuffix(\"InputSetContainerView\") {\n        return true\n    }\n    return false\n}\n",
+        "private func isKeyboardViewContainer(view: NSObject) -> Bool {\n    let typeName = NSStringFromClass(type(of: view))\n    if typeName.hasPrefix(\"UI\") && typeName.hasSuffix(\"InputSetContainerView\") {\n        return true\n    }\n    return false\n}\n\nprivate func sosuzagramAppGroupName(for bundleId: String) -> String {\n    return \"group.\\(bundleId)\"\n}\n\nprivate func sosuzagramFallbackContainerUrl(for bundleId: String) -> URL {\n    let fileManager = FileManager.default\n    let baseUrl = fileManager.urls(for: .applicationSupportDirectory, in: .userDomainMask).first\n        ?? fileManager.urls(for: .documentDirectory, in: .userDomainMask).first\n        ?? URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)\n    let containerUrl = baseUrl\n        .appendingPathComponent(\"SosuzagramContainer\", isDirectory: true)\n        .appendingPathComponent(bundleId, isDirectory: true)\n    try? fileManager.createDirectory(at: containerUrl, withIntermediateDirectories: true)\n    return containerUrl\n}\n\nprivate func sosuzagramResolveContainerUrl(for bundleId: String) -> (url: URL, usesAppGroup: Bool) {\n    let appGroupName = sosuzagramAppGroupName(for: bundleId)\n    if let appGroupUrl = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroupName) {\n        return (appGroupUrl, true)\n    } else {\n        Logger.shared.log(\"AppDelegate\", \"App Group \\(appGroupName) is unavailable for \\(bundleId). Falling back to Application Support container.\")\n        return (sosuzagramFallbackContainerUrl(for: bundleId), false)\n    }\n}\n"
+    )
+
+old_url_session = """        let baseAppBundleId = Bundle.main.bundleIdentifier!\n        let appGroupName = \"group.\\(baseAppBundleId)\"\n\n        let configuration = URLSessionConfiguration.background(withIdentifier: identifier)\n        configuration.sharedContainerIdentifier = appGroupName\n"""
+new_url_session = """        let baseAppBundleId = Bundle.main.bundleIdentifier!\n        let resolvedContainer = sosuzagramResolveContainerUrl(for: baseAppBundleId)\n\n        let configuration = URLSessionConfiguration.background(withIdentifier: identifier)\n        if resolvedContainer.usesAppGroup {\n            configuration.sharedContainerIdentifier = sosuzagramAppGroupName(for: baseAppBundleId)\n        }\n"""
+if old_url_session in content:
+    content = content.replace(old_url_session, new_url_session)
+
+old_startup = """        let baseAppBundleId = Bundle.main.bundleIdentifier!\n        let appGroupName = \"group.\\(baseAppBundleId)\"\n        let maybeAppGroupUrl = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroupName)\n        \n        let buildConfig = BuildConfig(baseAppBundleId: baseAppBundleId)\n"""
+new_startup = """        let baseAppBundleId = Bundle.main.bundleIdentifier!\n        let resolvedContainer = sosuzagramResolveContainerUrl(for: baseAppBundleId)\n        let appGroupUrl = resolvedContainer.url\n        \n        let buildConfig = BuildConfig(baseAppBundleId: baseAppBundleId)\n"""
+if old_startup in content:
+    content = content.replace(old_startup, new_startup)
+
+old_guard = """        guard let appGroupUrl = maybeAppGroupUrl else {\n            self.mainWindow?.presentNative(UIAlertController(title: nil, message: \"Error 2\", preferredStyle: .alert))\n            return true\n        }\n        \n"""
+if old_guard in content:
+    content = content.replace(old_guard, "")
+
+with open(path, "w", encoding="utf-8") as f:
+    f.write(content)
+PY
+else
+    echo "Warning: AppDelegate.swift not found at $APP_DELEGATE_SWIFT"
+fi
+
 echo "Configuring Bazel repository cache..."
 cat >> "$UPSTREAM_DIR/.bazelrc" <<'EOF'
 
