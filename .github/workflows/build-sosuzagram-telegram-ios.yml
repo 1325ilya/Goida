@@ -35,13 +35,13 @@ jobs:
             ${{ runner.os }}-bazel-
             
       - name: Bootstrap Telegram-iOS upstream
-        run: ./scripts/bootstrap_telegram_ios.sh
+        run: bash ./scripts/bootstrap_telegram_ios.sh
         
       - name: Apply Sosuzagram Overlay & Patches
-        run: ./scripts/apply_sosuzagram_overlay.sh
+        run: bash ./scripts/apply_sosuzagram_overlay.sh
         
       - name: Generate Build Configuration
-        run: ./scripts/generate_build_config.sh
+        run: bash ./scripts/generate_build_config.sh
         env:
           TELEGRAM_API_ID: ${{ secrets.TELEGRAM_API_ID }}
           TELEGRAM_API_HASH: ${{ secrets.TELEGRAM_API_HASH }}
