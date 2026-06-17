@@ -205,7 +205,7 @@ if "if getattr(arguments, 'disableExtensions', False):\n        bazel_command_li
         "    bazel_command_line.set_enable_sandbox(False)\n    bazel_command_line.set_split_swiftmodules(False)\n    if getattr(arguments, 'disableExtensions', False):\n        bazel_command_line.set_disable_extensions()\n    if getattr(arguments, 'disableProvisioningProfiles', False):\n        bazel_command_line.set_disable_provisioning_profiles()\n\n    bazel_command_line.invoke_spm_build()\n"
     )
 
-if "--disableExtensions" not in content:
+if "buildParser.add_argument(\n        '--disableExtensions'" not in content:
     content = content.replace(
         "    buildParser.add_argument(\n        '--lock',\n        action='store_true',\n        default=False,\n        help='Respect MODULE.bazel.lock.'\n    )\n",
         "    buildParser.add_argument(\n        '--disableExtensions',\n        action='store_true',\n        default=False,\n        help='''\n            Build the main app without app extensions.\n            Useful for sideload signing with a single provisioning profile.\n            '''\n    )\n    buildParser.add_argument(\n        '--disableProvisioningProfiles',\n        action='store_true',\n        default=False,\n        help='''\n            Build without embedding provisioning profiles in Bazel targets.\n            Useful when preparing an IPA for external resigning.\n            '''\n    )\n    buildParser.add_argument(\n        '--lock',\n        action='store_true',\n        default=False,\n        help='Respect MODULE.bazel.lock.'\n    )\n"
