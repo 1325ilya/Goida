@@ -40,7 +40,6 @@ python3 build-system/Make/Make.py \
   --buildNumber="$BUILD_NUMBER" \
   --codesigningInformationPath=build-system/fake-codesigning \
   --disableExtensions \
-  --disableProvisioningProfiles \
   --outputBuildArtifactsPath="$ARTIFACTS_DIR"
 
 if [ ! -f "$ARTIFACTS_DIR/Telegram.ipa" ]; then
