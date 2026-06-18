@@ -26,7 +26,7 @@ final class SosuzagramRootViewController: UIViewController {
         view.backgroundColor = UIColor(red: 0.07, green: 0.08, blue: 0.12, alpha: 1.0)
 
         let title = UILabel()
-        title.text = "Sosuzagram iOS"
+        title.text = "BurmalGram iOS"
         title.textColor = .white
         title.font = .systemFont(ofSize: 34, weight: .bold)
         title.textAlignment = .center
@@ -36,7 +36,7 @@ final class SosuzagramRootViewController: UIViewController {
         statusLabel.font = .systemFont(ofSize: 20, weight: .semibold)
         statusLabel.textAlignment = .center
 
-        detailsLabel.text = "Anti-delete core module is bundled. Telegram-iOS integration is the next step. Private encrypted / TTL chats are skipped."
+        detailsLabel.text = "Anti-delete core module is bundled. BurmalGram integration is active. Private encrypted / TTL chats are skipped."
         detailsLabel.textColor = UIColor(white: 0.82, alpha: 1.0)
         detailsLabel.font = .systemFont(ofSize: 16, weight: .regular)
         detailsLabel.textAlignment = .center

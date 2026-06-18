@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-APP_NAME="Sosuzagram"
+APP_NAME="BurmalGram"
 BUNDLE_ID="com.vonexl.sosuzagram"
 BUILD_DIR="build/ios"
 PAYLOAD_DIR="$BUILD_DIR/Payload"
@@ -27,7 +27,7 @@ cat > "$APP_DIR/Info.plist" <<PLIST
     <key>CFBundleDevelopmentRegion</key>
     <string>en</string>
     <key>CFBundleDisplayName</key>
-    <string>Sosuzagram</string>
+    <string>BurmalGram</string>
     <key>CFBundleExecutable</key>
     <string>$APP_NAME</string>
     <key>CFBundleIdentifier</key>
@@ -35,7 +35,7 @@ cat > "$APP_DIR/Info.plist" <<PLIST
     <key>CFBundleInfoDictionaryVersion</key>
     <string>6.0</string>
     <key>CFBundleName</key>
-    <string>Sosuzagram</string>
+    <string>BurmalGram</string>
     <key>CFBundlePackageType</key>
     <string>APPL</string>
     <key>CFBundleShortVersionString</key>
@@ -62,7 +62,7 @@ codesign --force --sign - "$APP_DIR" >/dev/null 2>&1 || true
 mkdir -p "$BUILD_DIR/artifacts"
 (
   cd "$BUILD_DIR"
-  zip -qry "artifacts/Sosuzagram-ios26-unsigned.ipa" Payload
+  zip -qry "artifacts/BurmalGram-ios26-unsigned.ipa" Payload
 )
 
 ls -lah "$BUILD_DIR/artifacts"

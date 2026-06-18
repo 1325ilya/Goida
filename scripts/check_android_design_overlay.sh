@@ -7,7 +7,6 @@ CHECK_DIR="$ROOT_DIR/upstream/Telegram-iOS-android-check"
 SOURCE_CORE_DIR="$ROOT_DIR/Sources/SosuzagramIOSCore"
 TARGET_CORE_DIR="$CHECK_DIR/submodules/SosuzagramIOSCore"
 PATCH1="$ROOT_DIR/overlay/Sosuzagram/Patches/0001-sosuzagram-all-changes.patch"
-PATCH2="$ROOT_DIR/overlay/Sosuzagram/Patches/0002-sosuzagram-android-design.patch"
 
 assert_contains() {
   local file="$1"
@@ -28,8 +27,8 @@ if [ ! -d "$SOURCE_CORE_DIR" ]; then
   exit 1
 fi
 
-if [ ! -f "$PATCH1" ] || [ ! -f "$PATCH2" ]; then
-  echo "Missing Android Design overlay patches." >&2
+if [ ! -f "$PATCH1" ]; then
+  echo "Missing Sosuzagram overlay patch." >&2
   exit 1
 fi
 
@@ -72,8 +71,6 @@ EOF
 
 git -C "$CHECK_DIR" apply --whitespace=nowarn --check "$PATCH1"
 git -C "$CHECK_DIR" apply --whitespace=nowarn "$PATCH1"
-git -C "$CHECK_DIR" apply --whitespace=nowarn --check "$PATCH2"
-git -C "$CHECK_DIR" apply --whitespace=nowarn "$PATCH2"
 
 assert_contains "$CHECK_DIR/submodules/ChatListUI/Sources/Node/ChatListItem.swift" "conversation cards"
 assert_contains "$CHECK_DIR/submodules/TelegramUI/Components/Chat/ReplyAccessoryPanelNode/BUILD" "//submodules/SosuzagramIOSCore:SosuzagramIOSCore"

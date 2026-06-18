@@ -6,7 +6,6 @@ $checkDir = Join-Path $rootDir "upstream\Telegram-iOS-android-check"
 $sourceCoreDir = Join-Path $rootDir "Sources\SosuzagramIOSCore"
 $targetCoreDir = Join-Path $checkDir "submodules\SosuzagramIOSCore"
 $patch1 = Join-Path $rootDir "overlay\Sosuzagram\Patches\0001-sosuzagram-all-changes.patch"
-$patch2 = Join-Path $rootDir "overlay\Sosuzagram\Patches\0002-sosuzagram-android-design.patch"
 
 function Invoke-GitChecked {
     param(
@@ -36,9 +35,6 @@ if (-not (Test-Path $sourceCoreDir)) {
 }
 if (-not (Test-Path $patch1)) {
     throw "Missing patch: $patch1"
-}
-if (-not (Test-Path $patch2)) {
-    throw "Missing patch: $patch2"
 }
 
 Invoke-GitChecked -Repo $checkDir -Arguments @("reset", "--hard", "HEAD")
@@ -76,8 +72,6 @@ swift_library(
 
 Invoke-GitChecked -Repo $checkDir -Arguments @("apply", "--whitespace=nowarn", "--check", $patch1)
 Invoke-GitChecked -Repo $checkDir -Arguments @("apply", "--whitespace=nowarn", $patch1)
-Invoke-GitChecked -Repo $checkDir -Arguments @("apply", "--whitespace=nowarn", "--check", $patch2)
-Invoke-GitChecked -Repo $checkDir -Arguments @("apply", "--whitespace=nowarn", $patch2)
 
 $checks = @(
     @{ Path = (Join-Path $checkDir "submodules\ChatListUI\Sources\Node\ChatListItem.swift"); Pattern = 'conversation cards' },
