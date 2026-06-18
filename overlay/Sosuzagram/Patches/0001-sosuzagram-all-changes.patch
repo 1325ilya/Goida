@@ -2843,7 +2843,7 @@ index 00000000..5858ca0c
 +}
 diff --git a/submodules/TelegramPresentationData/Sources/SosuzagramMaterial3Theme.swift b/submodules/TelegramPresentationData/Sources/SosuzagramMaterial3Theme.swift
 new file mode 100644
-index 00000000..d61acf96
+index 00000000..ee7f8ef2
 --- /dev/null
 +++ b/submodules/TelegramPresentationData/Sources/SosuzagramMaterial3Theme.swift
 @@ -0,0 +1,271 @@
@@ -3031,10 +3031,10 @@ index 00000000..d61acf96
 +        panelSeparatorColor: separator,
 +        panelHighlightedIconBackgroundColor: accentContainer,
 +        panelHighlightedIconColor: accent,
-+        backgroundColor: surface1,
 +        stickersBackgroundColor: surface1,
 +        stickersSearchBackgroundColor: searchField,
-+        gifsBackgroundColor: surface1
++        gifsBackgroundColor: surface1,
++        backgroundColor: surface1
 +    )
 +    
 +    let inputButtonPanel = theme.chat.inputButtonPanel.withUpdated(
