@@ -18,7 +18,7 @@ index 22655f3a..e0fe4480 100644
      """
      <key>CFBundleDisplayName</key>
 -    <string>Telegram</string>
-+    <string>Sosuzagram</string>
++    <string>BurmalGram</string>
      """
  )
  
@@ -27,7 +27,7 @@ index 22655f3a..e0fe4480 100644
      <string>{telegram_bundle_id}.Share</string>
      <key>CFBundleName</key>
 -    <string>Telegram</string>
-+    <string>Sosuzagram</string>
++    <string>BurmalGram</string>
      <key>CFBundlePackageType</key>
      <string>XPC!</string>
      <key>NSExtension</key>
@@ -36,7 +36,7 @@ index 22655f3a..e0fe4480 100644
      <string>{telegram_bundle_id}.NotificationContent</string>
      <key>CFBundleName</key>
 -    <string>Telegram</string>
-+    <string>Sosuzagram</string>
++    <string>BurmalGram</string>
      <key>CFBundlePackageType</key>
      <string>XPC!</string>
      <key>NSExtension</key>
@@ -45,7 +45,7 @@ index 22655f3a..e0fe4480 100644
      <string>{telegram_bundle_id}.Widget</string>
      <key>CFBundleName</key>
 -    <string>Telegram</string>
-+    <string>Sosuzagram</string>
++    <string>BurmalGram</string>
      <key>CFBundlePackageType</key>
      <string>XPC!</string>
      <key>NSExtension</key>
@@ -54,7 +54,7 @@ index 22655f3a..e0fe4480 100644
      <string>{telegram_bundle_id}.SiriIntents</string>
      <key>CFBundleName</key>
 -    <string>Telegram</string>
-+    <string>Sosuzagram</string>
++    <string>BurmalGram</string>
      <key>CFBundlePackageType</key>
      <string>XPC!</string>
      <key>NSExtension</key>
@@ -63,7 +63,7 @@ index 22655f3a..e0fe4480 100644
      <string>{telegram_bundle_id}.BroadcastUpload</string>
      <key>CFBundleName</key>
 -    <string>Telegram</string>
-+    <string>Sosuzagram</string>
++    <string>BurmalGram</string>
      <key>CFBundlePackageType</key>
      <string>XPC!</string>
      <key>NSExtension</key>
@@ -72,7 +72,7 @@ index 22655f3a..e0fe4480 100644
      <string>{telegram_bundle_id}.NotificationService</string>
      <key>CFBundleName</key>
 -    <string>Telegram</string>
-+    <string>Sosuzagram</string>
++    <string>BurmalGram</string>
      <key>CFBundlePackageType</key>
      <string>XPC!</string>
      <key>NSExtension</key>
@@ -81,12 +81,12 @@ index 22655f3a..e0fe4480 100644
      <string>en</string>
      <key>CFBundleDisplayName</key>
 -    <string>Telegram</string>
-+    <string>Sosuzagram</string>
++    <string>BurmalGram</string>
      <key>CFBundleIdentifier</key>
      <string>{telegram_bundle_id}</string>
      <key>CFBundleName</key>
 -    <string>Telegram</string>
-+    <string>Sosuzagram</string>
++    <string>BurmalGram</string>
      <key>CFBundlePackageType</key>
      <string>APPL</string>
      <key>CFBundleSignature</key>
@@ -1374,13 +1374,13 @@ index a835c6f6..61f62bf2 100644
      entries.append(.dataSettings(presentationData.theme, presentationData.strings.PrivacySettings_DataSettings))
      entries.append(.dataSettingsInfo(presentationData.theme, presentationData.strings.PrivacySettings_DataSettingsHelp))
      
-+    entries.append(.sosuzagramHeader(presentationData.theme, "SOSUZAGRAM SETTINGS"))
++    entries.append(.sosuzagramHeader(presentationData.theme, "BURMALGRAM SETTINGS"))
 +    let localHistoryValue = UserDefaults.standard.object(forKey: "sosuzagram_local_history") as? Bool ?? true
 +    entries.append(.sosuzagramHistoryToggle(presentationData.theme, "Save Deleted Messages", localHistoryValue))
 +    let showMarkerValue = UserDefaults.standard.object(forKey: "sosuzagram_show_marker") as? Bool ?? true
 +    entries.append(.sosuzagramHistoryToggle(presentationData.theme, "Show Deletion Marker", showMarkerValue))
 +    entries.append(.sosuzagramHistoryToggle(presentationData.theme, "Ghost Mode (Read without marking)", skipReadHistory))
-+    entries.append(.sosuzagramHistoryInfo(presentationData.theme, "If enabled, messages deleted by the other party will be saved locally in Sosuzagram. Deletion marker will show a trash icon next to deleted messages. Ghost Mode lets you read messages without sending read receipts."))
++    entries.append(.sosuzagramHistoryInfo(presentationData.theme, "If enabled, messages deleted by the other party will be saved locally in BurmalGram. Deletion marker will show a trash icon next to deleted messages. Ghost Mode lets you read messages without sending read receipts."))
 +    
      return entries
  }
@@ -3548,7 +3548,7 @@ index fcb5d7a3..1750db9d 100644
 +            }
 +            if !pluginMenuChildren.isEmpty {
 +                let insertIndex = min(actions.count, 1)
-+                actions.insert(UIMenu(title: "Sosuzagram", image: nil, children: pluginMenuChildren), at: insertIndex)
++                actions.insert(UIMenu(title: "BurmalGram", image: nil, children: pluginMenuChildren), at: insertIndex)
 +            }
 +        }
 +        
@@ -5018,7 +5018,7 @@ index 32aa2f66..cad6ad68 100644
      items[.advanced]!.append(PeerInfoScreenDisclosureItem(id: 1, text: presentationData.strings.Settings_PrivacySettings, icon: PresentationResourcesSettings.security, action: {
          interaction.openSettings(.privacyAndSecurity)
      }))
-+    items[.advanced]!.append(PeerInfoScreenDisclosureItem(id: 100, text: "Настройки Sosuzagram", icon: PresentationResourcesSettings.security, action: {
++    items[.advanced]!.append(PeerInfoScreenDisclosureItem(id: 100, text: "Настройки BurmalGram", icon: PresentationResourcesSettings.security, action: {
 +        interaction.openSettings(.sosuzagramSettings)
 +    }))
      items[.advanced]!.append(PeerInfoScreenDisclosureItem(id: 2, text: presentationData.strings.Settings_ChatSettings, icon: PresentationResourcesSettings.dataAndStorage, action: {

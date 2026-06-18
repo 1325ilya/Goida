@@ -47,7 +47,7 @@ if [ ! -f "$ARTIFACTS_DIR/Telegram.ipa" ]; then
   exit 1
 fi
 
-cp "$ARTIFACTS_DIR/Telegram.ipa" "$ARTIFACTS_DIR/Sosuzagram-Telegram-iOS-gbox-resignable.ipa"
+cp "$ARTIFACTS_DIR/Telegram.ipa" "$ARTIFACTS_DIR/BurmalGram-Telegram-iOS-gbox-resignable.ipa"
 
 echo "GBOX-friendly IPA ready:"
-echo "  $ARTIFACTS_DIR/Sosuzagram-Telegram-iOS-gbox-resignable.ipa"
+echo "  $ARTIFACTS_DIR/BurmalGram-Telegram-iOS-gbox-resignable.ipa"

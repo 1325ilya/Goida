@@ -15,7 +15,7 @@ API_ID="${TELEGRAM_API_ID:-25759243}"
 API_HASH="${TELEGRAM_API_HASH:-0621d95b074463ca881894b6e008d838}"
 BUNDLE_ID="${BUNDLE_ID:-org.burmalda.zagram}"
 TEAM_ID="C67CF9S4VU"
-APP_TITLE="${APP_TITLE:-Sosuzagram}"
+APP_TITLE="${APP_TITLE:-BurmalGram}"
 
 if [ -z "$API_ID" ] || [ -z "$API_HASH" ]; then
   echo "Error: TELEGRAM_API_ID and TELEGRAM_API_HASH environment variables are required." >&2
