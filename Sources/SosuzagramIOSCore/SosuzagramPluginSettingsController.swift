@@ -286,7 +286,7 @@ public func sosuzagramPluginSettingsController(context: AccountContext, pluginId
                             sortId: 0,
                             signature: "missing-plugin",
                             buildItem: { presentationData, _ in
-                                ItemListTextItem(presentationData: presentationData, text: .plain("Plugin is not available in the built-in Sosuzagram bundle."), sectionId: 0)
+                                ItemListTextItem(presentationData: presentationData, text: .plain("Plugin is not available in the built-in BurmalGram bundle."), sectionId: 0)
                             }
                         )
                     ],

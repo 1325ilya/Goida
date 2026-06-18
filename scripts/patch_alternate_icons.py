@@ -146,24 +146,41 @@ def main():
         # Replace CFBundleDisplayName and CFBundleName in TelegramInfoPlist
         build_content = re.sub(
             r'<key>CFBundleDisplayName</key>\s*<string>Telegram</string>',
-            r'<key>CFBundleDisplayName</key>\n    <string>Sosuzagram</string>',
+            r'<key>CFBundleDisplayName</key>\n    <string>BurmalGram</string>',
             build_content
         )
         build_content = re.sub(
             r'<key>CFBundleName</key>\s*<string>Telegram</string>',
-            r'<key>CFBundleName</key>\n    <string>Sosuzagram</string>',
+            r'<key>CFBundleName</key>\n    <string>BurmalGram</string>',
             build_content
         )
 
         # Replace CFBundleDisplayName in AppNameInfoPlist
         build_content = build_content.replace(
             'name = "AppNameInfoPlist",\n    extension = "plist",\n    template =\n    """\n    <key>CFBundleDisplayName</key>\n    <string>Telegram</string>',
-            'name = "AppNameInfoPlist",\n    extension = "plist",\n    template =\n    """\n    <key>CFBundleDisplayName</key>\n    <string>Sosuzagram</string>'
+            'name = "AppNameInfoPlist",\n    extension = "plist",\n    template =\n    """\n    <key>CFBundleDisplayName</key>\n    <string>BurmalGram</string>'
+        )
+
+        build_content = build_content.replace(
+            "Telegram stores your contacts heavily encrypted in the cloud to let you connect with your friends across all your devices.",
+            "BurmalGram stores your contacts heavily encrypted in the cloud to let you connect with your friends across all your devices."
+        )
+        build_content = build_content.replace(
+            "When you send your location to your friends, Telegram needs access to show them a map. You also need this to send locations from an Apple Watch.",
+            "When you send your location to your friends, BurmalGram needs access to show them a map. You also need this to send locations from an Apple Watch."
+        )
+        build_content = build_content.replace(
+            "When you send your location to your friends, Telegram needs access to show them a map.",
+            "When you send your location to your friends, BurmalGram needs access to show them a map."
+        )
+        build_content = build_content.replace(
+            "<string>Telegram iOS Color Theme File</string>",
+            "<string>BurmalGram iOS Color Theme File</string>"
         )
 
         with open(build_path, 'w', encoding='utf-8') as f:
             f.write(build_content)
-        print("Updated Telegram/BUILD with alternate icons and Sosuzagram display name")
+        print("Updated Telegram/BUILD with alternate icons and BurmalGram display name")
     else:
         print(f"Warning: {build_path} not found")
 

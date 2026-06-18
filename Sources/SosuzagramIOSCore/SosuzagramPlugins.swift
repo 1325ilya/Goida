@@ -99,13 +99,13 @@ func sosuzagramBuiltInPlugins() -> [SosuzagramPluginDescriptor] {
         SosuzagramPluginDescriptor(
             id: "in_app_notifications",
             name: "In-App Notifications",
-            desc: "Гибкие локальные уведомления Telegram внутри приложения.",
+            desc: "Гибкие локальные уведомления BurmalGram внутри приложения.",
             settingsBuilder: inAppNotificationsSettings
         ),
         SosuzagramPluginDescriptor(
             id: "server_status",
             name: "Server Status",
-            desc: "Показывает текущий пинг датацентра Telegram в заголовке списка чатов.",
+            desc: "Показывает текущий пинг датацентра BurmalGram в заголовке списка чатов.",
             settingsBuilder: {
                 [
                     .header("Мониторинг"),
@@ -207,7 +207,7 @@ private func inAppNotificationsSettings() -> [SosuzagramPluginSettingsContent] {
         toggleRow("current_account_only", "Только текущий аккаунт", "Игнорировать уведомления остальных аккаунтов.", defaultValue: true),
         toggleRow("show_topics", "Отображать имя топика", defaultValue: true),
         toggleRow("blur_animation", "Блюр-анимация", defaultValue: true),
-        .info("Часть параметров Extera адаптирована под нативную iOS-логику уведомлений и применяется только внутри Sosuzagram.")
+        .info("Часть параметров Extera адаптирована под нативную iOS-логику уведомлений и применяется только внутри BurmalGram.")
     ])
 
     return rows

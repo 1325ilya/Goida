@@ -321,7 +321,7 @@ private func sosuzagramTranslationProviderLabel(_ value: String) -> String {
     case "system":
         return "Системный"
     default:
-        return "Telegram"
+        return "BurmalGram"
     }
 }
 
@@ -732,7 +732,7 @@ private func sosuzagramOverviewEntries(
         buildItem: { presentationData, _ in
             ItemListTextItem(
                 presentationData: presentationData,
-                text: .plain("Настройки Sosuzagram разложены по категориям. Внутри разделов доступны все уже перенесённые нативные функции и параметры встроенных плагинов."),
+                text: .plain("Настройки BurmalGram разложены по категориям. Внутри разделов доступны все уже перенесённые нативные функции и параметры встроенных плагинов."),
                 sectionId: 1
             )
         }
@@ -1020,7 +1020,7 @@ private func sosuzagramSettingsEntries(
                 systemStyle: sosuzagramSettingsSystemStyle(),
                 title: "Целевой язык",
                 label: sosuzagramTranslationTargetLabel(translationTarget),
-                additionalDetailLabel: "Используется как язык по умолчанию для ручного перевода и экранов перевода Sosuzagram.",
+                additionalDetailLabel: "Используется как язык по умолчанию для ручного перевода и экранов перевода BurmalGram.",
                 sectionId: SosuzagramSettingsSection.translation.rawValue,
                 style: .blocks,
                 disclosureStyle: .arrow,
@@ -1062,7 +1062,7 @@ private func sosuzagramSettingsEntries(
                 systemStyle: sosuzagramSettingsSystemStyle(),
                 title: "Язык приложения и перевод",
                 label: "",
-                additionalDetailLabel: "Открывает системный экран Telegram с языком приложения и дополнительными языковыми настройками.",
+                additionalDetailLabel: "Открывает системный экран BurmalGram с языком приложения и дополнительными языковыми настройками.",
                 sectionId: SosuzagramSettingsSection.translation.rawValue,
                 style: .blocks,
                 disclosureStyle: .arrow,
@@ -2006,7 +2006,7 @@ private func sosuzagramSettingsEntries(
         sortId: 244,
         signature: "smoothanimations:\(smoothAnimations)",
         buildItem: { presentationData, arguments in
-            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "Плавные анимации", text: "Увеличивает длительность и сглаживает переходы в Sosuzagram и списке чатов.", value: smoothAnimations, sectionId: SosuzagramSettingsSection.icons.rawValue, style: .blocks, updated: { value in
+            ItemListSwitchItem(presentationData: presentationData, systemStyle: sosuzagramSettingsSystemStyle(), title: "Плавные анимации", text: "Увеличивает длительность и сглаживает переходы в BurmalGram и списке чатов.", value: smoothAnimations, sectionId: SosuzagramSettingsSection.icons.rawValue, style: .blocks, updated: { value in
                 arguments.toggleSmoothAnimations(value)
             })
         }
@@ -2235,7 +2235,7 @@ private func sosuzagramSettingsEntries(
         sortId: 220,
         signature: "appearance-links-header",
         buildItem: { presentationData, _ in
-            ItemListSectionHeaderItem(presentationData: presentationData, text: "Встроенные разделы Telegram", sectionId: SosuzagramSettingsSection.icons.rawValue)
+            ItemListSectionHeaderItem(presentationData: presentationData, text: "Встроенные разделы BurmalGram", sectionId: SosuzagramSettingsSection.icons.rawValue)
         }
     ))
     entries.append(SosuzagramSettingsEntry(
@@ -2247,9 +2247,9 @@ private func sosuzagramSettingsEntries(
             ItemListDisclosureItem(
                 presentationData: presentationData,
                 systemStyle: sosuzagramSettingsSystemStyle(),
-                title: "Темы Telegram",
+                title: "Темы BurmalGram",
                 label: "",
-                additionalDetailLabel: "Открывает системный экран тем и оформления Telegram.",
+                additionalDetailLabel: "Открывает системный экран тем и оформления BurmalGram.",
                 sectionId: SosuzagramSettingsSection.icons.rawValue,
                 style: .blocks,
                 disclosureStyle: .arrow,
@@ -2270,7 +2270,7 @@ private func sosuzagramSettingsEntries(
                 systemStyle: sosuzagramSettingsSystemStyle(),
                 title: "Папки и вкладки",
                 label: "",
-                additionalDetailLabel: "Открывает системные настройки папок, фильтров и вкладок Telegram.",
+                additionalDetailLabel: "Открывает системные настройки папок, фильтров и вкладок BurmalGram.",
                 sectionId: SosuzagramSettingsSection.icons.rawValue,
                 style: .blocks,
                 disclosureStyle: .arrow,
@@ -2342,7 +2342,7 @@ private func sosuzagramSettingsEntries(
         sortId: 2000,
         signature: "plugins-info",
         buildItem: { presentationData, _ in
-            ItemListTextItem(presentationData: presentationData, text: .plain("Новые .plugin-файлы не импортируются автоматически. Для каждого нового плагина нужен отдельный нативный порт под Sosuzagram."), sectionId: SosuzagramSettingsSection.plugins.rawValue)
+            ItemListTextItem(presentationData: presentationData, text: .plain("Новые .plugin-файлы не импортируются автоматически. Для каждого нового плагина нужен отдельный нативный порт под BurmalGram."), sectionId: SosuzagramSettingsSection.plugins.rawValue)
         }
     ))
 
@@ -2864,7 +2864,7 @@ private func sosuzagramSettingsControllerImpl(context: AccountContext, category:
 
         let controllerState = ItemListControllerState(
             presentationData: ItemListPresentationData(presentationData),
-            title: .text(category?.title ?? "Sosuzagram"),
+            title: .text(category?.title ?? "BurmalGram"),
             leftNavigationButton: nil,
             rightNavigationButton: nil,
             backNavigationButton: ItemListBackButton(title: presentationData.strings.Common_Back)
@@ -2976,6 +2976,12 @@ private func sosuzagramSettingsControllerImpl(context: AccountContext, category:
             style: .blocks,
             animateChanges: smoothAnimations || androidDesign
         )
+
+        if androidDesign {
+            let screenName = category == nil ? "settings_overview" : "settings_category"
+            let elements = category == nil ? ["cards", "switches", "disclosure rows"] : ["switches", "disclosure rows", "info panels"]
+            SosuzagramAndroidDesignManager.logApplied(screen: screenName, elements: elements, detail: category?.title ?? "overview")
+        }
 
         return (controllerState, (listState, arguments))
     }
@@ -3258,7 +3264,7 @@ private func sosuzagramSettingsControllerImpl(context: AccountContext, category:
             return
         }
         let presentationData = context.sharedContext.currentPresentationData.with { $0 }
-        let currentValue = max(0, min(3, UserDefaults.standard.integer(forKey: "sosuzagram_material_design_level")))
+        let currentValue = SosuzagramAndroidDesignManager.materialDesignLevel()
         let options: [(Int, String)] = [
             (0, "Отключено"),
             (1, "1/3"),
@@ -3484,7 +3490,7 @@ private func sosuzagramSettingsControllerImpl(context: AccountContext, category:
         let presentationData = context.sharedContext.currentPresentationData.with { $0 }
         let currentValue = UserDefaults.standard.string(forKey: "sosuzagram_translation_provider") ?? "telegram"
         let options: [(String, String)] = [
-            ("telegram", "Telegram"),
+            ("telegram", "BurmalGram"),
             ("google", "Google"),
             ("system", "Системный")
         ]
@@ -3499,7 +3505,7 @@ private func sosuzagramSettingsControllerImpl(context: AccountContext, category:
                 updateSettingsImpl?()
             }))
         }
-        items.append(ActionSheetTextItem(title: "Telegram использует встроенный перевод Telegram, Google включает альтернативный перевод, а системный режим использует iOS Translate, если он доступен."))
+        items.append(ActionSheetTextItem(title: "BurmalGram использует встроенный перевод приложения, Google включает альтернативный перевод, а системный режим использует iOS Translate, если он доступен."))
         actionSheet.setItemGroups([
             ActionSheetItemGroup(items: items),
             ActionSheetItemGroup(items: [
@@ -3534,7 +3540,7 @@ private func sosuzagramSettingsControllerImpl(context: AccountContext, category:
                 updateSettingsImpl?()
             }))
         }
-        items.append(ActionSheetTextItem(title: "Язык приложения повторяет текущую локализацию Telegram, а язык системы берётся из основных языковых настроек iOS."))
+        items.append(ActionSheetTextItem(title: "Язык приложения повторяет текущую локализацию BurmalGram, а язык системы берётся из основных языковых настроек iOS."))
         actionSheet.setItemGroups([
             ActionSheetItemGroup(items: items),
             ActionSheetItemGroup(items: [
@@ -3681,9 +3687,9 @@ private func sosuzagramSettingsControllerImpl(context: AccountContext, category:
 
                 let message: String
                 if supportedPlugin != nil {
-                    message = "Плагин \(importedPlugin.name) импортирован и включён. Его настройки уже доступны в Sosuzagram."
+                    message = "Плагин \(importedPlugin.name) импортирован и включён. Его настройки уже доступны в BurmalGram."
                 } else {
-                    message = "Файл \(importedPlugin.name) импортирован в SosuzagramPlugins, но для работы нужен отдельный нативный порт под iOS."
+                    message = "Файл \(importedPlugin.name) импортирован в локальное хранилище плагинов BurmalGram, но для работы нужен отдельный нативный порт под iOS."
                 }
 
                 controller.present(textAlertController(context: context, title: "Импорт плагина", text: message, actions: actions), in: .window(.root))

@@ -47,7 +47,7 @@ jobs:
           TELEGRAM_API_HASH: ${{ secrets.TELEGRAM_API_HASH }}
           TEAM_ID: ${{ secrets.TEAM_ID || '0000000000' }}
           BUNDLE_ID: 'org.burmalda.zagram'
-          APP_TITLE: 'Sosuzagram'
+          APP_TITLE: 'BurmalGram'
           
       - name: Patch Provisioning Profiles
         run: |
