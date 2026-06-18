@@ -1,5 +1,6 @@
 import Foundation
 import os
+import os.log
 
 public struct SosuzagramAndroidDesignModeChange: Sendable {
     public let enabled: Bool
@@ -45,7 +46,7 @@ public enum SosuzagramAndroidDesignManager {
     public static let modeKey = "sosuzagram_android_design"
 
     private static let snapshotKey = "sosuzagram_android_design_snapshot_v1"
-    private static let logger = Logger(subsystem: "app.sosuzagram", category: "AndroidDesignBeta")
+    private static let customLog = OSLog(subsystem: "app.sosuzagram", category: "AndroidDesignBeta")
     private static let logQueue = DispatchQueue(label: "app.sosuzagram.android-design-log")
     private static var seenMarkers = Set<String>()
 
@@ -296,12 +297,7 @@ public enum SosuzagramAndroidDesignManager {
             if let onceKey {
                 seenMarkers.insert(onceKey)
             }
-            switch level {
-            case .error, .fault:
-                logger.error("[\(category, privacy: .public)] \(message, privacy: .public)")
-            default:
-                logger.log("[\(category, privacy: .public)] \(message, privacy: .public)")
-            }
+            os_log("[%{public}@] %{public}@", log: customLog, type: level, category, message)
             NSLog("[AndroidDesignBeta][%@] %@", category, message)
         }
     }
