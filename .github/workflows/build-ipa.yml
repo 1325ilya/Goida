@@ -1,4 +1,4 @@
-name: Build Sosuzagram IPA
+name: Build BurmalGram IPA
 
 on:
   workflow_dispatch:
@@ -16,6 +16,6 @@ jobs:
       - name: Upload IPA artifact
         uses: actions/upload-artifact@v4
         with:
-          name: Sosuzagram-ios26-unsigned-ipa
-          path: build/ios/artifacts/Sosuzagram-ios26-unsigned.ipa
+          name: BurmalGram-ios26-unsigned-ipa
+          path: build/ios/artifacts/BurmalGram-ios26-unsigned.ipa
           if-no-files-found: error

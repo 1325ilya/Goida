@@ -1,4 +1,4 @@
-name: Build Sosuzagram (Telegram-iOS fork)
+name: Build BurmalGram (Telegram-iOS fork)
 
 on:
   workflow_dispatch:
@@ -16,7 +16,7 @@ jobs:
     runs-on: macos-latest
     
     steps:
-      - name: Checkout Sosuzagram overlay repository
+      - name: Checkout BurmalGram overlay repository
         uses: actions/checkout@v4
         
       - name: Set up Python
@@ -37,7 +37,7 @@ jobs:
       - name: Bootstrap Telegram-iOS upstream
         run: bash ./scripts/bootstrap_telegram_ios.sh
         
-      - name: Apply Sosuzagram Overlay & Patches
+      - name: Apply BurmalGram Overlay & Patches
         run: bash ./scripts/apply_sosuzagram_overlay.sh
         
       - name: Generate Build Configuration
@@ -47,7 +47,7 @@ jobs:
           TELEGRAM_API_HASH: ${{ secrets.TELEGRAM_API_HASH }}
           TEAM_ID: ${{ secrets.TEAM_ID || '0000000000' }}
           BUNDLE_ID: 'org.burmalda.zagram'
-          APP_TITLE: 'Sosuzagram'
+          APP_TITLE: 'BurmalGram'
           
       - name: Patch Provisioning Profiles
         run: |
@@ -68,24 +68,24 @@ jobs:
           BUILD_CONFIGURATION="${{ inputs.build_configuration }}" \
           TELEGRAM_BAZEL_CACHE_DIR="$HOME/telegram-bazel-cache" \
             bash ./scripts/build_gbox_resignable_telegram_ipa.sh
-          cp build/artifacts/gbox/Sosuzagram-Telegram-iOS-gbox-resignable.ipa \
-            upstream/Telegram-iOS/Sosuzagram-Telegram-iOS-gbox-resignable.ipa
+          cp build/artifacts/gbox/BurmalGram-Telegram-iOS-gbox-resignable.ipa \
+            upstream/Telegram-iOS/BurmalGram-Telegram-iOS-gbox-resignable.ipa
 
       - name: Upload GBOX-Resignable IPA
         uses: actions/upload-artifact@v4
         with:
-          name: Sosuzagram-Telegram-iOS-gbox-resignable-ipa
-          path: upstream/Telegram-iOS/Sosuzagram-Telegram-iOS-gbox-resignable.ipa
+          name: BurmalGram-Telegram-iOS-gbox-resignable-ipa
+          path: upstream/Telegram-iOS/BurmalGram-Telegram-iOS-gbox-resignable.ipa
 
       - name: Create GitHub Release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          TAG_NAME: sosuzagram-ios-full-${{ github.run_number }}
+          TAG_NAME: burmalgram-ios-full-${{ github.run_number }}
         run: |
           gh release create "$TAG_NAME" \
-            upstream/Telegram-iOS/Sosuzagram-Telegram-iOS-gbox-resignable.ipa \
+            upstream/Telegram-iOS/BurmalGram-Telegram-iOS-gbox-resignable.ipa \
             --target "$GITHUB_SHA" \
-            --title "Sosuzagram iOS (Full Telegram Fork) #${{ github.run_number }}" \
+            --title "BurmalGram iOS (Full Telegram Fork) #${{ github.run_number }}" \
             --notes "GBOX-friendly resignable Telegram-iOS build. Built without app extensions and with sideload-safe main-app fallback changes to improve compatibility with personal certificate resigning."
 
       - name: Save Bazel cache

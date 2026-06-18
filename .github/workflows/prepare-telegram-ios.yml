@@ -9,18 +9,18 @@ jobs:
   prepare-upstream:
     runs-on: macos-latest
     steps:
-      - name: Checkout Sosuzagram
+      - name: Checkout BurmalGram
         uses: actions/checkout@v4
 
       - name: Bootstrap Telegram-iOS upstream
         run: bash scripts/bootstrap_telegram_ios.sh
 
-      - name: Prepare Sosuzagram overlay
+      - name: Prepare BurmalGram overlay
         run: bash scripts/prepare_sosuzagram_overlay.sh
 
       - name: Upload overlay artifact
         uses: actions/upload-artifact@v4
         with:
-          name: sosuzagram-telegram-ios-overlay
+          name: burmalgram-telegram-ios-overlay
           path: overlay/Sosuzagram
           if-no-files-found: error

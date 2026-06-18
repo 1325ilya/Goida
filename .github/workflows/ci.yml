@@ -1,4 +1,4 @@
-name: Sosuzagram iOS 26 Core
+name: BurmalGram iOS 26 Core
 
 on:
   workflow_dispatch:

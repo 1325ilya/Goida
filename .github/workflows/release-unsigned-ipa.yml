@@ -1,4 +1,4 @@
-name: Release unsigned IPA
+name: Release unsigned BurmalGram IPA
 
 on:
   workflow_dispatch:
@@ -21,10 +21,10 @@ jobs:
       - name: Create GitHub Release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          TAG_NAME: sosuzagram-ios-unsigned-${{ github.run_number }}
+          TAG_NAME: burmalgram-ios-unsigned-${{ github.run_number }}
         run: |
           gh release create "$TAG_NAME" \
-            build/ios/artifacts/Sosuzagram-ios26-unsigned.ipa \
+            build/ios/artifacts/BurmalGram-ios26-unsigned.ipa \
             --target "$GITHUB_SHA" \
-            --title "Sosuzagram iOS unsigned IPA ${{ github.run_number }}" \
-            --notes "Unsigned/resignable IPA. Sign it with your own certificate before installing on iPhone. This is a starter shell app with SosuzagramIOSCore bundled; Telegram-iOS integration is the next step."
+            --title "BurmalGram iOS unsigned IPA ${{ github.run_number }}" \
+            --notes "Unsigned/resignable IPA. Sign it with your own certificate before installing on iPhone. This is a starter shell app with SosuzagramIOSCore bundled; BurmalGram integration is active."
