@@ -264,6 +264,18 @@ index abc01321..df59438d 100644
                  item.interaction.updatePeerGrouping(index.messageIndex.id.peerId, false)
                  close = false
                  self.skipFadeout = true
+diff --git a/submodules/TelegramUI/Components/Chat/ReplyAccessoryPanelNode/BUILD b/submodules/TelegramUI/Components/Chat/ReplyAccessoryPanelNode/BUILD
+index 3f758ba0..833c4ef5 100644
+--- a/submodules/TelegramUI/Components/Chat/ReplyAccessoryPanelNode/BUILD
++++ b/submodules/TelegramUI/Components/Chat/ReplyAccessoryPanelNode/BUILD
+@@ -22,6 +22,7 @@ swift_library(
+         "//submodules/TelegramUI/Components/AnimationCache",
+         "//submodules/TelegramUI/Components/MultiAnimationRenderer",
+         "//submodules/TelegramUI/Components/Chat/AccessoryPanelNode",
++        "//submodules/SosuzagramIOSCore:SosuzagramIOSCore",
+         "//submodules/TelegramUI/Components/CompositeTextNode",
+         "//submodules/TelegramNotices",
+     ],
 diff --git a/submodules/TelegramUI/Components/Chat/ReplyAccessoryPanelNode/Sources/ReplyAccessoryPanelNode.swift b/submodules/TelegramUI/Components/Chat/ReplyAccessoryPanelNode/Sources/ReplyAccessoryPanelNode.swift
 index 44c99484..c88b6ef2 100644
 --- a/submodules/TelegramUI/Components/Chat/ReplyAccessoryPanelNode/Sources/ReplyAccessoryPanelNode.swift

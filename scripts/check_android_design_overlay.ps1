@@ -81,11 +81,12 @@ Invoke-GitChecked -Repo $checkDir -Arguments @("apply", "--whitespace=nowarn", $
 
 $checks = @(
     @{ Path = (Join-Path $checkDir "submodules\ChatListUI\Sources\Node\ChatListItem.swift"); Pattern = 'conversation cards' },
+    @{ Path = (Join-Path $checkDir "submodules\TelegramUI\Components\Chat\ReplyAccessoryPanelNode\BUILD"); Pattern = '//submodules/SosuzagramIOSCore:SosuzagramIOSCore' },
     @{ Path = (Join-Path $checkDir "submodules\TelegramUI\Components\Chat\ReplyAccessoryPanelNode\Sources\ReplyAccessoryPanelNode.swift"); Pattern = 'reply accessory panel' },
     @{ Path = (Join-Path $checkDir "submodules\TelegramUI\Components\ChatList\ChatListFilterTabContainerNode\Sources\ChatListFilterTabContainerNode.swift"); Pattern = 'filter chips' },
     @{ Path = (Join-Path $checkDir "submodules\TelegramUI\Components\ChatListHeaderComponent\Sources\ChatListNavigationBar.swift"); Pattern = 'sosuzagramMaterialDesignLevelForCurrentMode()' },
     @{ Path = (Join-Path $checkDir "submodules\TelegramPresentationData\Sources\SosuzagramMaterial3Manager.swift"); Pattern = 'public func sosuzagramMaterialDesignLevelForCurrentMode() -> Int' },
-    @{ Path = (Join-Path $checkDir "submodules\SosuzagramIOSCore\SosuzagramSettingsController.swift"); Pattern = 'let change = SosuzagramAndroidDesignManager.toggleBetaMode(value)' }
+    @{ Path = (Join-Path $checkDir "submodules\SosuzagramIOSCore\SosuzagramSettingsController.swift"); Pattern = 'sosuzagramApplyAndroidDesignPreset(value)' }
 )
 
 foreach ($check in $checks) {

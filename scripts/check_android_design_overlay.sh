@@ -76,10 +76,11 @@ git -C "$CHECK_DIR" apply --whitespace=nowarn --check "$PATCH2"
 git -C "$CHECK_DIR" apply --whitespace=nowarn "$PATCH2"
 
 assert_contains "$CHECK_DIR/submodules/ChatListUI/Sources/Node/ChatListItem.swift" "conversation cards"
+assert_contains "$CHECK_DIR/submodules/TelegramUI/Components/Chat/ReplyAccessoryPanelNode/BUILD" "//submodules/SosuzagramIOSCore:SosuzagramIOSCore"
 assert_contains "$CHECK_DIR/submodules/TelegramUI/Components/Chat/ReplyAccessoryPanelNode/Sources/ReplyAccessoryPanelNode.swift" "reply accessory panel"
 assert_contains "$CHECK_DIR/submodules/TelegramUI/Components/ChatList/ChatListFilterTabContainerNode/Sources/ChatListFilterTabContainerNode.swift" "filter chips"
 assert_contains "$CHECK_DIR/submodules/TelegramUI/Components/ChatListHeaderComponent/Sources/ChatListNavigationBar.swift" "sosuzagramMaterialDesignLevelForCurrentMode()"
 assert_contains "$CHECK_DIR/submodules/TelegramPresentationData/Sources/SosuzagramMaterial3Manager.swift" "public func sosuzagramMaterialDesignLevelForCurrentMode() -> Int"
-assert_contains "$CHECK_DIR/submodules/SosuzagramIOSCore/SosuzagramSettingsController.swift" "let change = SosuzagramAndroidDesignManager.toggleBetaMode(value)"
+assert_contains "$CHECK_DIR/submodules/SosuzagramIOSCore/SosuzagramSettingsController.swift" "sosuzagramApplyAndroidDesignPreset(value)"
 
 echo "ANDROID_DESIGN_OVERLAY_OK"
