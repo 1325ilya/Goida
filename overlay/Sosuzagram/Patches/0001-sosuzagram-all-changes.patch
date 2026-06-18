@@ -2739,6 +2739,385 @@ index da993847..ad9ba680 100644
                  let path = UIBezierPath(roundedRect: bounds, byRoundingCorners: corners, cornerRadii: CGSize(width: cornerRadius, height: cornerRadius))
                  context.addPath(path.cgPath)
                  context.fillPath()
+diff --git a/submodules/TelegramPresentationData/Sources/SosuzagramMaterial3Manager.swift b/submodules/TelegramPresentationData/Sources/SosuzagramMaterial3Manager.swift
+new file mode 100644
+index 00000000..5858ca0c
+--- /dev/null
++++ b/submodules/TelegramPresentationData/Sources/SosuzagramMaterial3Manager.swift
+@@ -0,0 +1,96 @@
++import Foundation
++import UIKit
++
++public enum SosuzagramDesignMode: Equatable {
++    case defaultMode
++    case android
++    case material3
++}
++
++private let sosuzagramMaterial3EnabledKey = "sosuzagram_material3_enabled"
++private let sosuzagramAndroidDesignEnabledKey = "sosuzagram_android_design"
++private let sosuzagramMaterialDesignLevelKey = "sosuzagram_material_design_level"
++
++public func sosuzagramMaterial3Enabled() -> Bool {
++    return UserDefaults.standard.object(forKey: sosuzagramMaterial3EnabledKey) as? Bool ?? false
++}
++
++public func sosuzagramAndroidDesignEnabledForCurrentMode() -> Bool {
++    return !sosuzagramMaterial3Enabled() && UserDefaults.standard.bool(forKey: sosuzagramAndroidDesignEnabledKey)
++}
++
++public func sosuzagramMaterialDesignLevelForCurrentMode() -> Int {
++    guard !sosuzagramMaterial3Enabled() else {
++        return 0
++    }
++    return max(0, min(3, UserDefaults.standard.integer(forKey: sosuzagramMaterialDesignLevelKey)))
++}
++
++public func sosuzagramCurrentDesignMode() -> SosuzagramDesignMode {
++    if sosuzagramMaterial3Enabled() {
++        return .material3
++    } else if sosuzagramAndroidDesignEnabledForCurrentMode() || sosuzagramMaterialDesignLevelForCurrentMode() > 0 {
++        return .android
++    } else {
++        return .defaultMode
++    }
++}
++
++public struct SosuzagramMaterial3Metrics {
++    public let groupedCardCornerRadius: CGFloat
++    public let groupedGlassCornerRadius: CGFloat
++    public let compactCornerRadius: CGFloat
++    public let expandedCornerRadius: CGFloat
++    public let bubbleMainRadius: CGFloat
++    public let bubbleAuxiliaryRadius: CGFloat
++    
++    public init(
++        groupedCardCornerRadius: CGFloat = 18.0,
++        groupedGlassCornerRadius: CGFloat = 28.0,
++        compactCornerRadius: CGFloat = 14.0,
++        expandedCornerRadius: CGFloat = 20.0,
++        bubbleMainRadius: CGFloat = 18.0,
++        bubbleAuxiliaryRadius: CGFloat = 8.0
++    ) {
++        self.groupedCardCornerRadius = groupedCardCornerRadius
++        self.groupedGlassCornerRadius = groupedGlassCornerRadius
++        self.compactCornerRadius = compactCornerRadius
++        self.expandedCornerRadius = expandedCornerRadius
++        self.bubbleMainRadius = bubbleMainRadius
++        self.bubbleAuxiliaryRadius = bubbleAuxiliaryRadius
++    }
++}
++
++public func sosuzagramMaterial3Metrics() -> SosuzagramMaterial3Metrics {
++    return SosuzagramMaterial3Metrics()
++}
++
++public func sosuzagramMaterial3CornerRadius(for height: CGFloat, expanded: Bool = false) -> CGFloat {
++    let metrics = sosuzagramMaterial3Metrics()
++    let fallback = floor(height * 0.5)
++    guard sosuzagramMaterial3Enabled() else {
++        return fallback
++    }
++    if expanded {
++        return min(metrics.expandedCornerRadius, max(metrics.compactCornerRadius, floor(height * 0.4)))
++    } else {
++        return min(metrics.compactCornerRadius, fallback)
++    }
++}
++
++public func sosuzagramMaterial3ButtonCornerRadius(for height: CGFloat) -> CGFloat {
++    let metrics = sosuzagramMaterial3Metrics()
++    guard sosuzagramMaterial3Enabled() else {
++        return floor(height * 0.5)
++    }
++    return min(metrics.expandedCornerRadius, max(metrics.compactCornerRadius, floor(height * 0.42)))
++}
++
++public func sosuzagramMaterial3GroupedCornerRadius(glass: Bool = false) -> CGFloat {
++    let metrics = sosuzagramMaterial3Metrics()
++    if glass {
++        return sosuzagramMaterial3Enabled() ? metrics.groupedGlassCornerRadius : 26.0
++    } else {
++        return sosuzagramMaterial3Enabled() ? metrics.groupedCardCornerRadius : 11.0
++    }
++}
+diff --git a/submodules/TelegramPresentationData/Sources/SosuzagramMaterial3Theme.swift b/submodules/TelegramPresentationData/Sources/SosuzagramMaterial3Theme.swift
+new file mode 100644
+index 00000000..d61acf96
+--- /dev/null
++++ b/submodules/TelegramPresentationData/Sources/SosuzagramMaterial3Theme.swift
+@@ -0,0 +1,271 @@
++import Foundation
++import UIKit
++
++private func sosuzagramMaterial3ForegroundColor(for color: UIColor) -> UIColor {
++    return color.lightness > 0.64 ? UIColor(white: 0.08, alpha: 0.96) : UIColor(white: 1.0, alpha: 0.96)
++}
++
++private func sosuzagramMaterial3Surface(theme: PresentationTheme, accent: UIColor, elevation: CGFloat) -> UIColor {
++    let alpha = theme.overallDarkAppearance ? min(0.22, 0.08 + elevation * 0.02) : min(0.12, 0.03 + elevation * 0.018)
++    return theme.list.blocksBackgroundColor.mixedWith(accent, alpha: alpha)
++}
++
++private func sosuzagramMaterial3PlainSurface(theme: PresentationTheme, accent: UIColor, elevation: CGFloat) -> UIColor {
++    let alpha = theme.overallDarkAppearance ? min(0.16, 0.05 + elevation * 0.015) : min(0.08, 0.02 + elevation * 0.012)
++    return theme.list.plainBackgroundColor.mixedWith(accent, alpha: alpha)
++}
++
++private func sosuzagramMaterial3Highlight(theme: PresentationTheme, accent: UIColor) -> UIColor {
++    return accent.withAlphaComponent(theme.overallDarkAppearance ? 0.22 : 0.12)
++}
++
++private func sosuzagramMaterial3Selected(theme: PresentationTheme, accent: UIColor) -> UIColor {
++    return accent.withAlphaComponent(theme.overallDarkAppearance ? 0.28 : 0.18)
++}
++
++private func sosuzagramMaterial3Separator(theme: PresentationTheme, surface: UIColor) -> UIColor {
++    return surface.mixedWith(theme.list.itemSecondaryTextColor, alpha: theme.overallDarkAppearance ? 0.22 : 0.10)
++}
++
++private func sosuzagramMaterial3VariableColor(base: PresentationThemeVariableColor, fill: UIColor) -> PresentationThemeVariableColor {
++    return base.withUpdated(withWallpaper: fill, withoutWallpaper: fill)
++}
++
++public func sosuzagramApplyMaterial3IfNeeded(to theme: PresentationTheme) -> PresentationTheme {
++    guard sosuzagramMaterial3Enabled() else {
++        return theme
++    }
++    
++    let accent = theme.list.itemAccentColor
++    let onAccent = sosuzagramMaterial3ForegroundColor(for: accent)
++    let surface0 = sosuzagramMaterial3PlainSurface(theme: theme, accent: accent, elevation: 0.0)
++    let surface1 = sosuzagramMaterial3Surface(theme: theme, accent: accent, elevation: 1.0)
++    let surface2 = sosuzagramMaterial3Surface(theme: theme, accent: accent, elevation: 2.0)
++    let surface3 = sosuzagramMaterial3Surface(theme: theme, accent: accent, elevation: 3.0)
++    let separator = sosuzagramMaterial3Separator(theme: theme, surface: surface2)
++    let highlight = sosuzagramMaterial3Highlight(theme: theme, accent: accent)
++    let selected = sosuzagramMaterial3Selected(theme: theme, accent: accent)
++    let accentContainer = accent.withAlphaComponent(theme.overallDarkAppearance ? 0.34 : 0.18)
++    let searchField = surface3.mixedWith(theme.list.itemPrimaryTextColor, alpha: theme.overallDarkAppearance ? 0.04 : 0.015)
++    
++    let list = theme.list.withUpdated(
++        blocksBackgroundColor: surface1,
++        modalBlocksBackgroundColor: surface2,
++        plainBackgroundColor: surface0,
++        modalPlainBackgroundColor: surface1,
++        itemHighlightedColor: selected,
++        itemBlocksBackgroundColor: surface2,
++        itemModalBlocksBackgroundColor: surface3,
++        itemHighlightedBackgroundColor: highlight,
++        itemBlocksSeparatorColor: separator,
++        itemPlainSeparatorColor: separator.withAlphaComponent(theme.overallDarkAppearance ? 0.8 : 0.7),
++        sectionHeaderTextColor: theme.list.sectionHeaderTextColor.mixedWith(accent, alpha: theme.overallDarkAppearance ? 0.12 : 0.08),
++        itemSwitchColors: theme.list.itemSwitchColors.withUpdated(
++            frameColor: separator.withAlphaComponent(0.9),
++            handleColor: sosuzagramMaterial3ForegroundColor(for: surface3),
++            contentColor: onAccent,
++            positiveColor: accent,
++            negativeColor: separator.withAlphaComponent(theme.overallDarkAppearance ? 1.0 : 0.9)
++        ),
++        itemCheckColors: theme.list.itemCheckColors.withUpdated(
++            fillColor: accent,
++            strokeColor: accent.withAlphaComponent(theme.overallDarkAppearance ? 0.30 : 0.18),
++            foregroundColor: onAccent
++        ),
++        controlSecondaryColor: accent.withAlphaComponent(theme.overallDarkAppearance ? 0.72 : 0.64),
++        freeInputField: theme.list.freeInputField.withUpdated(
++            backgroundColor: searchField,
++            strokeColor: separator,
++            placeholderColor: theme.list.itemSecondaryTextColor.withAlphaComponent(0.8),
++            controlColor: accent.withAlphaComponent(0.7)
++        ),
++        freePlainInputField: theme.list.freePlainInputField.withUpdated(
++            backgroundColor: searchField,
++            strokeColor: separator,
++            placeholderColor: theme.list.itemSecondaryTextColor.withAlphaComponent(0.8),
++            controlColor: accent.withAlphaComponent(0.7)
++        ),
++        itemInputField: theme.list.itemInputField.withUpdated(
++            backgroundColor: searchField,
++            strokeColor: separator,
++            placeholderColor: theme.list.itemSecondaryTextColor.withAlphaComponent(0.82),
++            controlColor: accent.withAlphaComponent(0.7)
++        )
++    )
++    
++    let rootController = theme.rootController.withUpdated(
++        tabBar: theme.rootController.tabBar.withUpdated(
++            backgroundColor: surface2,
++            separatorColor: separator,
++            selectedIconColor: accent,
++            selectedTextColor: accent
++        ),
++        navigationBar: theme.rootController.navigationBar.withUpdated(
++            buttonColor: accent,
++            accentTextColor: accent,
++            blurredBackgroundColor: surface1.withAlphaComponent(theme.overallDarkAppearance ? 0.92 : 0.96),
++            opaqueBackgroundColor: surface1,
++            separatorColor: separator,
++            segmentedBackgroundColor: surface3,
++            segmentedForegroundColor: accentContainer,
++            segmentedTextColor: theme.rootController.navigationBar.primaryTextColor,
++            segmentedDividerColor: separator
++        ),
++        navigationSearchBar: theme.rootController.navigationSearchBar.withUpdated(
++            backgroundColor: surface1,
++            accentColor: accent,
++            inputFillColor: searchField,
++            separatorColor: separator
++        )
++    )
++    
++    let chatList = theme.chatList.withUpdated(
++        backgroundColor: surface0,
++        itemSeparatorColor: separator,
++        itemBackgroundColor: surface1,
++        pinnedItemBackgroundColor: surface2,
++        itemHighlightedBackgroundColor: highlight,
++        pinnedItemHighlightedBackgroundColor: highlight,
++        itemSelectedBackgroundColor: selected,
++        checkmarkColor: accent,
++        unreadBadgeActiveBackgroundColor: accent,
++        unreadBadgeActiveTextColor: onAccent,
++        unreadBadgeInactiveBackgroundColor: accent.withAlphaComponent(theme.overallDarkAppearance ? 0.26 : 0.12),
++        unreadBadgeInactiveTextColor: accent,
++        reactionBadgeActiveBackgroundColor: accentContainer,
++        pinnedSearchBarColor: searchField,
++        regularSearchBarColor: searchField,
++        sectionHeaderFillColor: surface2,
++        sectionHeaderTextColor: list.sectionHeaderTextColor,
++        verifiedIconFillColor: accent,
++        onlineDotColor: accent
++    )
++    
++    let chatMessage = theme.chat.message.withUpdated(
++        incoming: theme.chat.message.incoming.withUpdated(
++            actionButtonsFillColor: sosuzagramMaterial3VariableColor(base: theme.chat.message.incoming.actionButtonsFillColor, fill: accentContainer),
++            actionButtonsStrokeColor: sosuzagramMaterial3VariableColor(base: theme.chat.message.incoming.actionButtonsStrokeColor, fill: accent.withAlphaComponent(theme.overallDarkAppearance ? 0.28 : 0.14)),
++            actionButtonsTextColor: sosuzagramMaterial3VariableColor(base: theme.chat.message.incoming.actionButtonsTextColor, fill: accent),
++            textSelectionColor: highlight
++        ),
++        outgoing: theme.chat.message.outgoing.withUpdated(
++            actionButtonsFillColor: sosuzagramMaterial3VariableColor(base: theme.chat.message.outgoing.actionButtonsFillColor, fill: accent),
++            actionButtonsStrokeColor: sosuzagramMaterial3VariableColor(base: theme.chat.message.outgoing.actionButtonsStrokeColor, fill: accent.withAlphaComponent(theme.overallDarkAppearance ? 0.30 : 0.18)),
++            actionButtonsTextColor: sosuzagramMaterial3VariableColor(base: theme.chat.message.outgoing.actionButtonsTextColor, fill: onAccent),
++            textSelectionColor: selected
++        ),
++        shareButtonFillColor: sosuzagramMaterial3VariableColor(base: theme.chat.message.shareButtonFillColor, fill: accentContainer),
++        shareButtonStrokeColor: sosuzagramMaterial3VariableColor(base: theme.chat.message.shareButtonStrokeColor, fill: accent.withAlphaComponent(theme.overallDarkAppearance ? 0.24 : 0.12)),
++        shareButtonForegroundColor: sosuzagramMaterial3VariableColor(base: theme.chat.message.shareButtonForegroundColor, fill: accent),
++        selectionControlColors: theme.chat.message.selectionControlColors.withUpdated(
++            fillColor: accent,
++            strokeColor: accent.withAlphaComponent(theme.overallDarkAppearance ? 0.26 : 0.14),
++            foregroundColor: onAccent
++        )
++    )
++    
++    let chatInputPanel = theme.chat.inputPanel.withUpdated(
++        panelBackgroundColor: surface1.withAlphaComponent(theme.overallDarkAppearance ? 0.86 : 0.92),
++        panelBackgroundColorNoWallpaper: surface1,
++        panelSeparatorColor: separator,
++        panelControlAccentColor: accent,
++        panelControlColor: accent.withAlphaComponent(0.88),
++        panelControlDisabledColor: theme.chat.inputPanel.panelControlDisabledColor.mixedWith(surface3, alpha: 0.25),
++        inputBackgroundColor: searchField,
++        inputStrokeColor: separator,
++        actionControlFillColor: accent,
++        actionControlForegroundColor: onAccent,
++        secondaryTextColor: theme.chat.inputPanel.secondaryTextColor.withAlphaComponent(0.92)
++    )
++    
++    let inputMediaPanel = theme.chat.inputMediaPanel.withUpdated(
++        panelSeparatorColor: separator,
++        panelHighlightedIconBackgroundColor: accentContainer,
++        panelHighlightedIconColor: accent,
++        backgroundColor: surface1,
++        stickersBackgroundColor: surface1,
++        stickersSearchBackgroundColor: searchField,
++        gifsBackgroundColor: surface1
++    )
++    
++    let inputButtonPanel = theme.chat.inputButtonPanel.withUpdated(
++        panelSeparatorColor: separator,
++        panelBackgroundColor: surface1,
++        buttonFillColor: accent,
++        buttonHighlightColor: selected,
++        buttonStrokeColor: accent.withAlphaComponent(theme.overallDarkAppearance ? 0.28 : 0.12),
++        buttonHighlightedFillColor: accent.mixedWith(theme.list.itemPrimaryTextColor, alpha: theme.overallDarkAppearance ? 0.08 : 0.04),
++        buttonHighlightedStrokeColor: accent.withAlphaComponent(theme.overallDarkAppearance ? 0.34 : 0.18),
++        buttonTextColor: onAccent
++    )
++    
++    let chatHistoryNavigation = theme.chat.historyNavigation.withUpdated(
++        fillColor: surface3,
++        strokeColor: separator,
++        foregroundColor: accent,
++        badgeBackgroundColor: accent,
++        badgeTextColor: onAccent
++    )
++    
++    let chat = theme.chat.withUpdated(
++        message: chatMessage,
++        inputPanel: chatInputPanel,
++        inputMediaPanel: inputMediaPanel,
++        inputButtonPanel: inputButtonPanel,
++        historyNavigation: chatHistoryNavigation
++    )
++    
++    let actionSheet = theme.actionSheet.withUpdated(
++        opaqueItemBackgroundColor: surface2,
++        itemBackgroundColor: surface2.withAlphaComponent(theme.overallDarkAppearance ? 0.94 : 0.97),
++        opaqueItemHighlightedBackgroundColor: highlight,
++        itemHighlightedBackgroundColor: highlight,
++        opaqueItemSeparatorColor: separator,
++        controlAccentColor: accent,
++        inputBackgroundColor: searchField,
++        inputHollowBackgroundColor: surface1,
++        inputBorderColor: separator
++    )
++    
++    let contextMenu = theme.contextMenu.withUpdated(
++        backgroundColor: surface2,
++        itemSeparatorColor: separator,
++        sectionSeparatorColor: separator,
++        itemBackgroundColor: surface2,
++        itemHighlightedBackgroundColor: highlight,
++        primaryColor: theme.contextMenu.primaryColor,
++        secondaryColor: theme.contextMenu.secondaryColor.mixedWith(accent, alpha: 0.10)
++    )
++    
++    let inAppNotification = theme.inAppNotification.withUpdated(
++        fillColor: surface3,
++        expandedNotification: theme.inAppNotification.expandedNotification.withUpdated(
++            navigationBar: theme.inAppNotification.expandedNotification.navigationBar.withUpdated(
++                backgroundColor: surface2,
++                controlColor: accent,
++                separatorColor: separator
++            )
++        )
++    )
++    
++    let result = PresentationTheme(
++        name: theme.name,
++        index: theme.index,
++        referenceTheme: theme.referenceTheme,
++        overallDarkAppearance: theme.overallDarkAppearance,
++        intro: theme.intro,
++        passcode: theme.passcode,
++        rootController: rootController,
++        list: list,
++        chatList: chatList,
++        chat: chat,
++        actionSheet: actionSheet,
++        contextMenu: contextMenu,
++        inAppNotification: inAppNotification,
++        chart: theme.chart,
++        preview: theme.preview
++    )
++    result.forceSync = theme.forceSync
++    result.starGift = theme.starGift
++    return result
++}
 diff --git a/submodules/TelegramStringFormatting/Sources/MessageContentKind.swift b/submodules/TelegramStringFormatting/Sources/MessageContentKind.swift
 index 86e0333e..75902261 100644
 --- a/submodules/TelegramStringFormatting/Sources/MessageContentKind.swift
@@ -11704,6 +12083,374 @@ index b9608661..ced86a14 100644
      public func openAddContact(context: AccountContext, peer: EnginePeer?, firstName: String, lastName: String, phoneNumber: String, label: String, present: @escaping (ViewController, Any?) -> Void, pushController: @escaping (ViewController) -> Void, completed: @escaping () -> Void) {
          openAddContactImpl(context: context, peer: peer, firstName: firstName, lastName: lastName, phoneNumber: phoneNumber, label: label, present: present, pushController: pushController, completed: completed)
      }
+diff --git a/submodules/TelegramUI/Sources/SosuzagramGamepadControllerSupport.swift b/submodules/TelegramUI/Sources/SosuzagramGamepadControllerSupport.swift
+new file mode 100644
+index 00000000..31b080e9
+--- /dev/null
++++ b/submodules/TelegramUI/Sources/SosuzagramGamepadControllerSupport.swift
+@@ -0,0 +1,301 @@
++import Foundation
++import GameController
++
++protocol SosuzagramGamepadEventSink: AnyObject {
++    func sosuzagramGamepadDidChangeState(_ state: SosuzagramGamepadManager.State)
++    func sosuzagramGamepadDidRequestActivationPrompt(deviceName: String)
++    func sosuzagramGamepadDidReceiveIntent(_ intent: SosuzagramGamepadIntent)
++}
++
++enum SosuzagramGamepadIntent {
++    case moveUp
++    case moveDown
++    case primaryAction
++    case back
++    case options
++}
++
++final class SosuzagramGamepadManager {
++    enum State: Equatable {
++        case disconnected
++        case connected(deviceName: String, controllerModeEnabled: Bool)
++    }
++    
++    static let shared = SosuzagramGamepadManager()
++    
++    weak var sink: SosuzagramGamepadEventSink? {
++        didSet {
++            self.notifyStateChanged()
++            self.deliverPendingPromptIfNeeded()
++        }
++    }
++    
++    private(set) var state: State = .disconnected
++    
++    private var isMonitoring = false
++    private weak var activeController: GCController?
++    private var controllerObservationTokens: [NSObjectProtocol] = []
++    private var shouldPromptForConnectedController = false
++    
++    private init() {
++    }
++    
++    var isControllerModeEnabled: Bool {
++        if case let .connected(_, controllerModeEnabled) = self.state {
++            return controllerModeEnabled
++        } else {
++            return false
++        }
++    }
++    
++    func startMonitoring() {
++        guard !self.isMonitoring else {
++            self.evaluateConnectedControllers()
++            return
++        }
++        self.isMonitoring = true
++        
++        let center = NotificationCenter.default
++        self.controllerObservationTokens.append(
++            center.addObserver(
++                forName: NSNotification.Name.GCControllerDidConnect,
++                object: nil,
++                queue: .main
++            ) { [weak self] notification in
++                self?.handleControllerConnected(notification.object as? GCController)
++            }
++        )
++        self.controllerObservationTokens.append(
++            center.addObserver(
++                forName: NSNotification.Name.GCControllerDidDisconnect,
++                object: nil,
++                queue: .main
++            ) { [weak self] notification in
++                self?.handleControllerDisconnected(notification.object as? GCController)
++            }
++        )
++        
++        self.evaluateConnectedControllers()
++    }
++    
++    func activateCurrentControllerMode() {
++        guard let controller = self.activeController ?? self.firstSupportedController() else {
++            return
++        }
++        
++        self.activeController = controller
++        self.installHandlers(for: controller)
++        self.shouldPromptForConnectedController = false
++        self.state = .connected(deviceName: self.deviceName(for: controller), controllerModeEnabled: true)
++        Logger.shared.log("SosuzagramGamepad", "controller mode enabled for \(self.deviceName(for: controller))")
++        self.notifyStateChanged()
++    }
++    
++    func declineCurrentControllerMode() {
++        guard let controller = self.activeController else {
++            return
++        }
++        self.uninstallHandlers(for: controller)
++        self.shouldPromptForConnectedController = false
++        self.state = .connected(deviceName: self.deviceName(for: controller), controllerModeEnabled: false)
++        Logger.shared.log("SosuzagramGamepad", "controller mode declined for \(self.deviceName(for: controller))")
++        self.notifyStateChanged()
++    }
++    
++    func disableControllerMode(logReason: String) {
++        if let controller = self.activeController {
++            self.uninstallHandlers(for: controller)
++        }
++        
++        switch self.state {
++        case let .connected(deviceName, _):
++            self.state = .connected(deviceName: deviceName, controllerModeEnabled: false)
++        case .disconnected:
++            break
++        }
++        
++        Logger.shared.log("SosuzagramGamepad", "controller mode disabled: \(logReason)")
++        self.notifyStateChanged()
++    }
++    
++    private func evaluateConnectedControllers() {
++        guard let controller = self.firstSupportedController() else {
++            self.handleNoSupportedControllers()
++            return
++        }
++        
++        self.activeController = controller
++        let isEnabled = self.isControllerModeEnabled
++        if isEnabled {
++            self.installHandlers(for: controller)
++        } else {
++            self.uninstallHandlers(for: controller)
++        }
++        
++        self.state = .connected(deviceName: self.deviceName(for: controller), controllerModeEnabled: isEnabled)
++        self.notifyStateChanged()
++        if !isEnabled {
++            self.shouldPromptForConnectedController = true
++            self.deliverPendingPromptIfNeeded()
++        }
++    }
++    
++    private func handleControllerConnected(_ controller: GCController?) {
++        guard let controller, self.isSupportedController(controller) else {
++            return
++        }
++        
++        self.activeController = controller
++        self.uninstallHandlers(for: controller)
++        self.state = .connected(deviceName: self.deviceName(for: controller), controllerModeEnabled: false)
++        self.shouldPromptForConnectedController = true
++        Logger.shared.log("SosuzagramGamepad", "controller connected: \(self.deviceName(for: controller))")
++        self.notifyStateChanged()
++        self.deliverPendingPromptIfNeeded()
++    }
++    
++    private func handleControllerDisconnected(_ controller: GCController?) {
++        guard let controller else {
++            self.handleNoSupportedControllers()
++            return
++        }
++        
++        let wasActiveController = self.activeController === controller
++        self.uninstallHandlers(for: controller)
++        
++        if wasActiveController {
++            Logger.shared.log("SosuzagramGamepad", "controller disconnected: \(self.deviceName(for: controller))")
++            self.activeController = nil
++            self.shouldPromptForConnectedController = false
++            self.state = .disconnected
++            self.notifyStateChanged()
++        }
++        
++        if let replacement = self.firstSupportedController() {
++            self.handleControllerConnected(replacement)
++        }
++    }
++    
++    private func handleNoSupportedControllers() {
++        if let controller = self.activeController {
++            self.uninstallHandlers(for: controller)
++        }
++        self.activeController = nil
++        self.shouldPromptForConnectedController = false
++        self.state = .disconnected
++        self.notifyStateChanged()
++    }
++    
++    private func firstSupportedController() -> GCController? {
++        return GCController.controllers().first(where: { self.isSupportedController($0) })
++    }
++    
++    private func isSupportedController(_ controller: GCController) -> Bool {
++        return controller.extendedGamepad != nil || controller.microGamepad != nil
++    }
++    
++    private func deviceName(for controller: GCController) -> String {
++        return controller.vendorName ?? "Game Controller"
++    }
++    
++    private func installHandlers(for controller: GCController) {
++        self.uninstallHandlers(for: controller)
++        
++        if let extendedGamepad = controller.extendedGamepad {
++            extendedGamepad.dpad.up.pressedChangedHandler = { [weak self] _, _, pressed in
++                guard pressed else {
++                    return
++                }
++                self?.emitIntent(.moveUp)
++            }
++            extendedGamepad.dpad.down.pressedChangedHandler = { [weak self] _, _, pressed in
++                guard pressed else {
++                    return
++                }
++                self?.emitIntent(.moveDown)
++            }
++            extendedGamepad.buttonA.pressedChangedHandler = { [weak self] _, _, pressed in
++                guard pressed else {
++                    return
++                }
++                self?.emitIntent(.primaryAction)
++            }
++            extendedGamepad.buttonB.pressedChangedHandler = { [weak self] _, _, pressed in
++                guard pressed else {
++                    return
++                }
++                self?.emitIntent(.back)
++            }
++        } else if let microGamepad = controller.microGamepad {
++            microGamepad.dpad.up.pressedChangedHandler = { [weak self] _, _, pressed in
++                guard pressed else {
++                    return
++                }
++                self?.emitIntent(.moveUp)
++            }
++            microGamepad.dpad.down.pressedChangedHandler = { [weak self] _, _, pressed in
++                guard pressed else {
++                    return
++                }
++                self?.emitIntent(.moveDown)
++            }
++            microGamepad.buttonA.pressedChangedHandler = { [weak self] _, _, pressed in
++                guard pressed else {
++                    return
++                }
++                self?.emitIntent(.primaryAction)
++            }
++            microGamepad.buttonX.pressedChangedHandler = { [weak self] _, _, pressed in
++                guard pressed else {
++                    return
++                }
++                self?.emitIntent(.back)
++            }
++        }
++        
++        controller.controllerPausedHandler = { [weak self] _ in
++            self?.emitIntent(.options)
++        }
++    }
++    
++    private func uninstallHandlers(for controller: GCController) {
++        controller.controllerPausedHandler = nil
++        
++        if let extendedGamepad = controller.extendedGamepad {
++            extendedGamepad.dpad.up.pressedChangedHandler = nil
++            extendedGamepad.dpad.down.pressedChangedHandler = nil
++            extendedGamepad.buttonA.pressedChangedHandler = nil
++            extendedGamepad.buttonB.pressedChangedHandler = nil
++        }
++        
++        if let microGamepad = controller.microGamepad {
++            microGamepad.dpad.up.pressedChangedHandler = nil
++            microGamepad.dpad.down.pressedChangedHandler = nil
++            microGamepad.buttonA.pressedChangedHandler = nil
++            microGamepad.buttonX.pressedChangedHandler = nil
++        }
++    }
++    
++    private func emitIntent(_ intent: SosuzagramGamepadIntent) {
++        guard self.isControllerModeEnabled else {
++            return
++        }
++        DispatchQueue.main.async { [weak self] in
++            self?.sink?.sosuzagramGamepadDidReceiveIntent(intent)
++        }
++    }
++    
++    private func notifyStateChanged() {
++        self.sink?.sosuzagramGamepadDidChangeState(self.state)
++    }
++    
++    private func deliverPendingPromptIfNeeded() {
++        guard self.shouldPromptForConnectedController else {
++            return
++        }
++        guard case let .connected(deviceName, controllerModeEnabled) = self.state, !controllerModeEnabled else {
++            return
++        }
++        self.sink?.sosuzagramGamepadDidRequestActivationPrompt(deviceName: deviceName)
++    }
++}
+diff --git a/submodules/TelegramUI/Sources/SosuzagramGamepadHintView.swift b/submodules/TelegramUI/Sources/SosuzagramGamepadHintView.swift
+new file mode 100644
+index 00000000..3d624aa8
+--- /dev/null
++++ b/submodules/TelegramUI/Sources/SosuzagramGamepadHintView.swift
+@@ -0,0 +1,55 @@
++import UIKit
++
++final class SosuzagramGamepadHintView: UIView {
++    private let blurView = UIVisualEffectView(effect: UIBlurEffect(style: .systemThinMaterialDark))
++    private let label = UILabel()
++    
++    override init(frame: CGRect) {
++        super.init(frame: frame)
++        
++        self.isUserInteractionEnabled = false
++        self.alpha = 0.0
++        self.translatesAutoresizingMaskIntoConstraints = false
++        
++        self.blurView.translatesAutoresizingMaskIntoConstraints = false
++        self.blurView.clipsToBounds = true
++        self.blurView.layer.cornerRadius = 18.0
++        self.addSubview(self.blurView)
++        
++        self.label.translatesAutoresizingMaskIntoConstraints = false
++        self.label.textColor = .white
++        self.label.font = UIFont.systemFont(ofSize: 13.0, weight: .semibold)
++        self.label.numberOfLines = 2
++        self.label.textAlignment = .center
++        self.blurView.contentView.addSubview(self.label)
++        
++        NSLayoutConstraint.activate([
++            self.blurView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
++            self.blurView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
++            self.blurView.topAnchor.constraint(equalTo: self.topAnchor),
++            self.blurView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
++            self.label.leadingAnchor.constraint(equalTo: self.blurView.contentView.leadingAnchor, constant: 14.0),
++            self.label.trailingAnchor.constraint(equalTo: self.blurView.contentView.trailingAnchor, constant: -14.0),
++            self.label.topAnchor.constraint(equalTo: self.blurView.contentView.topAnchor, constant: 10.0),
++            self.label.bottomAnchor.constraint(equalTo: self.blurView.contentView.bottomAnchor, constant: -10.0)
++        ])
++    }
++    
++    required init?(coder: NSCoder) {
++        fatalError("init(coder:) has not been implemented")
++    }
++    
++    func update(text: String, isVisible: Bool, animated: Bool) {
++        self.label.text = text
++        
++        let updates = {
++            self.alpha = isVisible ? 1.0 : 0.0
++        }
++        
++        if animated {
++            UIView.animate(withDuration: 0.2, delay: 0.0, options: [.beginFromCurrentState, .curveEaseInOut], animations: updates)
++        } else {
++            updates()
++        }
++    }
++}
 diff --git a/submodules/TelegramUI/Sources/TelegramRootController.swift b/submodules/TelegramUI/Sources/TelegramRootController.swift
 index db5f613c..fbe9bac1 100644
 --- a/submodules/TelegramUI/Sources/TelegramRootController.swift
