@@ -225,7 +225,7 @@ final class SosuzagramAppIconManager {
 
     @MainActor
     private func setAlternateIconName(_ name: String?) async throws {
-        try await withCheckedThrowingContinuation { continuation in
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
             UIApplication.shared.setAlternateIconName(name) { error in
                 if let error {
                     continuation.resume(throwing: error)
