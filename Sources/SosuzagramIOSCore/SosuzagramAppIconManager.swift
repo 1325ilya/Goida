@@ -36,7 +36,6 @@ struct SosuzagramAppIconOperationOutcome {
     let notice: String?
 }
 
-@MainActor
 final class SosuzagramAppIconManager {
     static let shared = SosuzagramAppIconManager()
 
@@ -184,6 +183,7 @@ final class SosuzagramAppIconManager {
         return self.snapshot()
     }
 
+    @MainActor
     func applyBuiltInIcon(_ icon: SosuzagramBuiltInAppIcon) async throws -> SosuzagramAppIconOperationOutcome {
         var preferences = self.loadPreferences()
         let notice: String?
@@ -203,6 +203,7 @@ final class SosuzagramAppIconManager {
         return SosuzagramAppIconOperationOutcome(snapshot: self.snapshot(), notice: notice)
     }
 
+    @MainActor
     func activateCustomIconPreview() async throws -> SosuzagramAppIconOperationOutcome {
         var preferences = self.loadPreferences()
         guard let customIcon = preferences.customIcon else {
@@ -222,6 +223,7 @@ final class SosuzagramAppIconManager {
         return SosuzagramAppIconOperationOutcome(snapshot: self.snapshot(), notice: notice)
     }
 
+    @MainActor
     private func setAlternateIconName(_ name: String?) async throws {
         try await withCheckedThrowingContinuation { continuation in
             UIApplication.shared.setAlternateIconName(name) { error in
