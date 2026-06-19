@@ -106,7 +106,6 @@ private struct SosuzagramSettingsControllerArguments {
     let openLocalizationSettings: () -> Void
     let openThemeSettings: () -> Void
     let openChatFoldersSettings: () -> Void
-    let selectIcon: (String) -> Void
     let openPlugin: (String) -> Void
     let importPlugin: () -> Void
 }
@@ -859,11 +858,11 @@ private func sosuzagramSettingsEntries(
     showFolderBadges: Bool,
     pillStackMode: String,
     forceSnow: Bool,
-    currentIcon: String,
     plugins: [SosuzagramPluginDescriptor]
 ) -> [SosuzagramSettingsEntry] {
     let theme = presentationData.theme
     var entries: [SosuzagramSettingsEntry] = []
+    let appIconSummary = SosuzagramAppIconManager.shared.settingsSummary()
 
     entries.append(SosuzagramSettingsEntry(
         section: SosuzagramSettingsSection.ghost.rawValue,
@@ -2037,14 +2036,14 @@ private func sosuzagramSettingsEntries(
         section: SosuzagramSettingsSection.icons.rawValue,
         stableId: 238,
         sortId: 238,
-        signature: "iconpacks",
+        signature: "iconpacks:\(appIconSummary.label):\(appIconSummary.detail)",
         buildItem: { presentationData, arguments in
             ItemListDisclosureItem(
                 presentationData: presentationData,
                 systemStyle: sosuzagramSettingsSystemStyle(),
-                title: "Наборы иконок",
-                label: "Extera style",
-                additionalDetailLabel: "Быстрый выбор альтернативной иконки приложения.",
+                title: "Иконка приложения",
+                label: appIconSummary.label,
+                additionalDetailLabel: appIconSummary.detail,
                 sectionId: SosuzagramSettingsSection.icons.rawValue,
                 style: .blocks,
                 disclosureStyle: .arrow,
@@ -2190,45 +2189,28 @@ private func sosuzagramSettingsEntries(
         }
     ))
 
-    let icons = [
-        ("Стандартная", "nil"),
-        ("Красная (Extera style)", "Red"),
-        ("Зелёная (Extera style)", "Green"),
-        ("Оранжевая (Extera style)", "Orange"),
-        ("Фиолетовая (Extera style)", "Purple")
-    ]
     entries.append(SosuzagramSettingsEntry(
         section: SosuzagramSettingsSection.icons.rawValue,
         stableId: 13,
         sortId: 13,
-        signature: "icons-header",
+        signature: "icons-header:\(appIconSummary.label)",
         buildItem: { presentationData, _ in
             ItemListSectionHeaderItem(presentationData: presentationData, text: "Иконки приложения", sectionId: SosuzagramSettingsSection.icons.rawValue)
         }
     ))
-    for (index, icon) in icons.enumerated() {
-        let isSelected = currentIcon == icon.1
-        entries.append(SosuzagramSettingsEntry(
-            section: SosuzagramSettingsSection.icons.rawValue,
-            stableId: UInt64(100 + index),
-            sortId: Int32(100 + index),
-            signature: "icon:\(icon.1):\(isSelected)",
-            buildItem: { presentationData, arguments in
-                ItemListDisclosureItem(
-                    presentationData: presentationData,
-                    systemStyle: sosuzagramSettingsSystemStyle(),
-                    title: icon.0,
-                    label: isSelected ? "Выбрано" : "",
-                    sectionId: SosuzagramSettingsSection.icons.rawValue,
-                    style: .blocks,
-                    disclosureStyle: .none,
-                    action: {
-                        arguments.selectIcon(icon.1)
-                    }
-                )
-            }
-        ))
-    }
+    entries.append(SosuzagramSettingsEntry(
+        section: SosuzagramSettingsSection.icons.rawValue,
+        stableId: 100,
+        sortId: 100,
+        signature: "icon-summary:\(appIconSummary.label):\(appIconSummary.detail)",
+        buildItem: { presentationData, _ in
+            ItemListTextItem(
+                presentationData: presentationData,
+                text: .plain("Все встроенные alternate icon и импорт кастомного превью теперь собраны в отдельном экране. Для произвольных картинок iOS сохраняет только превью и безопасно возвращает реальную иконку к стандартной."),
+                sectionId: SosuzagramSettingsSection.icons.rawValue
+            )
+        }
+    ))
     entries.append(SosuzagramSettingsEntry(
         section: SosuzagramSettingsSection.icons.rawValue,
         stableId: 220,
@@ -2745,18 +2727,6 @@ private func sosuzagramSettingsControllerImpl(context: AccountContext, category:
         openChatFoldersSettings: {
             openChatFoldersSettingsImpl?()
         },
-        selectIcon: { iconName in
-            let targetName = iconName == "nil" ? nil : iconName
-            if UIApplication.shared.supportsAlternateIcons {
-                UIApplication.shared.setAlternateIconName(targetName) { error in
-                    if let error {
-                        print("Error setting alternate icon: \(error.localizedDescription)")
-                    }
-                }
-            }
-            UserDefaults.standard.set(iconName, forKey: "sosuzagram_current_icon")
-            updateSettingsImpl?()
-        },
         openPlugin: { pluginId in
             openPluginImpl?(pluginId)
         },
@@ -2859,7 +2829,6 @@ private func sosuzagramSettingsControllerImpl(context: AccountContext, category:
         let showFolderBadges = UserDefaults.standard.object(forKey: "sosuzagram_show_folder_badges") as? Bool ?? true
         let pillStackMode = UserDefaults.standard.string(forKey: "sosuzagram_pill_stack_mode") ?? "off"
         let forceSnow = UserDefaults.standard.bool(forKey: "sosuzagram_force_snow")
-        let currentIcon = UserDefaults.standard.string(forKey: "sosuzagram_current_icon") ?? "nil"
         let plugins = sosuzagramBuiltInPlugins()
 
         let controllerState = ItemListControllerState(
@@ -2956,7 +2925,6 @@ private func sosuzagramSettingsControllerImpl(context: AccountContext, category:
             showFolderBadges: showFolderBadges,
             pillStackMode: pillStackMode,
             forceSnow: forceSnow,
-            currentIcon: currentIcon,
             plugins: plugins
         )
 
@@ -3595,43 +3563,9 @@ private func sosuzagramSettingsControllerImpl(context: AccountContext, category:
         guard let controller else {
             return
         }
-        let presentationData = context.sharedContext.currentPresentationData.with { $0 }
-        let currentIcon = UserDefaults.standard.string(forKey: "sosuzagram_current_icon") ?? "nil"
-        let icons = [
-            ("Стандартная", "nil"),
-            ("Красная (Extera style)", "Red"),
-            ("Зелёная (Extera style)", "Green"),
-            ("Оранжевая (Extera style)", "Orange"),
-            ("Фиолетовая (Extera style)", "Purple")
-        ]
-
-        let actionSheet = ActionSheetController(presentationData: presentationData)
-        var items: [ActionSheetItem] = [ActionSheetTextItem(title: "Наборы иконок")]
-        for (title, value) in icons {
-            let itemTitle = value == currentIcon ? "[selected] \(title)" : title
-            items.append(ActionSheetButtonItem(title: itemTitle, color: .accent, action: { [weak actionSheet] in
-                actionSheet?.dismissAnimated()
-                let targetName = value == "nil" ? nil : value
-                if UIApplication.shared.supportsAlternateIcons {
-                    UIApplication.shared.setAlternateIconName(targetName) { error in
-                        if let error {
-                            print("Error setting alternate icon: \(error.localizedDescription)")
-                        }
-                    }
-                }
-                UserDefaults.standard.set(value, forKey: "sosuzagram_current_icon")
-                updateSettingsImpl?()
-            }))
-        }
-        actionSheet.setItemGroups([
-            ActionSheetItemGroup(items: items),
-            ActionSheetItemGroup(items: [
-                ActionSheetButtonItem(title: presentationData.strings.Common_Cancel, color: .accent, font: .bold, action: { [weak actionSheet] in
-                    actionSheet?.dismissAnimated()
-                })
-            ])
-        ])
-        controller.present(actionSheet, in: .window(.root))
+        controller.push(sosuzagramAppIconPickerController(context: context, onUpdate: {
+            updateSettingsImpl?()
+        }))
     }
     openPluginImpl = { [weak controller] pluginId in
         controller?.push(sosuzagramPluginSettingsController(context: context, pluginId: pluginId))
