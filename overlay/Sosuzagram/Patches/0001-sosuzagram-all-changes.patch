@@ -12186,7 +12186,7 @@ index 00000000..31b080e9
 +        self.installHandlers(for: controller)
 +        self.shouldPromptForConnectedController = false
 +        self.state = .connected(deviceName: self.deviceName(for: controller), controllerModeEnabled: true)
-+        Logger.shared.log("SosuzagramGamepad", "controller mode enabled for \(self.deviceName(for: controller))")
++        print("SosuzagramGamepad: controller mode enabled for \(self.deviceName(for: controller))")
 +        self.notifyStateChanged()
 +    }
 +    
@@ -12197,7 +12197,7 @@ index 00000000..31b080e9
 +        self.uninstallHandlers(for: controller)
 +        self.shouldPromptForConnectedController = false
 +        self.state = .connected(deviceName: self.deviceName(for: controller), controllerModeEnabled: false)
-+        Logger.shared.log("SosuzagramGamepad", "controller mode declined for \(self.deviceName(for: controller))")
++        print("SosuzagramGamepad: controller mode declined for \(self.deviceName(for: controller))")
 +        self.notifyStateChanged()
 +    }
 +    
@@ -12213,7 +12213,7 @@ index 00000000..31b080e9
 +            break
 +        }
 +        
-+        Logger.shared.log("SosuzagramGamepad", "controller mode disabled: \(logReason)")
++        print("SosuzagramGamepad: controller mode disabled: \(logReason)")
 +        self.notifyStateChanged()
 +    }
 +    
@@ -12248,7 +12248,7 @@ index 00000000..31b080e9
 +        self.uninstallHandlers(for: controller)
 +        self.state = .connected(deviceName: self.deviceName(for: controller), controllerModeEnabled: false)
 +        self.shouldPromptForConnectedController = true
-+        Logger.shared.log("SosuzagramGamepad", "controller connected: \(self.deviceName(for: controller))")
++        print("SosuzagramGamepad: controller connected: \(self.deviceName(for: controller))")
 +        self.notifyStateChanged()
 +        self.deliverPendingPromptIfNeeded()
 +    }
@@ -12263,7 +12263,7 @@ index 00000000..31b080e9
 +        self.uninstallHandlers(for: controller)
 +        
 +        if wasActiveController {
-+            Logger.shared.log("SosuzagramGamepad", "controller disconnected: \(self.deviceName(for: controller))")
++            print("SosuzagramGamepad: controller disconnected: \(self.deviceName(for: controller))")
 +            self.activeController = nil
 +            self.shouldPromptForConnectedController = false
 +            self.state = .disconnected
@@ -12352,13 +12352,13 @@ index 00000000..31b080e9
 +            }
 +        }
 +        
-+        controller.controllerPausedHandler = { [weak self] _ in
-+            self?.emitIntent(.options)
++        if let menuButton = controller.extendedGamepad?.buttonMenu ?? controller.microGamepad?.buttonMenu {
++            menuButton.pressedChangedHandler = { [weak self] _, _, pressed in guard pressed else { return }; self?.emitIntent(.options) }
 +        }
 +    }
 +    
 +    private func uninstallHandlers(for controller: GCController) {
-+        controller.controllerPausedHandler = nil
++        controller.extendedGamepad?.buttonMenu.pressedChangedHandler = nil; controller.microGamepad?.buttonMenu.pressedChangedHandler = nil
 +        
 +        if let extendedGamepad = controller.extendedGamepad {
 +            extendedGamepad.dpad.up.pressedChangedHandler = nil
@@ -12463,11 +12463,12 @@ diff --git a/submodules/TelegramUI/Sources/TelegramRootController.swift b/submod
 index db5f613c..fbe9bac1 100644
 --- a/submodules/TelegramUI/Sources/TelegramRootController.swift
 +++ b/submodules/TelegramUI/Sources/TelegramRootController.swift
-@@ -31,6 +31,7 @@ import PeerInfoScreen
+@@ -31,6 +31,8 @@ import PeerInfoScreen
  import PeerInfoStoryGridScreen
  import ShareWithPeersScreen
  import ChatEmptyNode
 +import AlertUI
++import PresentationDataUtils
  
  private class DetailsChatPlaceholderNode: ASDisplayNode, NavigationDetailsPlaceholderNode {
      private var presentationData: PresentationData
@@ -12532,7 +12533,7 @@ index db5f613c..fbe9bac1 100644
 +        guard rootTabController.selectedIndex >= 0 && rootTabController.selectedIndex < rootTabController.controllers.count else {
 +            return nil
 +        }
-+        return rootTabController.controllers[rootTabController.selectedIndex] as? ViewController
++        return rootTabController.controllers[rootTabController.selectedIndex]
 +    }
 +    
 +    private func sosuzagramCurrentVisibleController() -> ViewController? {
