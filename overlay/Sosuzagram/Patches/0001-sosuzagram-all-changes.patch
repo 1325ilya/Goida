@@ -1483,7 +1483,7 @@ index 63c74cdd..f473dd4d 100644
              if self.hapticFeedback == nil {
                  self.hapticFeedback = HapticFeedback()
              }
-@@ -3836,6 +3844,148 @@ public final class ChatListNode: ListViewImpl {
+@@ -3836,6 +3844,156 @@ public final class ChatListNode: ListViewImpl {
          }
      }
      
@@ -1497,12 +1497,20 @@ index 63c74cdd..f473dd4d 100644
 +            return []
 +        }
 +        
-+        guard let range = self.displayedItemRange.visibleRange ?? self.displayedItemRange.loadedRange else {
++        let firstIndex: Int
++        let lastIndex: Int
++        if let range = self.displayedItemRange.visibleRange {
++            firstIndex = range.firstIndex
++            lastIndex = range.lastIndex
++        } else if let range = self.displayedItemRange.loadedRange {
++            firstIndex = range.firstIndex
++            lastIndex = range.lastIndex
++        } else {
 +            return []
 +        }
 +        
 +        var result: [(index: EngineChatList.Item.Index, peer: EnginePeer, entryIndex: Int)] = []
-+        for i in range.firstIndex ..< range.lastIndex {
++        for i in firstIndex ..< lastIndex {
 +            if i < 0 || i >= entryCount {
 +                continue
 +            }
