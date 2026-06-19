@@ -7,6 +7,7 @@ CONFIG_PATH="$UPSTREAM_DIR/build-system/template_minimal_development_configurati
 ARTIFACTS_DIR="$ROOT_DIR/build/artifacts/gbox"
 BUILD_NUMBER="${BUILD_NUMBER:-65}"
 BUILD_CONFIGURATION="${BUILD_CONFIGURATION:-release_arm64}"
+DISABLE_EXTENSIONS="${DISABLE_EXTENSIONS:-0}"
 
 if [ ! -d "$UPSTREAM_DIR/build-system" ]; then
   echo "Telegram-iOS build-system not found: $UPSTREAM_DIR" >&2
@@ -30,17 +31,21 @@ python3 build-system/Make/ImportCertificates.py --path build-system/fake-codesig
 rm -rf "$ARTIFACTS_DIR"
 mkdir -p "$ARTIFACTS_DIR"
 
-python3 build-system/Make/Make.py \
-  --cacheDir="${TELEGRAM_BAZEL_CACHE_DIR:-$HOME/telegram-bazel-cache}" \
-  --overrideXcodeVersion \
-  --overrideBazelVersion \
-  build \
-  --configurationPath="$CONFIG_PATH" \
-  --configuration="$BUILD_CONFIGURATION" \
-  --buildNumber="$BUILD_NUMBER" \
-  --codesigningInformationPath=build-system/fake-codesigning \
-  --disableExtensions \
+BUILD_ARGS=(
+  --cacheDir="${TELEGRAM_BAZEL_CACHE_DIR:-$HOME/telegram-bazel-cache}"
+  --overrideXcodeVersion
+  --overrideBazelVersion
+  build
+  --configurationPath="$CONFIG_PATH"
+  --configuration="$BUILD_CONFIGURATION"
+  --buildNumber="$BUILD_NUMBER"
+  --codesigningInformationPath=build-system/fake-codesigning
   --outputBuildArtifactsPath="$ARTIFACTS_DIR"
+)
+if [ "$DISABLE_EXTENSIONS" = "1" ]; then
+  BUILD_ARGS+=(--disableExtensions)
+fi
+python3 build-system/Make/Make.py "${BUILD_ARGS[@]}"
 
 if [ ! -f "$ARTIFACTS_DIR/Telegram.ipa" ]; then
   echo "Expected IPA not found at $ARTIFACTS_DIR/Telegram.ipa" >&2

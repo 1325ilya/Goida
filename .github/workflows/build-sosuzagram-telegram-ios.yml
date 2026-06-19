@@ -86,7 +86,7 @@ jobs:
             upstream/Telegram-iOS/Sosuzagram-Telegram-iOS-gbox-resignable.ipa \
             --target "$GITHUB_SHA" \
             --title "Sosuzagram iOS (Full Telegram Fork) #${{ github.run_number }}" \
-            --notes "GBOX-friendly resignable Telegram-iOS build. Built without app extensions and with sideload-safe main-app fallback changes to improve compatibility with personal certificate resigning."
+            --notes "GBOX-friendly resignable Telegram-iOS build. Built with app extensions enabled so BurmalGram keeps system notifications outside the app and preserves Telegram's notification service pipeline."
 
       - name: Save Bazel cache
         uses: actions/cache/save@v4
